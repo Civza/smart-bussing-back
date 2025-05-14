@@ -24,7 +24,6 @@ public class Lugar {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "lugar_sequence")
     private int lugar_id;
     private String name;
-    private String direccion;
     private String tipo;
     private String telefono;
     private String descripcion;

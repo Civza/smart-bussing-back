@@ -20,12 +20,13 @@ public class RegistroLugarController {
         this.registroLugarMapper = registroLugarMapper;
      }
 
+
+
      @PostMapping
      public ResponseEntity<?> registrarLugar(@RequestBody RegistroLugarDTO registroLugarDTO) {
          Empresa empresa = registroLugarMapper.toEmpresa(registroLugarDTO);
-         Contrato contrato = registroLugarMapper.toContrato(registroLugarDTO);
-         registroLugarMapper.toLugar(registroLugarDTO,empresa,contrato);
-
+         //Contrato contrato = registroLugarMapper.toContrato(registroLugarDTO);
+         registroLugarMapper.toLugar(registroLugarDTO,empresa);
          return ResponseEntity.ok().build();
      }
 }

@@ -1,7 +1,11 @@
 package buss.smartbussingapi.Usuario;
 
+import buss.smartbussingapi.Reporte.ReporteRuta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +23,9 @@ public class Usuario {
     private String email;
     private String password;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ReporteRuta> reporteRutas;
 
 }
 

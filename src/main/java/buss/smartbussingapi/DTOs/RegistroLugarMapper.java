@@ -24,12 +24,13 @@ public class RegistroLugarMapper {
     public Empresa toEmpresa(RegistroLugarDTO registroLugar) {
         Empresa empresa = new Empresa();
         empresa.setName(registroLugar.getNombreEmpresa());
-        empresa.setPais(registroLugar.getPaisEmpresa());
-        empresa.setMetodo_pago(registroLugar.getMetodoPago());
+        //empresa.setPais(registroLugar.getPaisEmpresa());
+        empresa.setCorreo_empresa(registroLugar.getCorreo_empresa());
         empresaRepository.save(empresa);
         return empresa;
     }
 
+    /*
     public Contrato toContrato(RegistroLugarDTO registroLugar){
         Contrato contrato = new Contrato();
         contrato.setFecha_inicio(registroLugar.getFechaInicio());
@@ -38,16 +39,16 @@ public class RegistroLugarMapper {
         contratoRepository.save(contrato);
         return contrato;
     }
+    */
 
-    public void toLugar(RegistroLugarDTO lugarDTO,Empresa empresa,Contrato contrato){
+
+    public void toLugar(RegistroLugarDTO lugarDTO,Empresa empresa){
         Lugar lugar = new Lugar();
         lugar.setName(lugarDTO.getNombreLugar());
-        lugar.setDireccion(lugarDTO.getDireccion());
         lugar.setTelefono(lugarDTO.getTelefono());
         lugar.setDescripcion(lugarDTO.getDescripcion());
         lugar.setTipo(lugarDTO.getTipo());
         lugar.setEmpresa(empresa);
-        lugar.setContrato(contrato);
 
         lugarRepository.save(lugar);
     }

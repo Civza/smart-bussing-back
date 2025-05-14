@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Empresa;
 
 import buss.smartbussingapi.Lugar.Lugar;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +25,10 @@ public class Empresa {
     private String name;
     private String pais;
     private String metodo_pago;
+    private String correo_empresa;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Lugar> lugares;
 
 }

@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Contrato;
 
 import buss.smartbussingapi.Lugar.Lugar;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Contrato {
     private int monto;
 
     @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Lugar> lugares;
 
 }
