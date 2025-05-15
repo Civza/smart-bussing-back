@@ -25,7 +25,7 @@ public class Empresa {
     private String name;
     private String pais;
     private String metodo_pago;
-    private String correo_empresa;
+    private String email;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     @JsonIgnore

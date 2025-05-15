@@ -8,6 +8,8 @@ import buss.smartbussingapi.Lugar.Lugar;
 import buss.smartbussingapi.Lugar.LugarRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class RegistroLugarMapper {
 
@@ -22,12 +24,19 @@ public class RegistroLugarMapper {
     }
 
     public Empresa toEmpresa(RegistroLugarDTO registroLugar) {
-        Empresa empresa = new Empresa();
-        empresa.setName(registroLugar.getNombreEmpresa());
-        //empresa.setPais(registroLugar.getPaisEmpresa());
-        empresa.setCorreo_empresa(registroLugar.getCorreo_empresa());
-        empresaRepository.save(empresa);
-        return empresa;
+        Optional<Empresa> empresa1 = empresaRepository.findByEmail(registroLugar.getCorreo_empresa());
+
+        if(!empresa1.isPresent()) {
+            Empresa empresa = new Empresa();
+            empresa.setEmail(registroLugar.getCorreo_empresa());
+            empresa.setName(registroLugar.getNombreEmpresa());
+            empresa.setPais("Mexico");
+            empresa.setMetodo_pago("Efectivo");
+            empresaRepository.save(empresa);
+            return empresa;
+        }
+
+        return empresa1.get();
     }
 
     /*
