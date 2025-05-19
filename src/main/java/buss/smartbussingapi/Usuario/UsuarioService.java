@@ -57,6 +57,19 @@ public class UsuarioService {
         if(usuarioExists.isPresent()){
             throw new IllegalArgumentException("Usuario ya existe");
         }
+
+        if(usuario.getNombre().isEmpty()){
+            throw new IllegalArgumentException("El nombre esta vacio");
+        }
+
+        if(usuario.getEmail().isEmpty()){
+            throw new IllegalArgumentException("El email esta vacio");
+        }
+
+        if(usuario.getPassword().isEmpty()){
+            throw new IllegalArgumentException("La contraseña esta vacio");
+        }
+
         usuarioRepository.save(usuario);
     }
 
