@@ -20,8 +20,6 @@ import java.util.List;
 public class Lugar {
 
     @Id
-    @SequenceGenerator(name = "lugar_sequence", sequenceName = "lugar_sequence" , allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "lugar_sequence")
     private int lugar_id;
     private String name;
     private String tipo;
