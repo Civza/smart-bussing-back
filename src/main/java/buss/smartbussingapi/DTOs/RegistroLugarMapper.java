@@ -28,6 +28,15 @@ public class RegistroLugarMapper {
 
         if(empresa1.isEmpty()) {
             Empresa empresa = new Empresa();
+
+            if(registroLugar.getCorreo_empresa() == null || registroLugar.getCorreo_empresa().isEmpty()) {
+                throw new IllegalArgumentException("El correo esta vacio");
+            }
+
+            if(registroLugar.getNombreLugar() == null || registroLugar.getNombreLugar().isEmpty()) {
+                throw new IllegalArgumentException("El nombre del lugar esta vacio");
+            }
+
             empresa.setEmail(registroLugar.getCorreo_empresa());
             empresa.setName(registroLugar.getNombreEmpresa());
             empresa.setPais("Mexico");
@@ -53,12 +62,24 @@ public class RegistroLugarMapper {
 
     public void toLugar(RegistroLugarDTO lugarDTO,Empresa empresa){
         Lugar lugar = new Lugar();
+
+        if(lugarDTO.getNombreLugar() == null || lugarDTO.getNombreLugar().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del lugar esta vacio");
+        }
+
+        if(lugarDTO.getTelefono() == null || lugarDTO.getTelefono().isEmpty()) {
+            throw new IllegalArgumentException("El telefono del lugar esta vacio");
+        }
+
+        if(lugarDTO.getDescripcion() == null || lugarDTO.getDescripcion().isEmpty()) {
+            throw new IllegalArgumentException("El descripcion del lugar esta vacio");
+        }
+
         lugar.setName(lugarDTO.getNombreLugar());
         lugar.setTelefono(lugarDTO.getTelefono());
         lugar.setDescripcion(lugarDTO.getDescripcion());
-        lugar.setTipo(lugarDTO.getTipo());
+        lugar.setTipo("Indefinido");
         lugar.setEmpresa(empresa);
-
         lugarRepository.save(lugar);
     }
 
