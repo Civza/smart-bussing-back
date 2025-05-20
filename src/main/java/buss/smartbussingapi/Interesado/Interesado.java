@@ -15,7 +15,5 @@ import lombok.Setter;
 public class Interesado {
 
     @Id
-    @SequenceGenerator(name = "interesado_sequence", sequenceName = "interesado_sequence" , allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "interesado_sequence")
     private String email;
 }
