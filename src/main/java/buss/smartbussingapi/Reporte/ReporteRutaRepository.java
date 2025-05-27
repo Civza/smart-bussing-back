@@ -13,7 +13,7 @@ public interface ReporteRutaRepository extends JpaRepository<ReporteRuta, Intege
     @Query("SELECT likeRoute FROM ReporteRuta")
     List<Integer> getAllLikes(List<ReporteRuta> rutas);
 
-    @Query(value = "SELECT rr FROM ReporteRuta rr JOIN rr.ruta r WHERE r.nombre_ruta == :routeName")
+    @Query(value = "SELECT rr FROM ReporteRuta rr JOIN rr.ruta r WHERE r.nombre_ruta = :routeName")
     List<ReporteRuta> getReporteRutasByRouteName(@Param("routeName") String routeName);
 
 }
