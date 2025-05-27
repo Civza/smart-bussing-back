@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Usuario;
 
+import buss.smartbussingapi.DTOs.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +26,19 @@ public class UsuarioService {
         return usuarioRepository.findById(id_usuario).get();
     }
 
-    public Usuario getUsuarioByEmail(String email){
+    public UsuarioDTO getUsuarioByEmail(String email){
         Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 
         if(!usuario.isPresent()){
             throw new IllegalArgumentException("No existe ese usuario");
         }
 
-        return usuario.get();
+        Usuario usuarioMain = usuario.get();
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+
+        usuarioDTO.setNombre(usuarioMain.getNombre());
+        usuarioDTO.setEmail(usuarioMain.getEmail());
+        return usuarioDTO;
     }
 
     public int getUsuarioIdByEmail(String email) {

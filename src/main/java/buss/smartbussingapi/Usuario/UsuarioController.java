@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Usuario;
 
+import buss.smartbussingapi.DTOs.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/email")
-    public Usuario getUsuarioByEmail(@RequestParam String email){
+    public UsuarioDTO getUsuarioByEmail(@RequestParam String email){
         return usuarioService.getUsuarioByEmail(email);
     }
 
