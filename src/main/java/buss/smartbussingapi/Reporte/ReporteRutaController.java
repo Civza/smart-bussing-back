@@ -26,6 +26,11 @@ public class ReporteRutaController {
         return reporteRutaService.getReporteRutaById(reporte_ruta_id);
     }
 
+    @GetMapping("/byRuta")
+    public List<ReporteRuta> getReporteRutaByRouteName(@RequestParam String routeName) {
+        return reporteRutaService.getReportesRutaByRouteName(routeName);
+    }
+
     @PostMapping
     public void addReporteRuta(@RequestBody ReporteRuta reporteRuta) {
         reporteRutaService.addReporteRuta(reporteRuta);

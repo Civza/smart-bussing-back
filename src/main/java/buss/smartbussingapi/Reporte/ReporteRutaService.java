@@ -20,10 +20,11 @@ public class ReporteRutaService {
         List<ReporteRuta> rr = reporteRutaRepository.findAll();
         List<Integer> likes = reporteRutaRepository.getAllLikes(rr);
 
-
-
-
         return rr;
+    }
+
+    public List<ReporteRuta> getReportesRutaByRouteName(String routeName){
+        return reporteRutaRepository.getReporteRutasByRouteName(routeName);
     }
 
     public ReporteRuta getReporteRutaById(int id_reporteRuta) {
