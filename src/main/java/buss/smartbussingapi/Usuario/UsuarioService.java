@@ -25,6 +25,16 @@ public class UsuarioService {
         return usuarioRepository.findById(id_usuario).get();
     }
 
+    public Usuario getUsuarioByEmail(String email){
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+
+        if(!usuario.isPresent()){
+            throw new IllegalArgumentException("No existe ese usuario");
+        }
+
+        return usuario.get();
+    }
+
     public int getUsuarioIdByEmail(String email) {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 

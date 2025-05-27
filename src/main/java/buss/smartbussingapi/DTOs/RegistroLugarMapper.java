@@ -26,26 +26,27 @@ public class RegistroLugarMapper {
     public Empresa toEmpresa(RegistroLugarDTO registroLugar) {
         Optional<Empresa> empresa1 = empresaRepository.findByEmail(registroLugar.getCorreo_empresa());
 
-        if(empresa1.isEmpty()) {
-            Empresa empresa = new Empresa();
-
-            if(registroLugar.getCorreo_empresa() == null || registroLugar.getCorreo_empresa().isEmpty()) {
-                throw new IllegalArgumentException("El correo esta vacio");
-            }
-
-            if(registroLugar.getNombreLugar() == null || registroLugar.getNombreLugar().isEmpty()) {
-                throw new IllegalArgumentException("El nombre del lugar esta vacio");
-            }
-
-            empresa.setEmail(registroLugar.getCorreo_empresa());
-            empresa.setName(registroLugar.getNombreEmpresa());
-            empresa.setPais("Mexico");
-            empresa.setMetodo_pago("Efectivo");
-            empresaRepository.save(empresa);
-            return empresa;
+        if(empresa1.isPresent()) {
+            return empresa1.get();
         }
 
-        return empresa1.get();
+        Empresa empresa = new Empresa();
+
+        if(registroLugar.getCorreo_empresa() == null || registroLugar.getCorreo_empresa().isEmpty()) {
+            throw new IllegalArgumentException("El correo esta vacio");
+        }
+
+        if(registroLugar.getNombreLugar() == null || registroLugar.getNombreLugar().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del lugar esta vacio");
+        }
+
+        empresa.setEmail(registroLugar.getCorreo_empresa());
+        empresa.setName(registroLugar.getNombreEmpresa());
+        empresa.setPais("Mexico");
+        empresa.setMetodo_pago("Efectivo");
+        empresaRepository.save(empresa);
+        return empresa;
+
     }
 
     /*
