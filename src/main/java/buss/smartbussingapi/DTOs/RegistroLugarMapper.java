@@ -26,7 +26,11 @@ public class RegistroLugarMapper {
     public Empresa toEmpresa(RegistroLugarDTO registroLugar) {
         Optional<Empresa> empresa1 = empresaRepository.findByEmail(registroLugar.getCorreo_empresa());
 
-        if(!empresa1.isPresent()) {
+        if(empresa1.isPresent()) {
+            return empresa1.get();
+        }
+
+        if(!empresa1.get().getEmail().equals(registroLugar.getCorreo_empresa())) {
             Empresa empresa = new Empresa();
             empresa.setEmail(registroLugar.getCorreo_empresa());
             empresa.setName(registroLugar.getNombreEmpresa());

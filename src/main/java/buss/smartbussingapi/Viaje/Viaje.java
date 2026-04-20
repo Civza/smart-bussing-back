@@ -1,6 +1,5 @@
 package buss.smartbussingapi.Viaje;
 
-import buss.smartbussingapi.Microbus.Microbus;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Ruta.Ruta;
 import jakarta.persistence.*;
@@ -18,8 +17,8 @@ import java.util.List;
 public class Viaje {
 
     @Id
-    @SequenceGenerator(name = "viaje_sequence", sequenceName = "viaje_sequence" , allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "viaje_sequence")
+    @SequenceGenerator(name = "viaje_sequence", sequenceName = "viaje_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "viaje_sequence")
     private int id_viaje;
     private int tiempo_viaje;
     private double costo_viaje;
@@ -28,7 +27,7 @@ public class Viaje {
     @JoinTable(
             name = "viaje_ruta",
             joinColumns = @JoinColumn(name = "id_viaje"),
-            inverseJoinColumns = @JoinColumn( name = "id_ruta")
+            inverseJoinColumns = @JoinColumn(name = "id_ruta")
     )
     private List<Ruta> rutas_viaje;
 
@@ -39,12 +38,4 @@ public class Viaje {
             inverseJoinColumns = @JoinColumn(name = "id_parada")
     )
     private List<Parada> paradas_viaje;
-
-    @ManyToMany
-    @JoinTable(
-            name = "viaje_microbus",
-            joinColumns = @JoinColumn(name = "id_viaje"),
-            inverseJoinColumns = @JoinColumn(name = "id_microbus")
-    )
-    private List<Microbus> microbus_viaje;
 }

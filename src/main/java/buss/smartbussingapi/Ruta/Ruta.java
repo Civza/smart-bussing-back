@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.locationtech.jts.geom.LineString;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,6 +29,8 @@ public class Ruta {
     private String nombre_ruta;
     private String horario_ruta;
     private boolean ac1tive;
+
+    //private LineString tracedRoute;
 
     @OneToMany(mappedBy = "ruta", cascade = CascadeType.ALL)
     @JsonIgnore
