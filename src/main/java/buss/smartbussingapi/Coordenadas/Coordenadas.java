@@ -22,8 +22,8 @@ public class Coordenadas {
     @SequenceGenerator(name = "coordenada_sequence", sequenceName = "coordenada_sequence" , allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "coordenada_sequence")
     private int id_coordenada;
-    private String longitud;
-    private String latitud;
+    private Double longitud;
+    private Double latitud;
 
     @ManyToMany(mappedBy = "coordenadas", cascade = CascadeType.ALL)
     private List<Ruta> rutaList = new ArrayList<>();
