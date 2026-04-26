@@ -1,6 +1,9 @@
 package buss.smartbussingapi.Reporte;
 
+import buss.smartbussingapi.DTOs.ReporteRutaDTO;
+import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,10 +34,10 @@ public class ReporteRutaController {
         return reporteRutaService.getReportesRutaByRouteName(routeName);
     }
 
-    @PostMapping
-    public void addReporteRuta(@RequestBody ReporteRuta reporteRuta) {
-        reporteRutaService.addReporteRuta(reporteRuta);
+    @PostMapping("/{id_ruta}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<ReporteRuta> createNewReporteRuta(@PathVariable("id_ruta") Integer id_ruta,@RequestBody ReporteRutaDTO reporteRutaDTO, @RequestParam("email") String email){
+        return new ApiResponse<>("Nuevo reporte en la ruta : " + id_ruta + "fue creado exitosamente", reporteRutaService.createNewReporteRuta(reporteRutaDTO,id_ruta,email),null);
     }
-
 
 }

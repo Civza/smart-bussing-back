@@ -38,6 +38,7 @@ public class UsuarioService {
 
         usuarioDTO.setNombre(usuarioMain.getNombre());
         usuarioDTO.setEmail(usuarioMain.getEmail());
+        usuarioDTO.setUrlPhoto(usuarioMain.getProfilePhotoURL());
         return usuarioDTO;
     }
 

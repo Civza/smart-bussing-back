@@ -2,7 +2,6 @@ package buss.smartbussingapi.Lugar;
 
 import buss.smartbussingapi.Contrato.Contrato;
 import buss.smartbussingapi.Empresa.Empresa;
-import buss.smartbussingapi.Images.FileData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,13 +26,11 @@ public class Lugar {
     private String tipo;
     private String telefono;
     private String descripcion;
+    private String[] urlFiles;
 
     @ManyToOne()
     @JoinColumn(name = "lugar_empresa_id")
     private Empresa empresa;
-
-    @OneToMany(mappedBy = "lugar", cascade = CascadeType.ALL)
-    private List<FileData> images;
 
     @ManyToOne
     @JoinColumn(name = "lugar_contrato_id")
