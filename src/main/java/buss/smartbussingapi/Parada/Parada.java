@@ -19,6 +19,7 @@ public class Parada {
     private int id_parada;
     private String nombre_parada;
     private String zona_parada;
+    private String descripcion_parada;
     private int tiempo_Espera;
 
     @OneToOne
