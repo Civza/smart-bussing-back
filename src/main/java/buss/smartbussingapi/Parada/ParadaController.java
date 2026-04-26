@@ -1,6 +1,8 @@
 package buss.smartbussingapi.Parada;
 
+import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,18 +19,22 @@ public class ParadaController {
     }
 
     @GetMapping
-    public List<Parada> getAllParadas(){
-        return paradaService.getParadasList();
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<Parada>> getAllParadas() {
+        return new ApiResponse<>("All paradas retrieved", paradaService.getParadasList(), null);
     }
 
     @GetMapping("/{id_parada}")
-    public Parada getParadaById(@PathVariable("id_parada") int id_parada){
-        return paradaService.getParadaById(id_parada);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Parada> getParadaById(@PathVariable("id_parada") int id_parada) {
+        return new ApiResponse<>("Parada retrieved", paradaService.getParadaById(id_parada), null);
     }
 
     @PostMapping
-    public void addParada(@RequestBody Parada parada){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<Void> addParada(@RequestBody Parada parada) {
         paradaService.addParada(parada);
+        return new ApiResponse<>("Parada created", null, null);
     }
 
 }

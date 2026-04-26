@@ -20,24 +20,27 @@ public class ReporteRutaController {
     }
 
     @GetMapping
-    public List<ReporteRuta> getReporteRuta() {
-        return reporteRutaService.getReportesRuta();
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ReporteRuta>> getReporteRuta() {
+        return new ApiResponse<>("All route reports retrieved", reporteRutaService.getReportesRuta(), null);
     }
 
     @GetMapping("/{reporte_ruta_id}")
-    public ReporteRuta getReporteRutaById(@PathVariable("reporte_ruta_id") int reporte_ruta_id) {
-        return reporteRutaService.getReporteRutaById(reporte_ruta_id);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<ReporteRuta> getReporteRutaById(@PathVariable("reporte_ruta_id") int reporte_ruta_id) {
+        return new ApiResponse<>("Route report retrieved", reporteRutaService.getReporteRutaById(reporte_ruta_id), null);
     }
 
     @GetMapping("/byRuta")
-    public List<ReporteRuta> getReporteRutaByRouteName(@RequestParam String routeName) {
-        return reporteRutaService.getReportesRutaByRouteName(routeName);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ReporteRuta>> getReporteRutaByRouteName(@RequestParam String routeName) {
+        return new ApiResponse<>("Route reports retrieved", reporteRutaService.getReportesRutaByRouteName(routeName), null);
     }
 
     @PostMapping("/{id_ruta}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<ReporteRuta> createNewReporteRuta(@PathVariable("id_ruta") Integer id_ruta,@RequestBody ReporteRutaDTO reporteRutaDTO, @RequestParam("email") String email){
-        return new ApiResponse<>("Nuevo reporte en la ruta : " + id_ruta + "fue creado exitosamente", reporteRutaService.createNewReporteRuta(reporteRutaDTO,id_ruta,email),null);
+    public ApiResponse<ReporteRuta> createNewReporteRuta(@PathVariable("id_ruta") Integer id_ruta, @RequestBody ReporteRutaDTO reporteRutaDTO, @RequestParam("email") String email) {
+        return new ApiResponse<>("Nuevo reporte en la ruta : " + id_ruta + " fue creado exitosamente", reporteRutaService.createNewReporteRuta(reporteRutaDTO, id_ruta, email), null);
     }
 
 }

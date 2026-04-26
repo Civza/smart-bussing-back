@@ -1,10 +1,9 @@
 package buss.smartbussingapi.Lugar;
 
+import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,13 +19,15 @@ public class LugarController {
     }
 
     @GetMapping
-    public List<Lugar> getLugares() {
-        return lugarService.findAlllugares();
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<Lugar>> getLugares() {
+        return new ApiResponse<>("All lugares retrieved", lugarService.findAlllugares(), null);
     }
 
     @GetMapping(path = "/{id_lugar}")
-    public Lugar getLugar(@PathVariable("id_lugar") int id_lugar) {
-        return lugarService.findLugarById(id_lugar);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Lugar> getLugar(@PathVariable("id_lugar") int id_lugar) {
+        return new ApiResponse<>("Lugar retrieved", lugarService.findLugarById(id_lugar), null);
     }
 
 

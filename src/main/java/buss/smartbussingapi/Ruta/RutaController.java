@@ -1,7 +1,9 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
+import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,29 +20,37 @@ public class RutaController {
     }
 
     @GetMapping
-    public List<Ruta> getRutas() {
-        return rutaService.getAllRutas();
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<Ruta>> getRutas() {
+        return new ApiResponse<>("All routes retrieved", rutaService.getAllRutas(), null);
     }
 
     @GetMapping("/{id_ruta}")
-    public Ruta getRuta(@PathVariable("id_ruta") int id_ruta) {
-        return rutaService.getRutaById(id_ruta);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Ruta> getRuta(@PathVariable("id_ruta") int id_ruta) {
+        return new ApiResponse<>("Route retrieved", rutaService.getRutaById(id_ruta), null);
     }
 
     @GetMapping("/coordenadas/{id_ruta}")
-    public List<Coordenadas> getCoordenadasByRuta(@PathVariable("id_ruta") int id_ruta) {
-        return rutaService.getCoordenadasRuta(id_ruta);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<Coordenadas>> getCoordenadasByRuta(@PathVariable("id_ruta") int id_ruta) {
+        return new ApiResponse<>("Coordinates retrieved", rutaService.getCoordenadasRuta(id_ruta), null);
     }
 
     @PostMapping
-    public void addNewRuta(@RequestBody Ruta ruta) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<Void> addNewRuta(@RequestBody Ruta ruta) {
         rutaService.agregarRuta(ruta);
+        return new ApiResponse<>("Route created", null, null);
     }
 
     @PostMapping("/{id_ruta}/coor")
-    public void addCoordenadas(@PathVariable("id_ruta") int id_ruta,@RequestBody List<Coordenadas> coordenadas) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<Void> addCoordenadas(@PathVariable("id_ruta") int id_ruta, @RequestBody List<Coordenadas> coordenadas) {
         rutaService.agregarCoordenadas(id_ruta, coordenadas);
+        return new ApiResponse<>("Coordinates added", null, null);
     }
+
 
 
 }
