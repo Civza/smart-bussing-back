@@ -1,6 +1,5 @@
 package buss.smartbussingapi.Viaje;
 
-import buss.smartbussingapi.Microbus.Microbus;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Ruta.Ruta;
 import jakarta.persistence.*;
@@ -40,11 +39,4 @@ public class Viaje {
     )
     private List<Parada> paradas_viaje;
 
-    @ManyToMany
-    @JoinTable(
-            name = "viaje_microbus",
-            joinColumns = @JoinColumn(name = "id_viaje"),
-            inverseJoinColumns = @JoinColumn(name = "id_microbus")
-    )
-    private List<Microbus> microbus_viaje;
 }

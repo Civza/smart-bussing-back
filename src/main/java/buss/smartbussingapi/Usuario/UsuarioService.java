@@ -1,11 +1,14 @@
 package buss.smartbussingapi.Usuario;
 
 import buss.smartbussingapi.DTOs.UsuarioDTO;
+import buss.smartbussingapi.commons.exceptions.AlreadyExistsException;
+import buss.smartbussingapi.commons.exceptions.InvalidCredentialsException;
+import buss.smartbussingapi.commons.exceptions.InvalidDataException;
+import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -17,111 +20,78 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    //Getter methods
-    public List<Usuario> getUsuarios(){
+    public List<Usuario> getUsuarios() {
         return usuarioRepository.findAll();
     }
 
-    public Usuario getUsuarioById(int id_usuario){
-        return usuarioRepository.findById(id_usuario).get();
+    public Usuario getUsuarioById(int id_usuario) {
+        return usuarioRepository.findById(id_usuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + id_usuario + " not found"));
     }
 
-    public UsuarioDTO getUsuarioByEmail(String email){
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+    public UsuarioDTO getUsuarioByEmail(String email) {
+        Usuario usuarioMain = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
 
-        if(!usuario.isPresent()){
-            throw new IllegalArgumentException("No existe ese usuario");
-        }
-
-        Usuario usuarioMain = usuario.get();
         UsuarioDTO usuarioDTO = new UsuarioDTO();
-
         usuarioDTO.setNombre(usuarioMain.getNombre());
         usuarioDTO.setEmail(usuarioMain.getEmail());
+        usuarioDTO.setUrlPhoto(usuarioMain.getProfilePhotoURL());
         return usuarioDTO;
     }
 
     public int getUsuarioIdByEmail(String email) {
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
-
-        if(!usuario.isPresent()){
-            throw new IllegalArgumentException("Usuario no encontrado");
-        }
-
-        return usuario.get().getId_usuario();
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"))
+                .getId_usuario();
     }
 
-    //bussines logic : LOGIN
-
-    public boolean verifyCredential(String correo, String password){
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(correo);
-
-        if(!usuario.isPresent()){
-            throw new IllegalArgumentException("Las credendenciales no son iguales");
+    public boolean verifyCredential(String correo, String password) {
+        Usuario usuario = usuarioRepository.findByEmail(correo)
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
+        if (!usuario.getPassword().equals(password)) {
+            throw new InvalidCredentialsException("Invalid credentials");
         }
-
-        return usuario.get().getPassword().equals(password);
+        return true;
     }
 
-    //Bussiness Logic : CLOSE SESSION
-
-    // POST : Register
-
-    public void registerUsuario(Usuario usuario){
-        Optional<Usuario> usuarioExists = usuarioRepository.findByEmail(usuario.getEmail());
-
-        if(usuarioExists.isPresent()){
-            throw new IllegalArgumentException("Usuario ya existe");
+    public void registerUsuario(Usuario usuario) {
+        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
+            throw new AlreadyExistsException("User with email " + usuario.getEmail() + " already exists");
         }
-
-        if(usuario.getNombre().isEmpty()){
-            throw new IllegalArgumentException("El nombre esta vacio");
+        if (usuario.getNombre() == null || usuario.getNombre().isBlank()) {
+            throw new InvalidDataException("Name cannot be empty");
         }
-
-        if(usuario.getEmail().isEmpty()){
-            throw new IllegalArgumentException("El email esta vacio");
+        if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
+            throw new InvalidDataException("Email cannot be empty");
         }
-
-        if(usuario.getPassword().isEmpty()){
-            throw new IllegalArgumentException("La contraseña esta vacio");
+        if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
+            throw new InvalidDataException("Password cannot be empty");
         }
-
         usuarioRepository.save(usuario);
     }
 
-    //PATCH
-
-    public void editProfileName(int id_usuario,String nombre) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id_usuario);
-
-        if (!usuario.isPresent()) {
-            throw new IllegalArgumentException("Usuario no encontrado");
+    public void editProfileName(int id_usuario, String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new InvalidDataException("Name cannot be empty");
         }
-
-        Usuario usuarioEditado = usuario.get();
-
-        if (!usuario.get().getNombre().equals(nombre)) {
+        Usuario usuarioEditado = usuarioRepository.findById(id_usuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + id_usuario + " not found"));
+        if (!usuarioEditado.getNombre().equals(nombre)) {
             usuarioEditado.setNombre(nombre);
         }
-
         usuarioRepository.save(usuarioEditado);
     }
 
-
-    public void editPassword(int id_usuario,String newPassword) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id_usuario);
-
-        if (!usuario.isPresent()) {
-            throw new IllegalArgumentException("Usuario no encontrado");
+    public void editPassword(int id_usuario, String newPassword) {
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new InvalidDataException("Password cannot be empty");
         }
-
-        Usuario usuarioEditado = usuario.get();
-
-        if (!usuario.get().getPassword().equals(newPassword)) {
+        Usuario usuarioEditado = usuarioRepository.findById(id_usuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + id_usuario + " not found"));
+        if (!usuarioEditado.getPassword().equals(newPassword)) {
             usuarioEditado.setPassword(newPassword);
         }
         usuarioRepository.save(usuarioEditado);
     }
-
-
 }

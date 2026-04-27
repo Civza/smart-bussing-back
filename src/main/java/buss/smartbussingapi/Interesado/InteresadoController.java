@@ -1,7 +1,9 @@
 package buss.smartbussingapi.Interesado;
 
+import buss.smartbussingapi.commons.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +20,15 @@ public class InteresadoController {
     }
 
     @GetMapping
-    private List<Interesado> getInteresados() {
-        return interesadoService.findAll();
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<Interesado>> getInteresados() {
+        return new ApiResponse<>("All interesados retrieved", interesadoService.findAll(), null);
     }
 
     @PostMapping
-    private void addNewInteresado(@RequestBody Interesado interesado) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<Void> addNewInteresado(@RequestBody Interesado interesado) {
         interesadoService.addNewInteresado(interesado);
+        return new ApiResponse<>("Interesado created", null, null);
     }
 }

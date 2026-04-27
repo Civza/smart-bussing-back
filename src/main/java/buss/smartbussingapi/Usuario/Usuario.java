@@ -22,6 +22,7 @@ public class Usuario {
     private String nombre;
     private String email;
     private String password;
+    private String profilePhotoURL;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore

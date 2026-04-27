@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Parada;
 
+import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,13 @@ public class ParadaService {
         return paradaRepository.findAll();
     }
 
-    public Parada getParadaById(int parada_id){
-        return paradaRepository.findById(parada_id).get();
+    public Parada getParadaById(int parada_id) {
+        return paradaRepository.findById(parada_id)
+                .orElseThrow(() -> new NotFoundException("Parada with ID " + parada_id + " not found"));
     }
 
     public void addParada(Parada parada){
+        //TODO - PARADA LOGIC ON ISSUE 17
         paradaRepository.save(parada);
     }
 
