@@ -22,6 +22,7 @@ public class ReporteRuta {
     private int id_reporteRuta;
     private String descripcion;
     private int likeRoute;
+    private String[] urlPhotos;
 
     @ManyToOne
     @JoinColumn(name = "ruta_id")

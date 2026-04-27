@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Permitir todas las rutas
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins("http://localhost:5173", "https://smart-bussing.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE","PATCH","OPTIONS") // Métodos HTTP permitidos
                         .allowedHeaders("*") // Permitir todos los headers
                         .allowCredentials(true); // Permitir credenciales (cookies, auth)

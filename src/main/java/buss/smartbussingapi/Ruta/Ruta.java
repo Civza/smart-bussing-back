@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
+import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Reporte.ReporteRuta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -8,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.locationtech.jts.geom.LineString;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,10 +27,12 @@ public class Ruta {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "ruta_sequence")
     private int id_ruta;
     private String nombre_ruta;
+    private String nombre_corto_ruta;
+    private String color_ruta;
+    private String color_texto_ruta;
+    private String tipo_ruta;
     private String horario_ruta;
-    private boolean ac1tive;
-
-    //private LineString tracedRoute;
+    private boolean active;
 
     @OneToMany(mappedBy = "ruta", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -44,5 +46,11 @@ public class Ruta {
     )
     private List<Coordenadas> coordenadas = new ArrayList<>();
 
-
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ruta_parada",
+            joinColumns = @JoinColumn(name = "id_ruta"),
+            inverseJoinColumns = @JoinColumn(name = "id_parada")
+    )
+    private List<Parada> paradas = new ArrayList<>();
 }
