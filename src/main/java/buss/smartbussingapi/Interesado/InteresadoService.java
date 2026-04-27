@@ -1,5 +1,7 @@
 package buss.smartbussingapi.Interesado;
 
+import buss.smartbussingapi.commons.exceptions.AlreadyExistsException;
+import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,12 @@ public class InteresadoService {
     }
 
     public void addNewInteresado(Interesado interesado) {
-
-        Optional<Interesado> findByEmail = interesadoRepository.findById(interesado.getEmail());
-
-        if (findByEmail.isPresent()) {
-            throw new IllegalArgumentException("Este interesado ya existe");
+        if (interesado.getEmail() == null || interesado.getEmail().isBlank()) {
+            throw new InvalidDataException("Email cannot be empty");
         }
 
-        if(interesado.getEmail().isEmpty()){
-            throw new IllegalArgumentException("Hay un campo vacio");
+        if (interesadoRepository.findById(interesado.getEmail()).isPresent()) {
+            throw new AlreadyExistsException("Interesado with email " + interesado.getEmail() + " already exists");
         }
 
         interesadoRepository.save(interesado);

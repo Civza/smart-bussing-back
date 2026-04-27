@@ -1,9 +1,10 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
+import buss.smartbussingapi.commons.exceptions.InvalidDataException;
+import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -18,28 +19,36 @@ public class RutaService {
     }
 
     public Ruta getRutaById(int ruta_id) {
-        return rutaRepository.findById(ruta_id).get();
+        return rutaRepository.findById(ruta_id)
+                .orElseThrow(() -> new NotFoundException("Route with ID " + ruta_id + " not found"));
     }
 
     public List<Ruta> getAllRutas() {
         return rutaRepository.findAll();
     }
 
-    public List<Coordenadas> getCoordenadasRuta(int ruta_id){
-        Ruta ruta = rutaRepository.findById(ruta_id).orElseThrow(() -> new IllegalArgumentException("No se encontro el ruta"));
+    public List<Coordenadas> getCoordenadasRuta(int ruta_id) {
+        Ruta ruta = rutaRepository.findById(ruta_id)
+                .orElseThrow(() -> new NotFoundException("Route with ID " + ruta_id + " not found"));
+        if (ruta.getCoordenadas().isEmpty()) {
+            throw new NotFoundException("No coordinates found for route with ID " + ruta_id);
+        }
         return ruta.getCoordenadas();
     }
 
-    public void agregarRuta(Ruta ruta){
+    public void agregarRuta(Ruta ruta) {
+        //TODO - NEW LOGIC COMING SOON
         rutaRepository.save(ruta);
     }
 
-    public void agregarCoordenadas(int ruta_id, List<Coordenadas> coordenadas){
-        Ruta ruta = rutaRepository.findById(ruta_id).orElseThrow(() -> new IllegalArgumentException("No se encontro el ruta"));
+    public void agregarCoordenadas(int ruta_id, List<Coordenadas> coordenadas) {
+        if (coordenadas == null || coordenadas.isEmpty()) {
+            throw new InvalidDataException("Coordinates list cannot be empty");
+        }
+        Ruta ruta = rutaRepository.findById(ruta_id)
+                .orElseThrow(() -> new NotFoundException("Route with ID " + ruta_id + " not found"));
+
         ruta.getCoordenadas().addAll(coordenadas);
         rutaRepository.save(ruta);
     }
-
-
-
 }

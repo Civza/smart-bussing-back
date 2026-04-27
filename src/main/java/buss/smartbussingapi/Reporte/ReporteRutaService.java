@@ -5,12 +5,11 @@ import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Usuario.Usuario;
 import buss.smartbussingapi.Usuario.UsuarioRepository;
+import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.PriorityQueue;
 
 @Service
 public class ReporteRutaService {
@@ -26,35 +25,31 @@ public class ReporteRutaService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<ReporteRuta> getReportesRuta(){
+    public List<ReporteRuta> getReportesRuta() {
         List<ReporteRuta> rr = reporteRutaRepository.findAll();
         List<Integer> likes = reporteRutaRepository.getAllLikes(rr);
-
         return rr;
     }
 
-    public List<ReporteRuta> getReportesRutaByRouteName(String routeName){
-        return reporteRutaRepository.getReporteRutasByRouteName(routeName);
+    public List<ReporteRuta> getReportesRutaByRouteName(String routeName) {
+        List<ReporteRuta> reportes = reporteRutaRepository.getReporteRutasByRouteName(routeName);
+        if (reportes.isEmpty()) {
+            throw new NotFoundException("No reports found for route: " + routeName);
+        }
+        return reportes;
     }
 
     public ReporteRuta getReporteRutaById(int id_reporteRuta) {
-        return reporteRutaRepository.findById(id_reporteRuta).get();
+        return reporteRutaRepository.findById(id_reporteRuta)
+                .orElseThrow(() -> new NotFoundException("Report with ID " + id_reporteRuta + " not found"));
     }
 
-    public ReporteRuta createNewReporteRuta(ReporteRutaDTO reporteRutaDTO, Integer id_ruta, String email){
-        Optional<Ruta> optionalRuta = rutaRepository.findById(id_ruta);
-        if(!optionalRuta.isPresent()){
-            throw new IllegalArgumentException("The route with ID : " + id_ruta + " doesnt exist ");
-        }
+    public ReporteRuta createNewReporteRuta(ReporteRutaDTO reporteRutaDTO, Integer id_ruta, String email) {
+        Ruta ruta = rutaRepository.findById(id_ruta)
+                .orElseThrow(() -> new NotFoundException("Route with ID " + id_ruta + " not found"));
 
-        Optional<Usuario> optionalUser = usuarioRepository.findByEmail(email);
-        if(!optionalRuta.isPresent()){
-            throw new IllegalArgumentException("The user with Email : " + email + " doesnt exist ");
-        }
-
-        Usuario user = optionalUser.get();
-
-        Ruta ruta = optionalRuta.get();
+        Usuario user = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
 
         ReporteRuta newReporteRuta = new ReporteRuta();
         newReporteRuta.setDescripcion(reporteRutaDTO.getDescripcion());
@@ -65,5 +60,4 @@ public class ReporteRutaService {
 
         return reporteRutaRepository.save(newReporteRuta);
     }
-
 }

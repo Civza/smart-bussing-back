@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Lugar;
 
+import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,8 @@ public class LugarService {
         return lugarRepository.findAll();
     }
 
-    public Lugar findLugarById(int id_lugar){
-        return lugarRepository.findById(id_lugar).get();
+    public Lugar findLugarById(int id_lugar) {
+        return lugarRepository.findById(id_lugar)
+                .orElseThrow(() -> new NotFoundException("Lugar with ID " + id_lugar + " not found"));
     }
 }

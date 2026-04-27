@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Viaje;
 
+import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,9 @@ public class ViajesService {
         this.viajeRepository = viajeRepository;
     }
 
-    public Viaje getViajebyId(int id_viaje){
-        Optional<Viaje> viaje = viajeRepository.findById(id_viaje);
-
-        if(!viaje.isPresent()){
-            throw new IllegalArgumentException("Viaje not found");
-        }
-
-        return viaje.get();
+    public Viaje getViajebyId(int id_viaje) {
+        return viajeRepository.findById(id_viaje)
+                .orElseThrow(() -> new NotFoundException("Viaje with ID " + id_viaje + " not found"));
     }
 
     public List<Viaje> getAllViajes(){
@@ -31,6 +27,7 @@ public class ViajesService {
     }
 
     public void addViaje(Viaje viaje){
+        //TODO - PENDING LOGIC FOR TRAVEL - COMING ON ISSUE 17
         viajeRepository.save(viaje);
     }
 
