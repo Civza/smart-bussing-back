@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Coordenadas;
 
 import buss.smartbussingapi.Ruta.Ruta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Coordenadas {
     private Double longitud;
     private Double latitud;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "coordenadas", cascade = CascadeType.ALL)
     private List<Ruta> rutaList = new ArrayList<>();
 
