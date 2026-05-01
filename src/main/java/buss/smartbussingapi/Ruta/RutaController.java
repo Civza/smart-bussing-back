@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
+import buss.smartbussingapi.DTOs.RutaRequestDTO;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,9 +40,8 @@ public class RutaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Void> addNewRuta(@RequestBody Ruta ruta) {
-        rutaService.agregarRuta(ruta);
-        return new ApiResponse<>("Route created", null, null);
+    public ApiResponse<Ruta> addNewRuta(@RequestBody RutaRequestDTO ruta) {
+        return new ApiResponse<>("Route created", rutaService.agregarRuta(ruta), null);
     }
 
     @PostMapping("/{id_ruta}/coor")

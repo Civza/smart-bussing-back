@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
+import buss.smartbussingapi.DTOs.RutaRequestDTO;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,9 @@ public class RutaService {
         return ruta.getCoordenadas();
     }
 
-    public void agregarRuta(Ruta ruta) {
-        //TODO - NEW LOGIC COMING SOON
-        rutaRepository.save(ruta);
+    public Ruta agregarRuta(RutaRequestDTO ruta) {
+        //TODO - NEW LOGIC COMING SOON (Validators)
+        return rutaRepository.save(new Ruta(null, ruta.nombre_ruta(), ruta.nombre_corto_ruta(), ruta.color_ruta(), ruta.color_texto_ruta(), ruta.tipo_ruta(), ruta.horario_ruta(), ruta.active(), null, null, null));
     }
 
     public void agregarCoordenadas(int ruta_id, List<Coordenadas> coordenadas) {
