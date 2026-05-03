@@ -1,7 +1,7 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
-import buss.smartbussingapi.DTOs.GeoJsonRouteDTO;
+import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

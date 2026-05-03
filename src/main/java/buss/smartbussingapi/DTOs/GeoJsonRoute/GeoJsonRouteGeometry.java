@@ -1,4 +1,4 @@
-package buss.smartbussingapi.DTOs;
+package buss.smartbussingapi.DTOs.GeoJsonRoute;
 
 import lombok.Getter;
 import lombok.Setter;

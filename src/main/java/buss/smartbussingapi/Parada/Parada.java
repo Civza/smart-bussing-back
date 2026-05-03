@@ -18,9 +18,7 @@ public class Parada {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "parada_sequence")
     private int id_parada;
     private String nombre_parada;
-    private String zona_parada;
     private String descripcion_parada;
-    private int tiempo_Espera;
 
     @OneToOne
     private Coordenadas coordenadas_parada;
