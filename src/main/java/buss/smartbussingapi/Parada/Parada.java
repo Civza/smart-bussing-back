@@ -20,6 +20,6 @@ public class Parada {
     private String nombre_parada;
     private String descripcion_parada;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Coordenadas coordenadas_parada;
 }

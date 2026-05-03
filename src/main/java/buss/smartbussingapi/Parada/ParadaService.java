@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Parada;
 
+import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.DTOs.GeoJsonStops.GeoJsonStopDTO;
 import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Ruta.RutaRepository;
@@ -62,12 +63,20 @@ public class ParadaService {
         parada.setNombre_parada(geoJsonStopDTO.getProperties().getStop_name());
         parada.setDescripcion_parada(geoJsonStopDTO.getProperties().getStop_description());
 
-        for(String routeName : geoJsonStopDTO.getProperties().getRoutes_names()){
-            Ruta curr_route = rutaRepository.findRutaByNombre_ruta(routeName);
-            if(curr_route == null){
-                throw new NotFoundException("The route with name : " + routeName + "doesnt exist");
+        Coordenadas newCoor = new Coordenadas();
+        newCoor.setLatitud(latitud);
+        newCoor.setLongitud(longitud);
+
+        parada.setCoordenadas_parada(newCoor);
+
+        if(geoJsonStopDTO.getProperties().getRoutes_names() != null){
+            for(String routeName : geoJsonStopDTO.getProperties().getRoutes_names()){
+                Ruta curr_route = rutaRepository.findRutaByNombre_ruta(routeName);
+                if(curr_route == null){
+                    throw new NotFoundException("The route with name : " + routeName + "doesnt exist");
+                }
+                curr_route.getParadas().add(parada);
             }
-            curr_route.getParadas().add(parada);
         }
 
         return paradaRepository.save(parada);
