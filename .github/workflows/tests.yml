@@ -12,7 +12,6 @@ jobs:
     services:
       postgres:
         image: postgres:15
-        container_name: smartbussing_test_container
 
         env:
           POSTGRES_DB: smartbuss_test
