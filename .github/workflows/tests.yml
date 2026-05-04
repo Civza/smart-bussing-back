@@ -51,7 +51,7 @@ jobs:
       run: mvn clean test "-Dspring.config.name=application-test"
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: test-results
         path: target/surefire-reports/
