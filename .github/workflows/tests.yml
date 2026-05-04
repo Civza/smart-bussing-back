@@ -12,7 +12,6 @@ jobs:
     services:
       postgres:
         image: postgres:15
-        container_name: smartbussing_test_container
 
         env:
           POSTGRES_DB: smartbuss_test
@@ -52,7 +51,7 @@ jobs:
       run: mvn clean test "-Dspring.config.name=application-test"
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: test-results
         path: target/surefire-reports/
