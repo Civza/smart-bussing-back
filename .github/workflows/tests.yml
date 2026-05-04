@@ -1,0 +1,59 @@
+name: tests.yml
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        container_name: smartbussing_test_container
+
+        env:
+          POSTGRES_DB: smartbuss_test
+          POSTGRES_USER: smartbusser
+          POSTGRES_PASSWORD: bussword
+
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+        ports:
+          - 5433:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up java 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Load database schema
+      run: |
+          sleep 5
+          psql -h localhost -p 5433 -U smartbusser -d smartbuss_test -f database/schema_backup.sql
+      env:
+        PGPASSWORD: bussword
+    - name: Verify database schema loaded
+      run: psql -h localhost -p 5433 -U smartbusser -d smartbuss_test -c "\dt"
+      env:
+        PGPASSWORD: bussword
+    - name: Run unit tests + integration tests
+      run: mvn clean test "-Dspring.config.name=application-test"
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: target/surefire-reports/
+        retention-days: 7
