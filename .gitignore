@@ -33,3 +33,7 @@ build/
 .vscode/
 
 .env
+
+## Agent Context ##
+AGENT_CONTEXT/
+AGENT_CONTEXT/CLAUDE.md
