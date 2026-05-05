@@ -35,4 +35,10 @@ public class GlobalControllerAdvice {
     public ApiResponse<Void> handleInvalidCredentials(InvalidCredentialsException e) {
         return new ApiResponse<>("Unauthorized", null, e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiResponse<Void> handleRuntimeService(RuntimeException e) {
+        return new ApiResponse<>("Runtime", null, e.getMessage());
+    }
 }

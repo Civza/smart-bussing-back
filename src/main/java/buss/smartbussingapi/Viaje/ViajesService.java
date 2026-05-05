@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Viaje;
 
+import buss.smartbussingapi.DTOs.DirectionsResponse;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,11 @@ public class ViajesService {
         return viajeRepository.findAll();
     }
 
-    public void addViaje(Viaje viaje){
+    public Viaje createNewViaje(Viaje viaje){
         //TODO - PENDING LOGIC FOR TRAVEL - COMING ON ISSUE 17
-        viajeRepository.save(viaje);
-    }
 
+
+        return viajeRepository.save(viaje);
+    }
 
 }

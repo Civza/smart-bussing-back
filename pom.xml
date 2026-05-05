@@ -54,6 +54,18 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- JGraphT -->
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
+        <!-- Cliente HTTP para Mapbox -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
