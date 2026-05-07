@@ -1,10 +1,15 @@
 package buss.smartbussingapi.Parada;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
+import buss.smartbussingapi.Ruta.Ruta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,4 +27,8 @@ public class Parada {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Coordenadas coordenadas_parada;
+
+    @ManyToMany(mappedBy = "paradas")
+    @JsonIgnore
+    private List<Ruta> rutas = new ArrayList<>();
 }

@@ -3,7 +3,6 @@ package buss.smartbussingapi.Viaje.CreatingOptimistPath;
 import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteGeometry;
 import buss.smartbussingapi.Parada.Parada;
-import buss.smartbussingapi.Parada.ParadaRepository;
 import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static buss.smartbussingapi.commons.Methods.haversine;
@@ -22,16 +20,12 @@ public class BuildBusGeoJson {
 
     private final RutaRepository rutaRepository;
 
-    public GeoJsonRouteGeometry buildBusGeoJson(List<Parada> paradasRuta, int ruta_id) {
+    public GeoJsonRouteGeometry buildBusGeoJson(List<Parada> paradasRuta) {
 
-        //In the future has no manage multiples routes with the transbords
-        Optional<Ruta> ruta = rutaRepository.findById(ruta_id);
+        // Deriva la ruta real a partir de las paradas del segmento
+        Ruta ruta = findCommonRoute(paradasRuta.get(0), paradasRuta.get(paradasRuta.size() - 1));
+        List<Coordenadas> trayectoCompleto = ruta.getCoordenadas();
 
-        if(ruta.isEmpty()){
-            throw new NotFoundException("The route with Id : " + ruta_id + "wasnt found");
-        }
-
-        List<Coordenadas> trayectoCompleto = ruta.get().getCoordenadas();
         // Índice en el trayecto más cercano a la parada de abordaje
         int idxOrigen = indiceMasCercano(
                 paradasRuta.get(0).getCoordenadas_parada(), trayectoCompleto
@@ -46,16 +40,30 @@ public class BuildBusGeoJson {
         int desde = Math.min(idxOrigen, idxDestino);
         int hasta = Math.max(idxOrigen, idxDestino);
 
-        // Recorta el trayecto solo entre esos dos puntos
-        List<Coordenadas> trayectoRecortado = trayectoCompleto.subList(desde, hasta + 1);
-
         List<List<Double>> coordinates = trayectoCompleto.subList(desde, hasta + 1)
                 .stream()
                 .map(c -> List.of(c.getLongitud(), c.getLatitud()))
                 .collect(Collectors.toList());
 
-
         return new GeoJsonRouteGeometry("LineString", coordinates);
+    }
+
+    /**
+     * Busca la primera Ruta que tenga en común la parada de origen y la de destino.
+     * Si no existe ruta compartida (caso de transbordo aún no soportado) lanza NotFoundException.
+     */
+    private Ruta findCommonRoute(Parada origen, Parada destino) {
+        List<Integer> idsRutasOrigen = origen.getRutas().stream()
+                .map(Ruta::getId_ruta)
+                .toList();
+
+        return destino.getRutas().stream()
+                .filter(r -> idsRutasOrigen.contains(r.getId_ruta()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(
+                        "No se encontró una ruta común entre la parada '" + origen.getNombre_parada()
+                        + "' y '" + destino.getNombre_parada() + "'"
+                ));
     }
 
     private int indiceMasCercano(Coordenadas parada, List<Coordenadas> trayecto) {
