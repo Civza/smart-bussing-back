@@ -89,6 +89,8 @@ public class RutaService {
         return rutaRepository.save(ruta);
     }
 
+    
+
     /*
     public void agregarCoordenadas(int ruta_id, List<Coordenadas> coordenadas) {
         if (coordenadas == null || coordenadas.isEmpty()) {

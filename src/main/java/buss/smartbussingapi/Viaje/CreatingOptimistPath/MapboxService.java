@@ -37,7 +37,7 @@ public class MapboxService {
             throw new NotFoundException("There no any stops register yet");
         }
         return allStops.stream()
-                .min(Comparator.comparingDouble( p ->
+                .min(Comparator.comparingDouble( (Parada p) ->
                     haversine(lat, lon ,
                             p.getCoordenadas_parada().getLatitud(),
                             p.getCoordenadas_parada().getLongitud()
@@ -97,8 +97,6 @@ public class MapboxService {
             throw new RuntimeException("Error parsing the response");
         }
     }
-
-
 
     // ── Haversine ────────────────────────────────────────────────────────────
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
