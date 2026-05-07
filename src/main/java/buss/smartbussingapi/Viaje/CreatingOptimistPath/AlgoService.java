@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Viaje.CreatingOptimistPath;
 
+import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteGeometry;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Parada.ParadaRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,16 +24,13 @@ public class AlgoService {
     private final GraphBuilderService graphBuilder;
     private final ParadaRepository paradaRepository;
 
-    public List<Parada> findOptimalRoute(int origenId, int destinoId) {
+    // RouteService.java — solo encuentra el camino
+    public List<Parada> findOptimalRoute(Parada origen, Parada destino) {
         SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph = graphBuilder.buildGraph();
 
-        // Mapa id → Parada para la heurística
         Map<Integer, Parada> paradaMap = paradaRepository.findAll()
                 .stream().collect(Collectors.toMap(Parada::getId_parada, p -> p));
 
-        Parada destino = paradaMap.get(destinoId);
-
-        // Heurística A*: distancia haversine al destino
         AStarAdmissibleHeuristic<Integer> heuristic = (nodeId, targetId) -> {
             Parada current = paradaMap.get(nodeId);
             return haversine(
@@ -45,13 +44,14 @@ public class AlgoService {
         AStarShortestPath<Integer, DefaultWeightedEdge> aStar =
                 new AStarShortestPath<>(graph, heuristic);
 
-        GraphPath<Integer, DefaultWeightedEdge> path = aStar.getPath(origenId, destinoId);
+        GraphPath<Integer, DefaultWeightedEdge> path =
+                aStar.getPath(origen.getId_parada(), destino.getId_parada());
 
         if (path == null) return Collections.emptyList();
 
         return path.getVertexList().stream()
                 .map(paradaMap::get)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // ── Haversine ────────────────────────────────────────────────────────────

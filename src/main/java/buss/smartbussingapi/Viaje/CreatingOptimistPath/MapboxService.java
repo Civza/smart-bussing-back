@@ -1,6 +1,7 @@
 package buss.smartbussingapi.Viaje.CreatingOptimistPath;
 
 import buss.smartbussingapi.DTOs.DirectionsResponse;
+import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteGeometry;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Parada.ParadaService;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
@@ -85,11 +86,25 @@ public class MapboxService {
                     steps.add(step.path("maneuver").path("instruction").asText())
             );
 
+            //Parse before implementing in the response
+            GeoJsonRouteGeometry geoJson = new GeoJsonRouteGeometry();
+            geoJson.setType(geometry.path("type").asText());
+
+            List<List<Double>> coordinates = new ArrayList<>();
+            geometry.path("coordinates").forEach(coord -> {
+                List<Double> point = List.of(
+                        coord.get(0).asDouble(),  // longitud
+                        coord.get(1).asDouble()   // latitud
+                );
+                coordinates.add(point);
+            });
+            geoJson.setCoordinates(coordinates);
+
             return DirectionsResponse.builder()
                     .paradaDestino(parada)
                     .distanceMeters(distance)
                     .timeSeconds(duration)
-                    .geoJson(geometry.toString())
+                    .geoJson(geoJson)
                     .instructions(steps)
                     .build();
 

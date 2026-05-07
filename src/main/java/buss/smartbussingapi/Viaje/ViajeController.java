@@ -2,6 +2,7 @@ package buss.smartbussingapi.Viaje;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.DTOs.DirectionsResponse;
+import buss.smartbussingapi.DTOs.ItineraryDTOs.ItineraryResponseDTO;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.MapboxService;
 import buss.smartbussingapi.commons.ApiResponse;
@@ -44,6 +45,13 @@ public class ViajeController {
 
          */
         return new ApiResponse<>("Viaje created", null, null);
+    }
+
+    @GetMapping("/draft/get-travel")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<ItineraryResponseDTO> getDraftOfPosibleRoute(@RequestParam("userLat") double userLat,@RequestParam("userLon") double userLon,@RequestParam("destLat") double destLat,@RequestParam("destLon") double destLon){
+        var response = viajesService.getDraftRoute(userLat,userLon,destLat,destLon);
+        return new ApiResponse<>("Draft created", response,null);
     }
 
     //Endpoint just for test ONLY -> Posibili addapt it to store it or delete it

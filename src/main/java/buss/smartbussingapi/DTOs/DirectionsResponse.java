@@ -1,5 +1,6 @@
 package buss.smartbussingapi.DTOs;
 
+import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteGeometry;
 import buss.smartbussingapi.Parada.Parada;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,6 @@ public class DirectionsResponse {
     private Parada paradaDestino;
     private double distanceMeters;
     private double timeSeconds;
-    private String geoJson;
+    private GeoJsonRouteGeometry geoJson;
     private List<String> instructions;
 }
