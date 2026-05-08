@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,9 @@ public class RegistroLugarDTO {
     private String tipo;
     private String telefono;
     private String descripcion;
+    private String direccion;
+
+    private List<String> urlFiles;
 
     //Para la generacion del contrato
     //private Date fechaInicio;

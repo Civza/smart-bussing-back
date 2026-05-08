@@ -28,7 +28,8 @@ public class Lugar {
     private String tipo;
     private String telefono;
     private String descripcion;
-    private String[] urlFiles;
+    private String direccion;
+    private List<String> urlFiles;
 
     @ManyToOne()
     @JoinColumn(name = "lugar_empresa_id")
