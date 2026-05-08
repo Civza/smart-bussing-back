@@ -1,7 +1,7 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
-import buss.smartbussingapi.DTOs.RutaRequestDTO;
+import buss.smartbussingapi.DTOs.GeoJsonFeatureCollectionDTO;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,8 +40,8 @@ public class RutaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Ruta> addNewRuta(@RequestBody RutaRequestDTO ruta) {
-        return new ApiResponse<>("Route created", rutaService.agregarRuta(ruta), null);
+    public ApiResponse<Ruta> addNewRuta(@RequestBody GeoJsonFeatureCollectionDTO payload) {
+        return new ApiResponse<>("Route created", rutaService.agregarRutaDesdeGeoJson(payload), null);
     }
 
     @PostMapping("/{id_ruta}/coor")
