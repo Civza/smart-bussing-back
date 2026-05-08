@@ -108,6 +108,9 @@ public class RutaService {
     
     /*
 
+
+     */
+
     public Ruta agregarRutaDesdeGeoJson(GeoJsonFeatureCollectionDTO payload) {
         if (payload == null || payload.features() == null) {
             throw new InvalidDataException("Invalid GeoJSON payload");
@@ -175,8 +178,7 @@ public class RutaService {
             Parada parada = new Parada();
             parada.setNombre_parada(nombreParada);
             parada.setDescripcion_parada(descripcionParada);
-            parada.setZona_parada("");
-            parada.setTiempo_Espera(0);
+
 
             JsonNode stopGeom = stopFeature.get("geometry");
             if (stopGeom != null && stopGeom.has("coordinates")) {
