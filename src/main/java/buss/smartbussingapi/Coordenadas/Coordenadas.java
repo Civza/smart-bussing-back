@@ -28,6 +28,7 @@ public class Coordenadas {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "coordenadas", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Ruta> rutaList = new ArrayList<>();
 
 

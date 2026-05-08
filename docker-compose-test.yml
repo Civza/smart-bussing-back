@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  postgres-test:
+    image: postgres:15
+    container_name: smartbussing_test_container
+
+    environment:
+      POSTGRES_DB: smartbuss_test
+      POSTGRES_USER: smartbusser
+      POSTGRES_PASSWORD: bussword
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - ./database/schema_backup.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartbusser -d smartbuss_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 5

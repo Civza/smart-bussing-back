@@ -25,7 +25,7 @@ public class Ruta {
     @Id
     @SequenceGenerator(name = "ruta_sequence", sequenceName = "ruta_sequence" , allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "ruta_sequence")
-    private int id_ruta;
+    private Integer id_ruta;
     private String nombre_ruta;
     private String nombre_corto_ruta;
     private String color_ruta;
