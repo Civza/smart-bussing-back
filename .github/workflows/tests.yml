@@ -49,6 +49,9 @@ jobs:
         PGPASSWORD: bussword
     - name: Run unit tests + integration tests
       run: mvn clean test "-Dspring.config.name=application-test"
+      env:
+        MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
+
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v7.0.0
