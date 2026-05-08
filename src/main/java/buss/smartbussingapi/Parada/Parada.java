@@ -4,17 +4,16 @@ import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.Ruta.Ruta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(fluent = false)
 @Entity
 @Table

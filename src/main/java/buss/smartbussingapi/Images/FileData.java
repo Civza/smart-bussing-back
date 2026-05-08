@@ -3,12 +3,14 @@ package buss.smartbussingapi.Images;
 import buss.smartbussingapi.Lugar.Lugar;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Accessors(fluent = false)
 @Entity
 @Table(name = "FILE_DATA")
 public class FileData {

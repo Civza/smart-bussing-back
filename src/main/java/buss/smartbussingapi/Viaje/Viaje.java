@@ -3,13 +3,14 @@ package buss.smartbussingapi.Viaje;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Ruta.Ruta;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@Accessors(fluent = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

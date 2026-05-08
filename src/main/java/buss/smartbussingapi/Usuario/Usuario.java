@@ -4,14 +4,15 @@ import buss.smartbussingapi.Reporte.ReporteRuta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Accessors(fluent = false)
 @Entity
 @Table
 public class Usuario {

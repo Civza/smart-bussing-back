@@ -4,10 +4,13 @@ import buss.smartbussingapi.DTOs.DirectionsResponse;
 import buss.smartbussingapi.Parada.Parada;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class SegmentoResponseDTO {
     private String tipo;                  // "WALKING" o "BUS"

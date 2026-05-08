@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(fluent = false)
 @Entity
 @Table
 public class Coordenadas {
@@ -26,7 +28,6 @@ public class Coordenadas {
     private Double longitud;
     private Double latitud;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "coordenadas", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Ruta> rutaList = new ArrayList<>();
