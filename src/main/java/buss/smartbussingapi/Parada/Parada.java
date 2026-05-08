@@ -22,6 +22,6 @@ public class Parada {
     private String descripcion_parada;
     private int tiempo_Espera;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Coordenadas coordenadas_parada;
 }
