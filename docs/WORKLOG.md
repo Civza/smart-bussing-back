@@ -1,3 +1,23 @@
+# WORKLOG — Update: Testing for GeoJSON Route Endpoint
+
+**Fecha:** 2026-05-08
+**Autor:** Antigravity
+
+---
+
+## ¿Qué se implementó?
+
+Se implementaron las pruebas unitarias para la función de creación de rutas mediante GeoJSON (`agregarRutaDesdeGeoJson`) en `RutaService`, asegurando que las entidades relacionadas (Rutas, Coordenadas y Paradas) se generen correctamente a partir del payload y verificando el manejo de errores. Además, se validó el correcto funcionamiento de los tests mediante un entorno de pruebas con Docker.
+
+### Detalles de la Implementación
+
+- **Test de Happy Path (`agregarRutaDesdeGeoJson_exitosa`):** Se probó la función con un payload JSON completo (tipo `FeatureCollection`) simulando una ruta y una parada. Se validó correctamente la conversión de las propiedades de la ruta (`route_long_name`, `route_color`, etc.), el parseo de coordenadas de geometría `LineString` y la correcta instanciación de las entidades `Parada`.
+- **Test de Error (`agregarRutaDesdeGeoJson_sinRutaLanzaException`):** Se comprobó que al enviar un GeoJSON que no contiene una feature de tipo `route`, el servicio lanza correctamente una `InvalidDataException`.
+- **Corrección de Tests Previos:** Se inhabilitó el test obsoleto `agregarRuta_exitosa` que estaba provocando fallas del tipo `UnnecessaryStubbingException` en la suite de pruebas debido a firmas de métodos antiguas.
+- **Entorno de Ejecución:** Se verificó la ejecución de la suite de pruebas aislando la ejecución con Maven en Docker, interactuando de forma exitosa con la base de datos de prueba aprovisionada por `docker-compose-test.yml`.
+
+---
+
 # WORKLOG — Issue #17: Draft Route Endpoint (Itinerario Básico)
 
 **Fecha:** 2026-05-07
