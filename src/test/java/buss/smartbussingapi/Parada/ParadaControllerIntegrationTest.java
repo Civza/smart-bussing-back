@@ -37,10 +37,16 @@ public class ParadaControllerIntegrationTest {
     void shouldAddParadaAndReturn201() throws Exception {
         String jsonBody = """
                 {
-                    "nombre_parada": "Parada Central",
-                    "zona_parada": "Centro",
-                    "descripcion_parada": "Frente al parque",
-                    "tiempo_Espera": 5
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-116.5963, 31.8667]
+                    },
+                    "properties": {
+                        "feature_type": "stop",
+                        "stop_name": "Parada Central",
+                        "stop_description": "Frente al parque"
+                    }
                 }
                 """;
 

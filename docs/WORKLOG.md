@@ -1,3 +1,38 @@
+# WORKLOG — Update: Test Suite Fixes (3 Failing Tests)
+
+**Fecha:** 2026-05-08
+**Autor:** Antigravity
+
+---
+
+## ¿Qué se corrigió?
+
+Se ejecutó la suite completa de tests con Docker (`docker-compose-test.yml`) y se encontraron **3 tests fallando** de 37 totales. Se corrigieron todos, dejando la suite en **35 tests, 0 failures (BUILD SUCCESS)**.
+
+### Fallos encontrados y correcciones
+
+| Test | Error | Causa Raíz | Corrección |
+|---|---|---|---|
+| `ParadaControllerIntegrationTest.shouldAddParadaAndReturn201` | `Status expected:<201> but was:<500>` | El test enviaba un JSON plano de `Parada` pero el controller ahora espera un `GeoJsonStopDTO` | Se actualizó el payload del test al formato GeoJSON correcto (`Feature` con `geometry.type: "Point"` y `properties.feature_type: "stop"`) |
+| `RutaControllerIntegrationTest.shouldAddCoordenadasAndReturn201` | `Status expected:<201> but was:<404>` | El endpoint `POST /{id_ruta}/coor` está comentado en `RutaController` (reemplazado por importación GeoJSON) | Se eliminó el test obsoleto |
+| `RutaControllerIntegrationTest.shouldGetCoordenadasByRuta` | `Status expected:<201> but was:<404>` | Depende del mismo endpoint comentado `POST /{id_ruta}/coor` | Se eliminó el test obsoleto |
+
+### Archivos modificados
+
+| Archivo | Cambio |
+|---|---|
+| `ParadaControllerIntegrationTest.java` | `shouldAddParadaAndReturn201` — payload actualizado de JSON plano a `GeoJsonStopDTO` |
+| `RutaControllerIntegrationTest.java` | Eliminados `shouldAddCoordenadasAndReturn201` y `shouldGetCoordenadasByRuta` (tests de endpoint deprecado) |
+
+### Resultado final
+
+```
+Tests run: 35, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+---
+
 # WORKLOG — Update: Testing for GeoJSON Route Endpoint
 
 **Fecha:** 2026-05-08
