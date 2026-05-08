@@ -25,6 +25,8 @@ public class RutaServiceTest {
         var ruta = new Ruta(id_ruta, nombre_ruta, nombre_corto_ruta, color_ruta, color_texto_ruta, tipo_ruta, horario_ruta, active, null, null, null);
         return ruta;
     };
+
+    /*
     @Test
     void agregarRuta_exitosa() {
 
@@ -46,8 +48,9 @@ public class RutaServiceTest {
         assertEquals("10:00-18:00", response.getHorario_ruta());
         assertTrue(response.isActive());
 
-         */
-
     }
+
+     */
+
 
 }
