@@ -7,8 +7,9 @@ import buss.smartbussingapi.Parada.ParadaService;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -16,45 +17,63 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static buss.smartbussingapi.commons.Methods.haversine;
+
 @Service
+@RequiredArgsConstructor
 public class MapboxService {
 
     @Value("${mapbox.token}")
     private String token;
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private final WebClient webClient = WebClient.create("https://api.mapbox.com");
-
-    @Autowired
     private final ParadaService paradaService;
 
-    public MapboxService(ParadaService paradaService){
-        this.paradaService = paradaService;
-    }
-
-    //1. Devuelve la parada mas corta dada las coordenadas del usuario
-    public Parada findNearestStop(double lat, double lon){
+    // Devuelve la parada más cercana dadas las coordenadas del usuario
+    public Parada findNearestStop(double lat, double lon) {
         List<Parada> allStops = paradaService.getParadasList();
-        if(allStops == null || allStops.isEmpty()){
-            throw new NotFoundException("There no any stops register yet");
+        if (allStops.isEmpty()) {
+            throw new NotFoundException("No hay paradas registradas aún");
         }
         return allStops.stream()
-                .min(Comparator.comparingDouble( (Parada p) ->
-                    haversine(lat, lon ,
+                .min(Comparator.comparingDouble((Parada p) ->
+                    haversine(lat, lon,
                             p.getCoordenadas_parada().getLatitud(),
                             p.getCoordenadas_parada().getLongitud()
                     )
                 ))
-                .orElseThrow( () -> new RuntimeException("Something failed looking for stops"));
+                .orElseThrow(() -> new NotFoundException("No se encontró ninguna parada cercana"));
     }
 
-
-    public DirectionsResponse getWalkingDirections(double userLat, double userLon, Parada parada){
+    /**
+     * Step 1: Caminata desde las coordenadas del usuario hasta la parada de abordaje.
+     * Origen: (userLat, userLon) → Destino: parada.coordenadas
+     */
+    public DirectionsResponse getWalkingDirections(double userLat, double userLon, Parada parada) {
         double stopLat = parada.getCoordenadas_parada().getLatitud();
         double stopLon = parada.getCoordenadas_parada().getLongitud();
 
         String coordinates = userLon + "," + userLat + ";" + stopLon + "," + stopLat;
+        String response = callMapboxWalking(coordinates);
+        return parseResponse(response, parada);
+    }
 
-        String response = webClient.get()
+    /**
+     * Step 5: Caminata desde la parada de bajada hasta el destino real del usuario.
+     * Origen: parada.coordenadas → Destino: (destLat, destLon)
+     */
+    public DirectionsResponse getWalkingDirections(Parada parada, double destLat, double destLon) {
+        double stopLat = parada.getCoordenadas_parada().getLatitud();
+        double stopLon = parada.getCoordenadas_parada().getLongitud();
+
+        String coordinates = stopLon + "," + stopLat + ";" + destLon + "," + destLat;
+        String response = callMapboxWalking(coordinates);
+        return parseResponse(response, null);
+    }
+
+    private String callMapboxWalking(String coordinates) {
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/directions/v5/mapbox/walking/{coordinates}")
                         .queryParam("access_token", token)
@@ -63,19 +82,23 @@ public class MapboxService {
                         .queryParam("language", "es")
                         .build(coordinates))
                 .retrieve()
+                .onStatus(HttpStatusCode::isError, resp ->
+                        resp.bodyToMono(String.class).map(body ->
+                                new RuntimeException("Mapbox error " + resp.statusCode() + ": " + body)))
                 .bodyToMono(String.class)
                 .block();
-
-        return parseResponse(response, parada);
     }
 
-    //3. Parse to send to frontend
-    private DirectionsResponse parseResponse(String json, Parada parada){
-        try{
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(json);
-            JsonNode travel = root.path("routes").get(0);
+    private DirectionsResponse parseResponse(String json, Parada parada) {
+        try {
+            JsonNode root = MAPPER.readTree(json);
+            JsonNode routes = root.path("routes");
 
+            if (routes.isEmpty()) {
+                throw new NotFoundException("Mapbox no encontró una ruta para las coordenadas dadas");
+            }
+
+            JsonNode travel = routes.get(0);
             double distance = travel.path("distance").asDouble();
             double duration = travel.path("duration").asDouble();
 
@@ -86,7 +109,6 @@ public class MapboxService {
                     steps.add(step.path("maneuver").path("instruction").asText())
             );
 
-            //Parse before implementing in the response
             GeoJsonRouteGeometry geoJson = new GeoJsonRouteGeometry();
             geoJson.setType(geometry.path("type").asText());
 
@@ -108,19 +130,10 @@ public class MapboxService {
                     .instructions(steps)
                     .build();
 
-        } catch (Exception e){
-            throw new RuntimeException("Error parsing the response");
+        } catch (NotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al parsear la respuesta de Mapbox: " + e.getMessage());
         }
-    }
-
-    // ── Haversine ────────────────────────────────────────────────────────────
-    private double haversine(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     }
 }

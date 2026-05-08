@@ -4,7 +4,7 @@ import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteGeometry;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Ruta.Ruta;
-import buss.smartbussingapi.Ruta.RutaRepository;
+import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,11 @@ import static buss.smartbussingapi.commons.Methods.haversine;
 @RequiredArgsConstructor
 public class BuildBusGeoJson {
 
-    private final RutaRepository rutaRepository;
-
     public GeoJsonRouteGeometry buildBusGeoJson(List<Parada> paradasRuta) {
+
+        if (paradasRuta == null || paradasRuta.size() < 2) {
+            throw new InvalidDataException("Se necesitan al menos 2 paradas para construir el segmento de bus");
+        }
 
         // Deriva la ruta real a partir de las paradas del segmento
         Ruta ruta = findCommonRoute(paradasRuta.get(0), paradasRuta.get(paradasRuta.size() - 1));

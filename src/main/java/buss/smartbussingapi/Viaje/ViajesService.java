@@ -9,7 +9,7 @@ import buss.smartbussingapi.Viaje.CreatingOptimistPath.AlgoService;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.BuildBusGeoJson;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.MapboxService;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,21 +18,13 @@ import java.util.List;
 import static buss.smartbussingapi.commons.Methods.haversine;
 
 @Service
+@RequiredArgsConstructor
 public class ViajesService {
 
-    @Autowired
     private final ViajeRepository viajeRepository;
     private final MapboxService mapboxService;
     private final AlgoService algoService;
     private final BuildBusGeoJson busGeoJson;
-
-    public ViajesService(ViajeRepository viajeRepository, MapboxService mapboxService, AlgoService algoService,
-            BuildBusGeoJson busGeoJson) {
-        this.viajeRepository = viajeRepository;
-        this.mapboxService = mapboxService;
-        this.algoService = algoService;
-        this.busGeoJson = busGeoJson;
-    }
 
     public Viaje getViajebyId(int id_viaje) {
         return viajeRepository.findById(id_viaje)
@@ -55,8 +47,10 @@ public class ViajesService {
 
         ItineraryResponseDTO newItinerary = new ItineraryResponseDTO();
         List<SegmentoResponseDTO> segments = new ArrayList<>();
-        double totalSeconds = 1800; // 30 min default - Pending wiht ML predcitin times
-        double totalMeterts = 7200; // 10 km for UABC - Cotsco distances.
+        // TODO: reemplazar con predicción ML de tiempo real
+        double totalSeconds = 0;
+        // TODO: reemplazar con suma real de distancias por segmento
+        double totalMeterts = 0;
 
         // Step 1 and 2
         Parada p = mapboxService.findNearestStop(userLat, userLon);
@@ -93,13 +87,13 @@ public class ViajesService {
         // Step 5
         if (!isInTheRadio(dest.getCoordenadas_parada().getLatitud(), dest.getCoordenadas_parada().getLongitud(),
                 destLat, destLon, 0.3)) {
-            DirectionsResponse response = mapboxService.getWalkingDirections(userLat, userLon, p);
-            SegmentoResponseDTO segmentoResponseDTO2 = SegmentoResponseDTO.builder()
+            DirectionsResponse response = mapboxService.getWalkingDirections(dest, destLat, destLon);
+            SegmentoResponseDTO walkToDestSegment = SegmentoResponseDTO.builder()
                     .tipo("WALKING")
-                    .descripcion("Caminar hasta la parada : " + p.getNombre_parada())
+                    .descripcion("Caminar hasta tu destino desde la parada : " + dest.getNombre_parada())
                     .directions(response)
                     .build();
-            segments.add(segmentoResponseDTO2);
+            segments.add(walkToDestSegment);
             totalMeterts += response.getDistanceMeters();
             totalSeconds += response.getTimeSeconds();
         }
