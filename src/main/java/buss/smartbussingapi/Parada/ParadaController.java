@@ -1,5 +1,6 @@
 package buss.smartbussingapi.Parada;
 
+import buss.smartbussingapi.DTOs.GeoJsonStops.GeoJsonStopDTO;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,9 +33,9 @@ public class ParadaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Void> addParada(@RequestBody Parada parada) {
-        paradaService.addParada(parada);
-        return new ApiResponse<>("Parada created", null, null);
+    public ApiResponse<Parada> createNewParada(@RequestBody GeoJsonStopDTO geoJsonStopDTO) {
+        var parada = paradaService.addParada(geoJsonStopDTO);
+        return new ApiResponse<>("Parada created", parada, null);
     }
 
 }

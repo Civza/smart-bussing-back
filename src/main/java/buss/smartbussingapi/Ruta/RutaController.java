@@ -44,12 +44,15 @@ public class RutaController {
         return new ApiResponse<>("Route created", rutaService.agregarRutaDesdeGeoJson(payload), null);
     }
 
+    /*
     @PostMapping("/{id_ruta}/coor")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<Void> addCoordenadas(@PathVariable("id_ruta") int id_ruta, @RequestBody List<Coordenadas> coordenadas) {
         rutaService.agregarCoordenadas(id_ruta, coordenadas);
         return new ApiResponse<>("Coordinates added", null, null);
     }
+
+     */
 
 
 

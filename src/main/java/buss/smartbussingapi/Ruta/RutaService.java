@@ -1,7 +1,7 @@
 package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
-import buss.smartbussingapi.DTOs.RutaRequestDTO;
+import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +41,60 @@ public class RutaService {
         return ruta.getCoordenadas();
     }
 
-    public Ruta agregarRuta(RutaRequestDTO ruta) {
-        //TODO - NEW LOGIC COMING SOON (Validators)
-        return rutaRepository.save(new Ruta(null, ruta.nombre_ruta(), ruta.nombre_corto_ruta(), ruta.color_ruta(), ruta.color_texto_ruta(), ruta.tipo_ruta(), ruta.horario_ruta(), ruta.active(), null, null, null));
+    public Ruta createNewRouteFromGeoJSON(GeoJsonRouteDTO geoJsonRouteDTO) {
+        if(!"route".equals(geoJsonRouteDTO.getProperties().getFeature_type())){
+            throw new InvalidDataException("The type of the feature needs to be 'route'");
+        }
+
+        // Validate geometry type
+        if (!"LineString".equals(geoJsonRouteDTO.getGeometry().getType())) {
+            throw new InvalidDataException("GeoJSON geometry type must be 'LineString'");
+        }
+
+        // Validate coordinates
+        List<List<Double>> coords = geoJsonRouteDTO.getGeometry().getCoordinates();
+        if (coords == null || coords.isEmpty()) {
+            throw new InvalidDataException("Route must have at least one coordinate");
+        }
+
+        //Validation para no pasar el area de Ensenada
+        for(List<Double> coor : coords){
+            double longitud = coor.get(0);
+            double latitud = coor.get(1);
+
+            if (longitud < -180 || longitud > 180) {
+                throw new InvalidDataException("Invalid longitude value: " + longitud);
+            }
+            if (latitud < -90 || latitud > 90) {
+                throw new InvalidDataException("Invalid latitude value: " + latitud);
+            }
+        }
+
+        Ruta ruta = new Ruta();
+        ruta.setNombre_ruta(geoJsonRouteDTO.getProperties().getRoute_long_name());
+        ruta.setNombre_corto_ruta(geoJsonRouteDTO.getProperties().getRoute_short_name());
+        ruta.setColor_ruta(geoJsonRouteDTO.getProperties().getRoute_color());
+        ruta.setColor_texto_ruta(geoJsonRouteDTO.getProperties().getRoute_text_color());
+        ruta.setTipo_ruta(geoJsonRouteDTO.getProperties().getRoute_type());
+
+        List<Coordenadas> coordenadasList = coords.stream().map(coord -> {
+            Coordenadas curr = new Coordenadas();
+            curr.setLongitud(coord.get(0));
+            curr.setLatitud(coord.get(1));
+            List<Ruta> routes = new ArrayList<>();
+            routes.add(ruta);
+            curr.setRutaList(routes);
+            return curr;
+        }).toList();
+
+        ruta.setCoordenadas(coordenadasList);
+        ruta.setActive(true);
+        return rutaRepository.save(ruta);
     }
 
+    
+
+    /*
     public void agregarCoordenadas(int ruta_id, List<Coordenadas> coordenadas) {
         if (coordenadas == null || coordenadas.isEmpty()) {
             throw new InvalidDataException("Coordinates list cannot be empty");
@@ -56,6 +105,11 @@ public class RutaService {
         ruta.getCoordenadas().addAll(coordenadas);
         rutaRepository.save(ruta);
     }
+    
+    /*
+
+
+     */
 
     public Ruta agregarRutaDesdeGeoJson(GeoJsonFeatureCollectionDTO payload) {
         if (payload == null || payload.features() == null) {
@@ -124,8 +178,7 @@ public class RutaService {
             Parada parada = new Parada();
             parada.setNombre_parada(nombreParada);
             parada.setDescripcion_parada(descripcionParada);
-            parada.setZona_parada("");
-            parada.setTiempo_Espera(0);
+
 
             JsonNode stopGeom = stopFeature.get("geometry");
             if (stopGeom != null && stopGeom.has("coordinates")) {
