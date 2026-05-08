@@ -7,6 +7,7 @@ import buss.smartbussingapi.Parada.ParadaService;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -25,6 +26,11 @@ public class MapboxService {
 
     @Value("${mapbox.token}")
     private String token;
+
+    @PostConstruct
+    void checkTokenLoaded() {
+        System.out.println("Mapbox token loaded? " + (token != null && !token.isBlank()));
+    }
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private final WebClient webClient = WebClient.create("https://api.mapbox.com");

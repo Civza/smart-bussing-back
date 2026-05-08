@@ -18,6 +18,75 @@ Se implementaron las pruebas unitarias para la función de creación de rutas me
 
 ---
 
+# WORKLOG — PR #11: GeoJSON Route & Stop Parsing Endpoint
+
+**Fecha:** 2026-05-07
+**Branch:** `Json-post`
+**Autor:** Emiliano
+
+---
+
+## ¿Qué se implementó?
+
+Se implementó el endpoint `POST /api/v1/ruta/agregarRutaDesdeGeoJson` que permite crear una ruta completa (con coordenadas y paradas) a partir de un payload GeoJSON tipo `FeatureCollection`. Este endpoint reemplaza la necesidad de crear rutas manualmente campo por campo, permitiendo la importación directa desde herramientas GIS.
+
+### Detalles de la Implementación
+
+- **`RutaService.agregarRutaDesdeGeoJson`:** Parseo completo del `FeatureCollection` — extrae la feature de tipo `route` para crear la entidad `Ruta` con sus propiedades (`route_long_name`, `route_color`, `route_text_color`, etc.), convierte la geometría `LineString` en entidades `Coordenadas`, e instancia entidades `Parada` a partir de features de tipo `stop`.
+- **`GeoJsonFeatureCollectionDTO`:** Nuevo DTO para deserializar el payload GeoJSON entrante.
+- **`RutaController`:** Se agregó el nuevo endpoint POST que recibe el DTO y delega al servicio.
+- **Ajuste en `Parada`:** Corrección menor en la entidad para compatibilidad con el nuevo flujo de creación.
+- **Tests de integración:** Se actualizaron los tests de `RutaControllerIntegrationTest` para cubrir el nuevo endpoint.
+
+### Archivos modificados / creados
+
+| Archivo | Cambio |
+|---|---|
+| `RutaService.java` | +94 líneas — lógica completa de parseo GeoJSON a entidades |
+| `GeoJsonFeatureCollectionDTO.java` | [NEW] DTO para el payload `FeatureCollection` |
+| `RutaController.java` | Nuevo endpoint POST para importación GeoJSON |
+| `Parada.java` | Ajuste menor de compatibilidad |
+| `RutaControllerIntegrationTest.java` | Tests actualizados para el nuevo endpoint |
+
+---
+
+# WORKLOG — PRs #5/#7/#8: Infraestructura de Testing e Integración
+
+**Fecha:** 2026-05-04 → 2026-05-06
+**Branches:** `testing`, `integration-tests`
+**Autor:** Emiliano
+
+---
+
+## ¿Qué se implementó?
+
+Se estableció la infraestructura completa de testing para el proyecto: pipeline de CI con GitHub Actions, entorno containerizado con Docker/PostgreSQL para pruebas de integración, y cobertura de tests de integración para **todos** los controllers existentes en la aplicación.
+
+### Infraestructura de CI (PR #5 — `testing`)
+
+- **GitHub Actions Workflow (`tests.yml`):** Pipeline automatizado que levanta un contenedor PostgreSQL, ejecuta las migraciones de schema y corre la suite de tests con Maven.
+- **`docker-compose-test.yml`:** Configuración de Docker Compose para el entorno de pruebas con PostgreSQL.
+- **`application-test.properties`:** Perfil de configuración de Spring dedicado para testing con credenciales del contenedor.
+- **`schema_backup.sql`:** Schema SQL consolidado para inicialización de la base de datos de prueba (reemplaza backup anterior de 701 líneas).
+- **Dependencias Maven:** Se agregaron dependencias de testing necesarias en `pom.xml`.
+
+### Tests de Integración (PRs #7/#8 — `integration-tests`)
+
+Se crearon **840+ líneas** de tests de integración cubriendo todos los controllers:
+
+| Test | Cobertura |
+|---|---|
+| `RutaControllerIntegrationTest` | CRUD completo de rutas |
+| `ParadaControllerIntegrationTest` | CRUD de paradas, asociación con rutas |
+| `UsuarioControllerIntegrationTest` | Registro, consulta y gestión de usuarios |
+| `ReporteRutaControllerIntegrationTest` | Creación y consulta de reportes de ruta |
+| `LugarControllerIntegrationTest` | CRUD de lugares |
+| `InteresadoControllerIntegrationTest` | Registro de interesados |
+| `ViajeControllerIntegrationTest` | Endpoints de viajes |
+| `RegistroLugarControllerIntegrationTest` | Registro de lugares |
+
+---
+
 # WORKLOG — Issue #17: Draft Route Endpoint (Itinerario Básico)
 
 **Fecha:** 2026-05-07

@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("api/v1/viaje")
 public class ViajeController {
 
-    @Autowired
     private final ViajesService viajesService;
     private final MapboxService mapboxService;
 
