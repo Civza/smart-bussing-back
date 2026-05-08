@@ -40,14 +40,26 @@ public class RutaControllerIntegrationTest {
     void shouldCreateRutaAndReturn201() throws Exception {
         String body = """ 
                 {
-                "nombre_ruta": "Ruta 1",
-                "nombre_corto_ruta": "R1",
-                "color_ruta": "red",
-                "color_texto_ruta": "white",
-                "tipo_ruta": "LineString",
-                "horario_ruta": "10:00-18:00",
-                "active": true
-                   }""";
+                  "type": "FeatureCollection",
+                  "features": [
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "feature_type": "route",
+                        "route_long_name": "Ruta 1",
+                        "route_short_name": "R1",
+                        "route_color": "red",
+                        "route_text_color": "white",
+                        "route_type": "LineString"
+                      },
+                      "geometry": {
+                        "type": "LineString",
+                        "coordinates": []
+                      }
+                    }
+                  ]
+                }
+                """;
 
         mockMvc.perform(
                         post("/api/v1/ruta")
@@ -61,7 +73,6 @@ public class RutaControllerIntegrationTest {
                 .andExpect(jsonPath("$.response.color_ruta").value("red"))
                 .andExpect(jsonPath("$.response.color_texto_ruta").value("white"))
                 .andExpect(jsonPath("$.response.tipo_ruta").value("LineString"))
-                .andExpect(jsonPath("$.response.horario_ruta").value("10:00-18:00"))
                 .andExpect(jsonPath("$.response.active").value(true))
                 .andExpect(jsonPath("$.response.id_ruta").exists())
                 .andExpect(jsonPath("$.error").doesNotExist());
