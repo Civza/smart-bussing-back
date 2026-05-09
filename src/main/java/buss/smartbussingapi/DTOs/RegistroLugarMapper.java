@@ -6,10 +6,12 @@ import buss.smartbussingapi.Empresa.Empresa;
 import buss.smartbussingapi.Empresa.EmpresaRepository;
 import buss.smartbussingapi.Lugar.Lugar;
 import buss.smartbussingapi.Lugar.LugarRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class RegistroLugarMapper {
 
@@ -79,8 +81,11 @@ public class RegistroLugarMapper {
         lugar.setName(lugarDTO.getNombreLugar());
         lugar.setTelefono(lugarDTO.getTelefono());
         lugar.setDescripcion(lugarDTO.getDescripcion());
+        lugar.setDireccion(lugarDTO.getDireccion());
+        lugar.setUrlFiles(lugarDTO.getUrlFiles());
         lugar.setTipo("Indefinido");
         lugar.setEmpresa(empresa);
+
         lugarRepository.save(lugar);
     }
 

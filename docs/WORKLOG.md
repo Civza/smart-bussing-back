@@ -1,3 +1,7 @@
+# WORKLOG — Issue #9: Registro de Lugar
+
+**Fecha:** 2026-05-08
+**Branch:** `Issue#9`
 # WORKLOG — Update: Test Suite Fixes (3 Failing Tests)
 
 **Fecha:** 2026-05-08
@@ -63,6 +67,29 @@ Se implementaron las pruebas unitarias para la función de creación de rutas me
 
 ## ¿Qué se implementó?
 
+Se refinó el flujo de registro unificado de Lugar + Empresa a través del endpoint `POST /api/v1/registrarLugar`. Los cambios se concentran en el DTO y el Mapper.
+
+### Archivos modificados
+
+| Archivo | Cambio |
+|---|---|
+| `RegistroLugarDTO.java` | Simplificado: se comenta `paisEmpresa` (hardcodeado en mapper), se comenta bloque de contrato (`fechaInicio`, `fechaFin`, `monto`); se agrega `List<String> urlFiles` |
+| `RegistroLugarMapper.java` | `toEmpresa()` busca primero por email y reutiliza empresa existente (evita duplicados); se agregan validaciones guard clause; `toContrato()` comentado; `toLugar()` mapea `urlFiles` y `direccion`, `tipo` hardcodeado a `"Indefinido"` |
+
+### Decisiones de diseño
+
+- **Idempotencia de empresa**: Si ya existe una empresa con ese correo, se usa la existente en lugar de lanzar error o crear duplicado. Esto permite registrar múltiples lugares bajo la misma empresa.
+- **Contrato diferido**: La lógica de contratos (`fechaInicio`, `fechaFin`, `monto`) queda comentada hasta que se defina el flujo de negocio completo.
+- **`tipo` hardcodeado**: El campo `tipo` del lugar se setea como `"Indefinido"` por ahora, hasta que el frontend envíe valores reales.
+
+---
+
+## ⚠️ Limitaciones / TODOs
+
+- [ ] Definir y activar la lógica de `Contrato` (fechas y monto).
+- [ ] El campo `tipo` del `Lugar` debería recibirse en el DTO, no hardcodearse.
+- [ ] `paisEmpresa` hardcodeado a `"Mexico"` — parametrizar cuando se soporte multi-país.
+- [ ] Las validaciones en el Mapper lanzan `IllegalArgumentException` en lugar de `InvalidDataException` del dominio. Migrar para consistencia con `GlobalControllerAdvice`.
 Se implementó el endpoint `POST /api/v1/ruta/agregarRutaDesdeGeoJson` que permite crear una ruta completa (con coordenadas y paradas) a partir de un payload GeoJSON tipo `FeatureCollection`. Este endpoint reemplaza la necesidad de crear rutas manualmente campo por campo, permitiendo la importación directa desde herramientas GIS.
 
 ### Detalles de la Implementación
