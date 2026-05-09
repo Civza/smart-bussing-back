@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class RutaControllerIntegrationTest {
@@ -122,81 +123,6 @@ public class RutaControllerIntegrationTest {
                 .andExpect(jsonPath("$.response.nombre_ruta").value("Ruta 1"));
     }
 
-    @Test
-    void shouldAddCoordenadasAndReturn201() throws Exception {
-        String jsonRuta = """
-                {
-                    "nombre_ruta": "Ruta 1",
-                    "nombre_corto_ruta": "R1",
-                    "color_ruta": "red",
-                    "color_texto_ruta": "white",
-                    "tipo_ruta": "LineString",
-                    "horario_ruta": "10:00-18:00",
-                    "active": true
-                }
-                """;
-        Ruta ruta = objectMapper.readValue(jsonRuta, Ruta.class);
-        ruta = rutaRepository.save(ruta);
-
-        String jsonCoordenadasBody = """
-                [
-                    {
-                        "latitud": 10.123,
-                        "longitud": -84.123
-                    },
-                    {
-                        "latitud": 10.124,
-                        "longitud": -84.124
-                    }
-                ]
-                """;
-
-        mockMvc.perform(
-                        post("/api/v1/ruta/" + ruta.getId_ruta() + "/coor")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(jsonCoordenadasBody)
-                )
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.info").value("Coordinates added"));
-    }
-
-    @Test
-    void shouldGetCoordenadasByRuta() throws Exception {
-        String jsonRuta = """
-                {
-                    "nombre_ruta": "Ruta 1",
-                    "nombre_corto_ruta": "R1",
-                    "color_ruta": "red",
-                    "color_texto_ruta": "white",
-                    "tipo_ruta": "LineString",
-                    "horario_ruta": "10:00-18:00",
-                    "active": true
-                }
-                """;
-        Ruta ruta = objectMapper.readValue(jsonRuta, Ruta.class);
-        ruta = rutaRepository.save(ruta);
-
-        String jsonCoordenadasBody = """
-                [
-                    {
-                        "latitud": 10.123,
-                        "longitud": -84.123
-                    }
-                ]
-                """;
-        mockMvc.perform(
-                        post("/api/v1/ruta/" + ruta.getId_ruta() + "/coor")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(jsonCoordenadasBody)
-                )
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(get("/api/v1/ruta/coordenadas/" + ruta.getId_ruta()))
-                .andDo(org.springframework.test.web.servlet.result.MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.info").value("Coordinates retrieved"))
-                .andExpect(jsonPath("$.response[0].latitud").value(10.123));
-    }
 
     @Test
     void shouldReturn404Or400WhenRutaNotFound() throws Exception {

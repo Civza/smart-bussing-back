@@ -2,6 +2,65 @@
 
 **Fecha:** 2026-05-08
 **Branch:** `Issue#9`
+# WORKLOG — Update: Test Suite Fixes (3 Failing Tests)
+
+**Fecha:** 2026-05-08
+**Autor:** Antigravity
+
+---
+
+## ¿Qué se corrigió?
+
+Se ejecutó la suite completa de tests con Docker (`docker-compose-test.yml`) y se encontraron **3 tests fallando** de 37 totales. Se corrigieron todos, dejando la suite en **35 tests, 0 failures (BUILD SUCCESS)**.
+
+### Fallos encontrados y correcciones
+
+| Test | Error | Causa Raíz | Corrección |
+|---|---|---|---|
+| `ParadaControllerIntegrationTest.shouldAddParadaAndReturn201` | `Status expected:<201> but was:<500>` | El test enviaba un JSON plano de `Parada` pero el controller ahora espera un `GeoJsonStopDTO` | Se actualizó el payload del test al formato GeoJSON correcto (`Feature` con `geometry.type: "Point"` y `properties.feature_type: "stop"`) |
+| `RutaControllerIntegrationTest.shouldAddCoordenadasAndReturn201` | `Status expected:<201> but was:<404>` | El endpoint `POST /{id_ruta}/coor` está comentado en `RutaController` (reemplazado por importación GeoJSON) | Se eliminó el test obsoleto |
+| `RutaControllerIntegrationTest.shouldGetCoordenadasByRuta` | `Status expected:<201> but was:<404>` | Depende del mismo endpoint comentado `POST /{id_ruta}/coor` | Se eliminó el test obsoleto |
+
+### Archivos modificados
+
+| Archivo | Cambio |
+|---|---|
+| `ParadaControllerIntegrationTest.java` | `shouldAddParadaAndReturn201` — payload actualizado de JSON plano a `GeoJsonStopDTO` |
+| `RutaControllerIntegrationTest.java` | Eliminados `shouldAddCoordenadasAndReturn201` y `shouldGetCoordenadasByRuta` (tests de endpoint deprecado) |
+
+### Resultado final
+
+```
+Tests run: 35, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+---
+
+# WORKLOG — Update: Testing for GeoJSON Route Endpoint
+
+**Fecha:** 2026-05-08
+**Autor:** Antigravity
+
+---
+
+## ¿Qué se implementó?
+
+Se implementaron las pruebas unitarias para la función de creación de rutas mediante GeoJSON (`agregarRutaDesdeGeoJson`) en `RutaService`, asegurando que las entidades relacionadas (Rutas, Coordenadas y Paradas) se generen correctamente a partir del payload y verificando el manejo de errores. Además, se validó el correcto funcionamiento de los tests mediante un entorno de pruebas con Docker.
+
+### Detalles de la Implementación
+
+- **Test de Happy Path (`agregarRutaDesdeGeoJson_exitosa`):** Se probó la función con un payload JSON completo (tipo `FeatureCollection`) simulando una ruta y una parada. Se validó correctamente la conversión de las propiedades de la ruta (`route_long_name`, `route_color`, etc.), el parseo de coordenadas de geometría `LineString` y la correcta instanciación de las entidades `Parada`.
+- **Test de Error (`agregarRutaDesdeGeoJson_sinRutaLanzaException`):** Se comprobó que al enviar un GeoJSON que no contiene una feature de tipo `route`, el servicio lanza correctamente una `InvalidDataException`.
+- **Corrección de Tests Previos:** Se inhabilitó el test obsoleto `agregarRuta_exitosa` que estaba provocando fallas del tipo `UnnecessaryStubbingException` en la suite de pruebas debido a firmas de métodos antiguas.
+- **Entorno de Ejecución:** Se verificó la ejecución de la suite de pruebas aislando la ejecución con Maven en Docker, interactuando de forma exitosa con la base de datos de prueba aprovisionada por `docker-compose-test.yml`.
+
+---
+
+# WORKLOG — PR #11: GeoJSON Route & Stop Parsing Endpoint
+
+**Fecha:** 2026-05-07
+**Branch:** `Json-post`
 **Autor:** Emiliano
 
 ---
@@ -31,6 +90,62 @@ Se refinó el flujo de registro unificado de Lugar + Empresa a través del endpo
 - [ ] El campo `tipo` del `Lugar` debería recibirse en el DTO, no hardcodearse.
 - [ ] `paisEmpresa` hardcodeado a `"Mexico"` — parametrizar cuando se soporte multi-país.
 - [ ] Las validaciones en el Mapper lanzan `IllegalArgumentException` en lugar de `InvalidDataException` del dominio. Migrar para consistencia con `GlobalControllerAdvice`.
+Se implementó el endpoint `POST /api/v1/ruta/agregarRutaDesdeGeoJson` que permite crear una ruta completa (con coordenadas y paradas) a partir de un payload GeoJSON tipo `FeatureCollection`. Este endpoint reemplaza la necesidad de crear rutas manualmente campo por campo, permitiendo la importación directa desde herramientas GIS.
+
+### Detalles de la Implementación
+
+- **`RutaService.agregarRutaDesdeGeoJson`:** Parseo completo del `FeatureCollection` — extrae la feature de tipo `route` para crear la entidad `Ruta` con sus propiedades (`route_long_name`, `route_color`, `route_text_color`, etc.), convierte la geometría `LineString` en entidades `Coordenadas`, e instancia entidades `Parada` a partir de features de tipo `stop`.
+- **`GeoJsonFeatureCollectionDTO`:** Nuevo DTO para deserializar el payload GeoJSON entrante.
+- **`RutaController`:** Se agregó el nuevo endpoint POST que recibe el DTO y delega al servicio.
+- **Ajuste en `Parada`:** Corrección menor en la entidad para compatibilidad con el nuevo flujo de creación.
+- **Tests de integración:** Se actualizaron los tests de `RutaControllerIntegrationTest` para cubrir el nuevo endpoint.
+
+### Archivos modificados / creados
+
+| Archivo | Cambio |
+|---|---|
+| `RutaService.java` | +94 líneas — lógica completa de parseo GeoJSON a entidades |
+| `GeoJsonFeatureCollectionDTO.java` | [NEW] DTO para el payload `FeatureCollection` |
+| `RutaController.java` | Nuevo endpoint POST para importación GeoJSON |
+| `Parada.java` | Ajuste menor de compatibilidad |
+| `RutaControllerIntegrationTest.java` | Tests actualizados para el nuevo endpoint |
+
+---
+
+# WORKLOG — PRs #5/#7/#8: Infraestructura de Testing e Integración
+
+**Fecha:** 2026-05-04 → 2026-05-06
+**Branches:** `testing`, `integration-tests`
+**Autor:** Emiliano
+
+---
+
+## ¿Qué se implementó?
+
+Se estableció la infraestructura completa de testing para el proyecto: pipeline de CI con GitHub Actions, entorno containerizado con Docker/PostgreSQL para pruebas de integración, y cobertura de tests de integración para **todos** los controllers existentes en la aplicación.
+
+### Infraestructura de CI (PR #5 — `testing`)
+
+- **GitHub Actions Workflow (`tests.yml`):** Pipeline automatizado que levanta un contenedor PostgreSQL, ejecuta las migraciones de schema y corre la suite de tests con Maven.
+- **`docker-compose-test.yml`:** Configuración de Docker Compose para el entorno de pruebas con PostgreSQL.
+- **`application-test.properties`:** Perfil de configuración de Spring dedicado para testing con credenciales del contenedor.
+- **`schema_backup.sql`:** Schema SQL consolidado para inicialización de la base de datos de prueba (reemplaza backup anterior de 701 líneas).
+- **Dependencias Maven:** Se agregaron dependencias de testing necesarias en `pom.xml`.
+
+### Tests de Integración (PRs #7/#8 — `integration-tests`)
+
+Se crearon **840+ líneas** de tests de integración cubriendo todos los controllers:
+
+| Test | Cobertura |
+|---|---|
+| `RutaControllerIntegrationTest` | CRUD completo de rutas |
+| `ParadaControllerIntegrationTest` | CRUD de paradas, asociación con rutas |
+| `UsuarioControllerIntegrationTest` | Registro, consulta y gestión de usuarios |
+| `ReporteRutaControllerIntegrationTest` | Creación y consulta de reportes de ruta |
+| `LugarControllerIntegrationTest` | CRUD de lugares |
+| `InteresadoControllerIntegrationTest` | Registro de interesados |
+| `ViajeControllerIntegrationTest` | Endpoints de viajes |
+| `RegistroLugarControllerIntegrationTest` | Registro de lugares |
 
 ---
 

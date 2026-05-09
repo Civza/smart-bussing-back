@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class ParadaControllerIntegrationTest {
@@ -36,10 +37,16 @@ public class ParadaControllerIntegrationTest {
     void shouldAddParadaAndReturn201() throws Exception {
         String jsonBody = """
                 {
-                    "nombre_parada": "Parada Central",
-                    "zona_parada": "Centro",
-                    "descripcion_parada": "Frente al parque",
-                    "tiempo_Espera": 5
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-116.5963, 31.8667]
+                    },
+                    "properties": {
+                        "feature_type": "stop",
+                        "stop_name": "Parada Central",
+                        "stop_description": "Frente al parque"
+                    }
                 }
                 """;
 
