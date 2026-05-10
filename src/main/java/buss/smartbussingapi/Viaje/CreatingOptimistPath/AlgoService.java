@@ -26,7 +26,7 @@ public class AlgoService {
 
     // Solo encuentra el camino óptimo entre dos paradas usando A*
     public List<Parada> findOptimalRoute(Parada origen, Parada destino) {
-        SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph = graphBuilder.buildGraph();
+        SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph = graphBuilder.getGraph();
 
         Map<Integer, Parada> paradaMap = paradaRepository.findAll()
                 .stream().collect(Collectors.toMap(Parada::getId_parada, p -> p));

@@ -2,6 +2,7 @@ package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO;
+import buss.smartbussingapi.Viaje.CreatingOptimistPath.GraphBuilderService;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ public class RutaService {
 
     @Autowired
     private final RutaRepository rutaRepository;
+    private final GraphBuilderService graphBuilderService;
 
-    public RutaService(RutaRepository rutaRepository) {
+    public RutaService(RutaRepository rutaRepository, GraphBuilderService graphBuilderService) {
         this.rutaRepository = rutaRepository;
+        this.graphBuilderService = graphBuilderService;
     }
 
     public Ruta getRutaById(int ruta_id) {
@@ -89,7 +92,9 @@ public class RutaService {
 
         ruta.setCoordenadas(coordenadasList);
         ruta.setActive(true);
-        return rutaRepository.save(ruta);
+        Ruta saved = rutaRepository.save(ruta);
+        graphBuilderService.rebuildGraph();
+        return saved;
     }
 
     
@@ -197,6 +202,8 @@ public class RutaService {
 
         ruta.setParadas(paradas);
 
-        return rutaRepository.save(ruta);
+        Ruta saved = rutaRepository.save(ruta);
+        graphBuilderService.rebuildGraph();
+        return saved;
     }
 }

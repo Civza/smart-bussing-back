@@ -4,7 +4,9 @@ import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Ruta.RutaRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import org.springframework.stereotype.Service;
@@ -13,34 +15,62 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static buss.smartbussingapi.commons.Methods.haversine;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GraphBuilderService {
 
     private final RutaRepository rutaRepository;
 
-    public SimpleWeightedGraph<Integer, DefaultWeightedEdge> buildGraph(){
-        SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    /** Cached graph singleton — built once at startup, rebuilt on demand. */
+    private volatile SimpleWeightedGraph<Integer, DefaultWeightedEdge> cachedGraph;
+
+    @PostConstruct
+    void initGraph() {
+        rebuildGraph();
+    }
+
+    /**
+     * Returns the cached graph. If it hasn't been built yet (shouldn't happen
+     * after @PostConstruct), it builds it on-the-fly as a safety fallback.
+     */
+    public SimpleWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {
+        if (cachedGraph == null) {
+            rebuildGraph();
+        }
+        return cachedGraph;
+    }
+
+    /**
+     * Rebuilds the graph from the current DB state and swaps the cached reference.
+     * Call this whenever routes or stops are created, updated, or deleted.
+     */
+    public synchronized void rebuildGraph() {
+        log.info("Building bus-stop graph from DB...");
+        SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph =
+                new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         List<Ruta> rutas = rutaRepository.findAll();
 
-        for(Ruta ruta : rutas){
+        for (Ruta ruta : rutas) {
             List<Coordenadas> trayecto = ruta.getCoordenadas();
-            List<Parada> paradas = orderStopsByNearest(ruta.getParadas(),trayecto);
+            List<Parada> paradas = orderStopsByNearest(ruta.getParadas(), trayecto);
 
-            for (Parada p : paradas){
+            for (Parada p : paradas) {
                 graph.addVertex(p.getId_parada());
             }
 
-            for (int i = 0; i < paradas.size() - 1; i++){
+            for (int i = 0; i < paradas.size() - 1; i++) {
                 Parada a = paradas.get(i);
                 Parada b = paradas.get(i + 1);
 
                 DefaultWeightedEdge edge = graph.addEdge(
-                        a.getId_parada(),b.getId_parada()
+                        a.getId_parada(), b.getId_parada()
                 );
 
-                if(edge != null){
+                if (edge != null) {
                     double dist = haversine(
                             a.getCoordenadas_parada().getLatitud(),
                             a.getCoordenadas_parada().getLongitud(),
@@ -52,8 +82,9 @@ public class GraphBuilderService {
             }
         }
 
-        return graph;
-
+        this.cachedGraph = graph;
+        log.info("Bus-stop graph built: {} vertices, {} edges",
+                graph.vertexSet().size(), graph.edgeSet().size());
     }
 
     // Ordena las paradas según su posición más cercana en el polyline
@@ -84,16 +115,5 @@ public class GraphBuilderService {
         return indiceMenor;
     }
 
-    // ── Haversine ────────────────────────────────────────────────────────────
-    private double haversine(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    }
-
-
 }
+
