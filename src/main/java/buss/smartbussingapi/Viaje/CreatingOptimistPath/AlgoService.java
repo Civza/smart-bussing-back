@@ -20,7 +20,7 @@ public class AlgoService {
 
     private final GraphBuilderService graphBuilder;
 
-    private static final double BOARDING_PENALTY_KM = 0.5;
+    private static final double BOARDING_PENALTY_KM = 1.0;
     private static final int MAX_CANDIDATES = 5;
     private static final double MAX_SEARCH_DIST_KM = 2.0;
 
