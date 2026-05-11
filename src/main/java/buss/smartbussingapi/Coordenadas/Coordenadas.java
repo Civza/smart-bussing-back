@@ -27,6 +27,7 @@ public class Coordenadas {
     private int id_coordenada;
     private Double longitud;
     private Double latitud;
+    private String sentido; // e.g., "IDA", "REGRESO", "AMBOS"
 
     @ManyToMany(mappedBy = "coordenadas", cascade = CascadeType.ALL)
     @JsonIgnore

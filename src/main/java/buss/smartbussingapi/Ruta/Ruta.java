@@ -32,9 +32,11 @@ public class Ruta {
     private String nombre_corto_ruta;
     private String color_ruta;
     private String color_texto_ruta;
-    private String tipo_ruta;
+    @Enumerated(EnumType.STRING)
+    private RutaType tipo_ruta;
     private String horario_ruta;
     private boolean active;
+    private boolean bidirectional = true;
 
     @OneToMany(mappedBy = "ruta", cascade = CascadeType.ALL)
     @JsonIgnore

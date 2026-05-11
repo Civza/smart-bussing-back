@@ -12,4 +12,11 @@ public interface RutaRepository extends JpaRepository<Ruta, Integer> {
 
     @Query("SELECT r FROM Ruta r WHERE r.nombre_ruta = :nombre_ruta")
     Ruta findRutaByNombre_ruta(@Param("nombre_ruta") String nombre_ruta);
+    @Query("""
+            SELECT DISTINCT r
+            FROM Ruta r
+            LEFT JOIN FETCH r.coordenadas
+            WHERE r.active = true
+            """)
+    List<Ruta> findAllActiveWithCoordenadas();
 }

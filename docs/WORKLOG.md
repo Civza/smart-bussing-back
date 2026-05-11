@@ -1,3 +1,51 @@
+# WORKLOG — Update: Multi-Route Routing & Graph Re-architecture
+
+**Fecha:** 2026-05-11
+**Autor:** Antigravity (Antigravity AI)
+
+---
+
+## ¿Qué se implementó?
+
+Se rediseñó completamente el motor de rutas para pasar de un modelo básico de "parada a parada" a un **grafo dirigido de vértices de polilínea**. Esto permite una precisión mucho mayor, soporte para transbordos entre rutas y manejo explícito de la direccionalidad de las calles.
+
+### Mejoras Principales
+
+1.  **Arquitectura de Grafo Basada en Polilíneas**:
+    *   **`GraphBuilderService`**: Ahora construye un `DefaultDirectedWeightedGraph` donde cada nodo es un punto (`Coordenadas`) de la polilínea de una ruta.
+    *   **Transbordos Intra-ruta**: Permite "saltar" entre puntos cercanos de la misma ruta (ej. cuando la ida y vuelta pasan por la misma calle) para optimizar el trayecto.
+    *   **Transbordos Inter-ruta**: Detección automática de puntos de conexión entre rutas distintas dentro de un radio de 500m.
+
+2.  **Direccionalidad y Sentido**:
+    *   **`Coordenadas`**: Se agregó el campo `sentido` (`IDA`, `REGRESO`, `AMBOS`) para controlar el flujo del grafo.
+    *   **`Ruta`**: Se agregó el flag `bidirectional` y el enum `RutaType` (`URBANA`, `SUBURBANA`, `BUS`, etc.) para una clasificación precisa.
+
+3.  **Nuevo Pipeline de Itinerarios**:
+    *   **`AlgoService`**: Ahora realiza búsquedas A* sobre coordenadas arbitrarias, encontrando los vértices de ruta más cercanos.
+    *   **`PathSegmenterService` (NUEVO)**: Descompone el camino de vértices en segmentos lógicos de `BUS` y `WALKING` (transbordos).
+    *   **`ViajesService`**: Orquestación completa del viaje: Caminata inicial → Segmentos de Bus/Transbordo → Caminata final.
+
+4.  **Infraestructura y Robustez**:
+    *   **`MapboxService`**: Soporte para direcciones de caminata entre cualquier par de coordenadas.
+    *   **`RutaService`**: Importación GeoJSON actualizada para procesar metadatos de sentido y tipo de ruta.
+    *   **Tests**: Corrección de fallos de inicialización mediante el uso de tokens dummy y el flag experimental de ByteBuddy para Java 26.
+
+### Archivos modificados / creados
+
+| Archivo | Cambio |
+|---|---|
+| `Coordenadas.java` | Agregado campo `sentido` |
+| `Ruta.java` | Refactor a `RutaType` (Enum) y agregado `bidirectional` |
+| `GraphBuilderService.java` | Refactor completo a Grafo Dirigido con transbordos |
+| `AlgoService.java` | Refactor para ruteo basado en coordenadas |
+| `PathSegmenterService.java` | [NEW] Lógica de segmentación de itinerarios |
+| `ViajesService.java` | Nueva orquestación de viajes multi-segmento |
+| `MapboxService.java` | Sobrecarga para ruteo punto-a-punto |
+| `RutaService.java` | Actualización de parseo GeoJSON |
+| `application.properties` (test) | Agregado `mapbox.token` dummy |
+
+---
+
 # WORKLOG — Issue #9: Registro de Lugar
 
 **Fecha:** 2026-05-08
