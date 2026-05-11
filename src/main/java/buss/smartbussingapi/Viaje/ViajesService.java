@@ -1,21 +1,18 @@
 package buss.smartbussingapi.Viaje;
 
 import buss.smartbussingapi.DTOs.DirectionsResponse;
-import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteGeometry;
 import buss.smartbussingapi.DTOs.ItineraryDTOs.ItineraryResponseDTO;
 import buss.smartbussingapi.DTOs.ItineraryDTOs.SegmentoResponseDTO;
-import buss.smartbussingapi.Parada.Parada;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.AlgoService;
-import buss.smartbussingapi.Viaje.CreatingOptimistPath.BuildBusGeoJson;
+import buss.smartbussingapi.Viaje.CreatingOptimistPath.GraphBuilderService;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.MapboxService;
+import buss.smartbussingapi.Viaje.CreatingOptimistPath.PathSegmenterService;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static buss.smartbussingapi.commons.Methods.haversine;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class ViajesService {
     private final ViajeRepository viajeRepository;
     private final MapboxService mapboxService;
     private final AlgoService algoService;
-    private final BuildBusGeoJson busGeoJson;
+    private final PathSegmenterService pathSegmenter;
 
     public Viaje getViajebyId(int id_viaje) {
         return viajeRepository.findById(id_viaje)
@@ -36,88 +33,54 @@ public class ViajesService {
     }
 
     public ItineraryResponseDTO getDraftRoute(double userLat, double userLon, double destLat, double destLon) {
-        // TODO - PENDING LOGIC FOR TRAVEL - COMING ON ISSUE 17
-        // 1. Check if the nearest STOP is on a ratio of the initial
-        // 2. Id not get a DirectiosnAPI walking
-        // 3. Call the method on AlgoService
-        // 4. get the single route (Already delimited)
-        // 5. make the same steps 1 and 2 for the destination
-        // 6. Prepape the response on SegmentsDTO (TYPE, ROUTE)
-        // 8. Send it to Frontend
+        // 1. Calculate the core path using polyline-vertex graph
+        List<GraphBuilderService.RouteVertex> corePath = algoService.findOptimalRoute(userLat, userLon, destLat, destLon);
+        
+        if (corePath.isEmpty()) {
+            throw new NotFoundException("No se encontró una ruta de autobús disponible para este trayecto.");
+        }
 
-        ItineraryResponseDTO newItinerary = new ItineraryResponseDTO();
-        List<SegmentoResponseDTO> segments = new ArrayList<>();
-        // TODO: reemplazar con predicción ML de tiempo real
+        // 2. Segment the path into BUS and TRANSFER segments
+        List<SegmentoResponseDTO> busSegments = pathSegmenter.segmentPath(corePath);
+
+        // 3. Assemble final itinerary with initial and final walking legs
+        List<SegmentoResponseDTO> finalSegments = new ArrayList<>();
         double totalSeconds = 0;
-        // TODO: reemplazar con suma real de distancias por segmento
-        double totalMeterts = 0;
+        double totalMeters = 0;
 
-        // Step 1 and 2
-        Parada p = mapboxService.findNearestStop(userLat, userLon);
-        if (!isInTheRadio(userLat, userLon, p.getCoordenadas_parada().getLatitud(),
-                p.getCoordenadas_parada().getLongitud(), 0.3)) {
-            DirectionsResponse response = mapboxService.getWalkingDirections(userLat, userLon, p);
-            SegmentoResponseDTO segmentoResponseDTO = SegmentoResponseDTO.builder()
-                    .tipo("WALKING")
-                    .descripcion("Caminar hasta la parada : " + p.getNombre_parada())
-                    .directions(response)
-                    .build();
-            segments.add(segmentoResponseDTO);
-            totalMeterts += response.getDistanceMeters();
-            totalSeconds += response.getTimeSeconds();
+        // Initial walk: User -> First RouteVertex
+        GraphBuilderService.RouteVertex first = corePath.get(0);
+        DirectionsResponse walkToStart = mapboxService.getWalkingDirections(userLat, userLon, first.lat(), first.lon());
+        finalSegments.add(SegmentoResponseDTO.builder()
+                .tipo("WALKING")
+                .descripcion("Caminar hasta el punto de abordaje")
+                .directions(walkToStart)
+                .build());
+        totalSeconds += walkToStart.getTimeSeconds();
+        totalMeters += walkToStart.getDistanceMeters();
+
+        // Bus & Transfer segments
+        for (SegmentoResponseDTO segment : busSegments) {
+            finalSegments.add(segment);
+            totalSeconds += segment.getDirections().getTimeSeconds();
+            totalMeters += segment.getDirections().getDistanceMeters();
         }
 
-        // Step 3
-        Parada dest = mapboxService.findNearestStop(destLat, destLon);
-        List<Parada> segment = algoService.findOptimalRoute(p, dest);
+        // Final walk: Last RouteVertex -> Destination
+        GraphBuilderService.RouteVertex last = corePath.get(corePath.size() - 1);
+        DirectionsResponse walkToDest = mapboxService.getWalkingDirections(last.lat(), last.lon(), destLat, destLon);
+        finalSegments.add(SegmentoResponseDTO.builder()
+                .tipo("WALKING")
+                .descripcion("Caminar hasta tu destino final")
+                .directions(walkToDest)
+                .build());
+        totalSeconds += walkToDest.getTimeSeconds();
+        totalMeters += walkToDest.getDistanceMeters();
 
-        // Step 4
-        GeoJsonRouteGeometry geoJsonRoute = busGeoJson.buildBusGeoJson(segment);
-        DirectionsResponse busDirections = DirectionsResponse.builder()
-                .paradaDestino(dest)
-                .geoJson(geoJsonRoute)
+        return ItineraryResponseDTO.builder()
+                .segmentos(finalSegments)
+                .duracionTotalSegundos(totalSeconds)
+                .distanciaTotalMetros(totalMeters)
                 .build();
-        SegmentoResponseDTO busSegment = SegmentoResponseDTO.builder()
-                .tipo("BUS")
-                .descripcion("En el autobus cuida tus pertenencias")
-                .directions(busDirections)
-                .build();
-        segments.add(busSegment);
-
-        // Step 5
-        if (!isInTheRadio(dest.getCoordenadas_parada().getLatitud(), dest.getCoordenadas_parada().getLongitud(),
-                destLat, destLon, 0.3)) {
-            DirectionsResponse response = mapboxService.getWalkingDirections(dest, destLat, destLon);
-            SegmentoResponseDTO walkToDestSegment = SegmentoResponseDTO.builder()
-                    .tipo("WALKING")
-                    .descripcion("Caminar hasta tu destino desde la parada : " + dest.getNombre_parada())
-                    .directions(response)
-                    .build();
-            segments.add(walkToDestSegment);
-            totalMeterts += response.getDistanceMeters();
-            totalSeconds += response.getTimeSeconds();
-        }
-
-        newItinerary.setDuracionTotalSegundos(totalSeconds);
-        newItinerary.setDistanciaTotalMetros(totalMeterts);
-        newItinerary.setSegmentos(segments);
-
-        return newItinerary;
     }
-
-    /*
-     * public Viaje createNewViaje(){
-     * 
-     * return viajeRepository.save();
-     * }
-     * 
-     * 
-     */
-
-    // Check the ratio
-    private boolean isInTheRadio(double userLat, double userLon, double stopLat, double stopLon, double radioKm) {
-        double distance = haversine(userLat, userLon, stopLat, stopLon);
-        return distance <= radioKm;
-    }
-
 }

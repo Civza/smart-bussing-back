@@ -24,13 +24,16 @@ public class RutaServiceTest {
     @Mock
     RutaRepository rutaRepository;
 
+    @Mock
+    buss.smartbussingapi.Viaje.CreatingOptimistPath.GraphBuilderService graphBuilderService;
+
     @InjectMocks
     RutaService rutaService;
 
-    private Ruta buildMockSavedRuta(int id_ruta, String nombre_ruta, String nombre_corto_ruta, String color_ruta, String color_texto_ruta, String tipo_ruta, String horario_ruta, boolean active) {
-        var ruta = new Ruta(id_ruta, nombre_ruta, nombre_corto_ruta, color_ruta, color_texto_ruta, tipo_ruta, horario_ruta, active, null, null, null);
+    private Ruta buildMockSavedRuta(int id_ruta, String nombre_ruta, String nombre_corto_ruta, String color_ruta, String color_texto_ruta, RutaType tipo_ruta, String horario_ruta, boolean active) {
+        var ruta = new Ruta(id_ruta, nombre_ruta, nombre_corto_ruta, color_ruta, color_texto_ruta, tipo_ruta, horario_ruta, active, true, null, null, null);
         return ruta;
-    };
+    }
     
     /*
     @Test
@@ -108,7 +111,7 @@ public class RutaServiceTest {
         assertEquals("RP", result.getNombre_corto_ruta());
         assertEquals("#FF0000", result.getColor_ruta());
         assertEquals("#FFFFFF", result.getColor_texto_ruta());
-        assertEquals("bus", result.getTipo_ruta());
+        assertEquals(RutaType.MICROBUS, result.getTipo_ruta());
         assertTrue(result.isActive());
         
         assertNotNull(result.getCoordenadas());

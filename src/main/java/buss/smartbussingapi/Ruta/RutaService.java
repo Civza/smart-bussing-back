@@ -78,7 +78,8 @@ public class RutaService {
         ruta.setNombre_corto_ruta(geoJsonRouteDTO.getProperties().getRoute_short_name());
         ruta.setColor_ruta(geoJsonRouteDTO.getProperties().getRoute_color());
         ruta.setColor_texto_ruta(geoJsonRouteDTO.getProperties().getRoute_text_color());
-        ruta.setTipo_ruta(geoJsonRouteDTO.getProperties().getRoute_type());
+        String tipoRutaStr = geoJsonRouteDTO.getProperties().getRoute_type();
+        ruta.setTipo_ruta(tipoRutaStr != null ? RutaType.valueOf(tipoRutaStr.toUpperCase()) : RutaType.URBANA);
 
         List<Coordenadas> coordenadasList = coords.stream().map(coord -> {
             Coordenadas curr = new Coordenadas();
@@ -145,7 +146,10 @@ public class RutaService {
         String nombreCortoRuta = routeProps.has("route_short_name") ? routeProps.get("route_short_name").asText() : "";
         String colorRuta = routeProps.has("route_color") ? routeProps.get("route_color").asText() : "#000000";
         String colorTextoRuta = routeProps.has("route_text_color") ? routeProps.get("route_text_color").asText() : "#FFFFFF";
-        String tipoRuta = routeProps.has("route_type") ? routeProps.get("route_type").asText() : "microbus";
+        String tipoRutaStr = routeProps.has("route_type") ? routeProps.get("route_type").asText() : "URBANA";
+        RutaType tipoRuta = RutaType.valueOf(tipoRutaStr.toUpperCase());
+        boolean bidirectional = !routeProps.has("bidirectional") || routeProps.get("bidirectional").asBoolean();
+        String defaultSentido = routeProps.has("sentido") ? routeProps.get("sentido").asText() : "AMBOS";
 
         Ruta ruta = new Ruta();
         ruta.setNombre_ruta(nombreRuta);
@@ -153,6 +157,7 @@ public class RutaService {
         ruta.setColor_ruta(colorRuta);
         ruta.setColor_texto_ruta(colorTextoRuta);
         ruta.setTipo_ruta(tipoRuta);
+        ruta.setBidirectional(bidirectional);
         ruta.setActive(true);
 
         JsonNode routeGeom = routeFeature.get("geometry");
@@ -167,6 +172,12 @@ public class RutaService {
                         Coordenadas coord = new Coordenadas();
                         coord.setLongitud(lon);
                         coord.setLatitud(lat);
+                        // If coordinates have a 3rd element, treat it as sentido (custom)
+                        if (coordPair.size() >= 3) {
+                            coord.setSentido(coordPair.get(2).asText());
+                        } else {
+                            coord.setSentido(defaultSentido);
+                        }
                         rutaCoordenadas.add(coord);
                     }
                 }

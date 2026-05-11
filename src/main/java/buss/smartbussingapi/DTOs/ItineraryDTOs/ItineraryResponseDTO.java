@@ -1,13 +1,14 @@
 package buss.smartbussingapi.DTOs.ItineraryDTOs;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItineraryResponseDTO {
     private List<SegmentoResponseDTO> segmentos;
     private double distanciaTotalMetros;

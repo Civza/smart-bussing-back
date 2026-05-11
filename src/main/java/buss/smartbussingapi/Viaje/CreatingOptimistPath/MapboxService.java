@@ -53,29 +53,31 @@ public class MapboxService {
     }
 
     /**
+     * Caminata entre dos coordenadas cualesquiera.
+     */
+    public DirectionsResponse getWalkingDirections(double startLat, double startLon, double endLat, double endLon) {
+        String coordinates = startLon + "," + startLat + ";" + endLon + "," + endLat;
+        String response = callMapboxWalking(coordinates);
+        return parseResponse(response, null);
+    }
+
+    /**
      * Step 1: Caminata desde las coordenadas del usuario hasta la parada de abordaje.
-     * Origen: (userLat, userLon) → Destino: parada.coordenadas
      */
     public DirectionsResponse getWalkingDirections(double userLat, double userLon, Parada parada) {
-        double stopLat = parada.getCoordenadas_parada().getLatitud();
-        double stopLon = parada.getCoordenadas_parada().getLongitud();
-
-        String coordinates = userLon + "," + userLat + ";" + stopLon + "," + stopLat;
-        String response = callMapboxWalking(coordinates);
-        return parseResponse(response, parada);
+        return getWalkingDirections(userLat, userLon,
+                parada.getCoordenadas_parada().getLatitud(),
+                parada.getCoordenadas_parada().getLongitud());
     }
 
     /**
      * Step 5: Caminata desde la parada de bajada hasta el destino real del usuario.
-     * Origen: parada.coordenadas → Destino: (destLat, destLon)
      */
     public DirectionsResponse getWalkingDirections(Parada parada, double destLat, double destLon) {
-        double stopLat = parada.getCoordenadas_parada().getLatitud();
-        double stopLon = parada.getCoordenadas_parada().getLongitud();
-
-        String coordinates = stopLon + "," + stopLat + ";" + destLon + "," + destLat;
-        String response = callMapboxWalking(coordinates);
-        return parseResponse(response, null);
+        return getWalkingDirections(
+                parada.getCoordenadas_parada().getLatitud(),
+                parada.getCoordenadas_parada().getLongitud(),
+                destLat, destLon);
     }
 
     private String callMapboxWalking(String coordinates) {
