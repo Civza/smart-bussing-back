@@ -20,9 +20,13 @@ public class AlgoService {
 
     private final GraphBuilderService graphBuilder;
 
+    private static final double BOARDING_PENALTY_KM = 0.5;
+    private static final int MAX_CANDIDATES = 5;
+    private static final double MAX_SEARCH_DIST_KM = 2.0;
+
     /**
      * Finds the optimal path between two coordinates using A* on the polyline-vertex graph.
-     * Returns a list of RouteVertex metadata representing the path.
+     * Evaluates multiple candidate entry/exit points to find the best overall trip.
      */
     public List<GraphBuilderService.RouteVertex> findOptimalRoute(
             double startLat, double startLon, double endLat, double endLon) {
@@ -30,27 +34,55 @@ public class AlgoService {
         DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> graph = graphBuilder.getGraph();
         Map<Integer, GraphBuilderService.RouteVertex> nodeMap = graphBuilder.getNodeMap();
 
-        Integer startNodeId = graphBuilder.findNearestVertex(startLat, startLon);
-        Integer endNodeId = graphBuilder.findNearestVertex(endLat, endLon);
+        List<GraphBuilderService.RouteVertex> startCandidates = 
+                graphBuilder.findNearestVertices(startLat, startLon, MAX_CANDIDATES, MAX_SEARCH_DIST_KM);
+        List<GraphBuilderService.RouteVertex> endCandidates = 
+                graphBuilder.findNearestVertices(endLat, endLon, MAX_CANDIDATES, MAX_SEARCH_DIST_KM);
 
-        if (startNodeId == null || endNodeId == null) return Collections.emptyList();
+        if (startCandidates.isEmpty() || endCandidates.isEmpty()) return Collections.emptyList();
 
-        GraphBuilderService.RouteVertex target = nodeMap.get(endNodeId);
+        List<GraphBuilderService.RouteVertex> bestPath = Collections.emptyList();
+        double minTotalCost = Double.MAX_VALUE;
 
-        AStarAdmissibleHeuristic<Integer> heuristic = (nodeId, targetId) -> {
-            GraphBuilderService.RouteVertex current = nodeMap.get(nodeId);
-            return haversine(current.lat(), current.lon(), target.lat(), target.lon());
-        };
+        for (GraphBuilderService.RouteVertex start : startCandidates) {
+            for (GraphBuilderService.RouteVertex end : endCandidates) {
+                
+                AStarAdmissibleHeuristic<Integer> heuristic = (nodeId, targetId) -> {
+                    GraphBuilderService.RouteVertex current = nodeMap.get(nodeId);
+                    return haversine(current.lat(), current.lon(), end.lat(), end.lon());
+                };
 
-        AStarShortestPath<Integer, DefaultWeightedEdge> aStar =
-                new AStarShortestPath<>(graph, heuristic);
+                AStarShortestPath<Integer, DefaultWeightedEdge> aStar =
+                        new AStarShortestPath<>(graph, heuristic);
 
-        GraphPath<Integer, DefaultWeightedEdge> path = aStar.getPath(startNodeId, endNodeId);
+                GraphPath<Integer, DefaultWeightedEdge> path = aStar.getPath(start.nodeId(), end.nodeId());
 
-        if (path == null) return Collections.emptyList();
+                if (path != null) {
+                    double walkToStart = haversine(startLat, startLon, start.lat(), start.lon());
+                    double walkFromEnd = haversine(endLat, endLon, end.lat(), end.lon());
+                    
+                    // Total cost = walk + boarding + graph_weight
+                    double totalCost = (walkToStart * GraphBuilderService.WALK_PENALTY_FACTOR) 
+                                     + path.getWeight() 
+                                     + (walkFromEnd * GraphBuilderService.WALK_PENALTY_FACTOR) 
+                                     + BOARDING_PENALTY_KM;
 
-        return path.getVertexList().stream()
-                .map(nodeMap::get)
-                .toList();
+                    if (totalCost < minTotalCost) {
+                        minTotalCost = totalCost;
+                        bestPath = path.getVertexList().stream()
+                                .map(nodeMap::get)
+                                .toList();
+                    }
+                }
+            }
+        }
+
+        // Final check: Is direct walking better than the best bus option?
+        double directWalkCost = haversine(startLat, startLon, endLat, endLon) * GraphBuilderService.WALK_PENALTY_FACTOR;
+        if (directWalkCost < minTotalCost) {
+            return Collections.emptyList(); // AlgoService returns empty to signal "just walk"
+        }
+
+        return bestPath;
     }
 }
