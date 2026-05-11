@@ -73,7 +73,7 @@ public class RutaServiceTest {
                     "route_short_name": "RP",
                     "route_color": "#FF0000",
                     "route_text_color": "#FFFFFF",
-                    "route_type": "bus"
+                    "route_type": "microbus"
                   },
                   "geometry": {
                     "type": "LineString",
