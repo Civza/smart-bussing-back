@@ -30,6 +30,12 @@ public class GraphBuilderService {
     /** Walking edges cost this many times more than bus edges of the same distance. */
     private static final double WALK_PENALTY_FACTOR = 3.0;
 
+    /** Only initiate transfer edges from every N-th vertex to reduce graph density. */
+    private static final int TRANSFER_SAMPLING_INTERVAL = 5;
+
+    /** Grid cell size in degrees (approx 500m). */
+    private static final double GRID_CELL_SIZE = 0.0045;
+
     // ── Cached data ──────────────────────────────────────────────────────────
     private volatile DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> cachedGraph;
     private volatile Map<Integer, RouteVertex> nodeMap;
@@ -126,19 +132,8 @@ public class GraphBuilderService {
         }
 
         // Add transfer edges (Inter-route and Intra-route)
-        int transferEdgeCount = 0;
-        List<Integer> activeRutaIds = new ArrayList<>(verticesByRuta.keySet());
-
-        for (int i = 0; i < activeRutaIds.size(); i++) {
-            for (int j = i; j < activeRutaIds.size(); j++) {
-                List<RouteVertex> verticesA = verticesByRuta.get(activeRutaIds.get(i));
-                List<RouteVertex> verticesB = verticesByRuta.get(activeRutaIds.get(j));
-
-                if (i != j && !boundingBoxesOverlap(verticesA, verticesB)) continue;
-
-                transferEdgeCount += addTransferEdges(graph, verticesA, verticesB, i == j);
-            }
-        }
+        log.info("Adding transfer edges using spatial index...");
+        int transferEdgeCount = addTransferEdgesOptimized(graph, newNodeMap, verticesByRuta);
 
         this.cachedGraph = graph;
         this.nodeMap = Collections.unmodifiableMap(newNodeMap);
@@ -158,19 +153,56 @@ public class GraphBuilderService {
         return (s1.equals("REGRESO") || s1.equals("AMBOS")) && (s2.equals("REGRESO") || s2.equals("AMBOS"));
     }
 
-    private int addTransferEdges(
+    private int addTransferEdgesOptimized(
             DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> graph,
-            List<RouteVertex> verticesA,
-            List<RouteVertex> verticesB,
-            boolean isIntraRoute) {
+            Map<Integer, RouteVertex> allNodes,
+            Map<Integer, List<RouteVertex>> verticesByRuta) {
 
         int count = 0;
-        for (RouteVertex va : verticesA) {
-            for (RouteVertex vb : verticesB) {
-                if (isIntraRoute && Math.abs(va.vertexIndex() - vb.vertexIndex()) <= 1) continue;
+        // 1. Build Spatial Index
+        Map<Long, List<RouteVertex>> grid = new HashMap<>(allNodes.size());
+        for (RouteVertex v : allNodes.values()) {
+            long key = getGridKey(v.lat(), v.lon());
+            grid.computeIfAbsent(key, k -> new ArrayList<>()).add(v);
+        }
 
-                double dist = haversine(va.lat(), va.lon(), vb.lat(), vb.lon());
-                if (dist <= MAX_TRANSFER_WALK_KM) {
+        // 2. Add edges using spatial lookup and pruning
+        for (List<RouteVertex> routeList : verticesByRuta.values()) {
+            for (int i = 0; i < routeList.size(); i += TRANSFER_SAMPLING_INTERVAL) {
+                RouteVertex va = routeList.get(i);
+
+                // Find nearest vertex in each other route within distance
+                Map<Integer, Double> minDists = new HashMap<>();
+                Map<Integer, RouteVertex> bestNeighbors = new HashMap<>();
+
+                long cellX = (long) (va.lat() / GRID_CELL_SIZE);
+                long cellY = (long) (va.lon() / GRID_CELL_SIZE);
+
+                for (long dx = -1; dx <= 1; dx++) {
+                    for (long dy = -1; dy <= 1; dy++) {
+                        List<RouteVertex> cellNodes = grid.get(getGridKeyFromCells(cellX + dx, cellY + dy));
+                        if (cellNodes == null) continue;
+
+                        for (RouteVertex vb : cellNodes) {
+                            // Pruning: Skip same node or immediate neighbors in same route
+                            if (va.rutaId() == vb.rutaId() && Math.abs(va.vertexIndex() - vb.vertexIndex()) <= 2) continue;
+
+                            double dist = haversine(va.lat(), va.lon(), vb.lat(), vb.lon());
+                            if (dist <= MAX_TRANSFER_WALK_KM) {
+                                if (dist < minDists.getOrDefault(vb.rutaId(), Double.MAX_VALUE)) {
+                                    minDists.put(vb.rutaId(), dist);
+                                    bestNeighbors.put(vb.rutaId(), vb);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Add edges to the best neighbor found for each route
+                for (Map.Entry<Integer, RouteVertex> entry : bestNeighbors.entrySet()) {
+                    RouteVertex vb = entry.getValue();
+                    double dist = minDists.get(entry.getKey());
+
                     // Transfer is bidirectional (walking)
                     if (!graph.containsEdge(va.nodeId(), vb.nodeId())) {
                         DefaultWeightedEdge e1 = graph.addEdge(va.nodeId(), vb.nodeId());
@@ -190,6 +222,14 @@ public class GraphBuilderService {
             }
         }
         return count;
+    }
+
+    private long getGridKey(double lat, double lon) {
+        return getGridKeyFromCells((long) (lat / GRID_CELL_SIZE), (long) (lon / GRID_CELL_SIZE));
+    }
+
+    private long getGridKeyFromCells(long x, long y) {
+        return (x << 32) | (y & 0xFFFFFFFFL);
     }
 
     public Integer findNearestVertex(double lat, double lon) {
