@@ -25,7 +25,7 @@ public class GraphBuilderService {
 
     // ── Constants ────────────────────────────────────────────────────────────
     /** Max walk distance (km) between two route vertices to create a transfer edge. */
-    private static final double MAX_TRANSFER_WALK_KM = 0.5;
+    private static final double MAX_TRANSFER_WALK_KM = 0.35;
 
     /** Walking edges cost this many times more than bus edges of the same distance. */
     public static final double WALK_PENALTY_FACTOR = 3.0;
@@ -34,7 +34,10 @@ public class GraphBuilderService {
     private static final int TRANSFER_SAMPLING_INTERVAL = 5;
     
     /** Penalty (in km) added to every inter-route transfer edge to discourage switching buses. */
-    private static final double TRANSFER_PENALTY_KM = 2.0;
+    private static final double TRANSFER_PENALTY_KM = 3.5;
+
+    /** Penalty (in km) for transfers within the same route (e.g. skipping a loop). */
+    private static final double INTRA_ROUTE_PENALTY_KM = 2.5;
 
     /** Grid cell size in degrees (approx 500m). */
     private static final double GRID_CELL_SIZE = 0.0045;
@@ -206,10 +209,12 @@ public class GraphBuilderService {
                     RouteVertex vb = entry.getValue();
                     double dist = minDists.get(entry.getKey());
 
-                    // Penalty is only applied to inter-route transfers
+                    // Apply appropriate penalty
                     double weight = (dist * WALK_PENALTY_FACTOR);
                     if (va.rutaId() != vb.rutaId()) {
                         weight += TRANSFER_PENALTY_KM;
+                    } else {
+                        weight += INTRA_ROUTE_PENALTY_KM;
                     }
 
                     // Transfer is bidirectional (walking)
