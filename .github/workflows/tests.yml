@@ -37,6 +37,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: SQL Dump
+      run: |
+        sleep 5
+        npx supabase db dump --db-url "$DB_URL" -s public -f database/schema_backup.sql
+      env:
+        DB_URL: ${{ secrets.DB_URL }}
     - name: Load database schema
       run: |
           sleep 5
