@@ -28,10 +28,13 @@ public class GraphBuilderService {
     private static final double MAX_TRANSFER_WALK_KM = 0.5;
 
     /** Walking edges cost this many times more than bus edges of the same distance. */
-    private static final double WALK_PENALTY_FACTOR = 3.0;
+    public static final double WALK_PENALTY_FACTOR = 3.0;
 
     /** Only initiate transfer edges from every N-th vertex to reduce graph density. */
     private static final int TRANSFER_SAMPLING_INTERVAL = 5;
+    
+    /** Penalty (in km) added to every inter-route transfer edge to discourage switching buses. */
+    private static final double TRANSFER_PENALTY_KM = 2.0;
 
     /** Grid cell size in degrees (approx 500m). */
     private static final double GRID_CELL_SIZE = 0.0045;
@@ -203,18 +206,24 @@ public class GraphBuilderService {
                     RouteVertex vb = entry.getValue();
                     double dist = minDists.get(entry.getKey());
 
+                    // Penalty is only applied to inter-route transfers
+                    double weight = (dist * WALK_PENALTY_FACTOR);
+                    if (va.rutaId() != vb.rutaId()) {
+                        weight += TRANSFER_PENALTY_KM;
+                    }
+
                     // Transfer is bidirectional (walking)
                     if (!graph.containsEdge(va.nodeId(), vb.nodeId())) {
                         DefaultWeightedEdge e1 = graph.addEdge(va.nodeId(), vb.nodeId());
                         if (e1 != null) {
-                            graph.setEdgeWeight(e1, dist * WALK_PENALTY_FACTOR);
+                            graph.setEdgeWeight(e1, weight);
                             count++;
                         }
                     }
                     if (!graph.containsEdge(vb.nodeId(), va.nodeId())) {
                         DefaultWeightedEdge e2 = graph.addEdge(vb.nodeId(), va.nodeId());
                         if (e2 != null) {
-                            graph.setEdgeWeight(e2, dist * WALK_PENALTY_FACTOR);
+                            graph.setEdgeWeight(e2, weight);
                             count++;
                         }
                     }
@@ -237,6 +246,14 @@ public class GraphBuilderService {
                 .min(Comparator.comparingDouble(v -> haversine(lat, lon, v.lat(), v.lon())))
                 .map(RouteVertex::nodeId)
                 .orElse(null);
+    }
+
+    public List<RouteVertex> findNearestVertices(double lat, double lon, int limit, double maxDistKm) {
+        return nodeMap.values().stream()
+                .filter(v -> haversine(lat, lon, v.lat(), v.lon()) <= maxDistKm)
+                .sorted(Comparator.comparingDouble(v -> haversine(lat, lon, v.lat(), v.lon())))
+                .limit(limit)
+                .toList();
     }
 
     private boolean boundingBoxesOverlap(List<RouteVertex> verticesA, List<RouteVertex> verticesB) {

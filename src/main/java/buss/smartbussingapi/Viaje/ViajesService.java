@@ -36,46 +36,54 @@ public class ViajesService {
         // 1. Calculate the core path using polyline-vertex graph
         List<GraphBuilderService.RouteVertex> corePath = algoService.findOptimalRoute(userLat, userLon, destLat, destLon);
         
-        if (corePath.isEmpty()) {
-            throw new NotFoundException("No se encontró una ruta de autobús disponible para este trayecto.");
-        }
-
-        // 2. Segment the path into BUS and TRANSFER segments
-        List<SegmentoResponseDTO> busSegments = pathSegmenter.segmentPath(corePath);
-
-        // 3. Assemble final itinerary with initial and final walking legs
         List<SegmentoResponseDTO> finalSegments = new ArrayList<>();
         double totalSeconds = 0;
         double totalMeters = 0;
 
-        // Initial walk: User -> First RouteVertex
-        GraphBuilderService.RouteVertex first = corePath.get(0);
-        DirectionsResponse walkToStart = mapboxService.getWalkingDirections(userLat, userLon, first.lat(), first.lon());
-        finalSegments.add(SegmentoResponseDTO.builder()
-                .tipo("WALKING")
-                .descripcion("Caminar hasta el punto de abordaje")
-                .directions(walkToStart)
-                .build());
-        totalSeconds += walkToStart.getTimeSeconds();
-        totalMeters += walkToStart.getDistanceMeters();
+        if (corePath.isEmpty()) {
+            // Case: No bus path found or walking is better. Provide direct walking instructions.
+            DirectionsResponse walkDirect = mapboxService.getWalkingDirections(userLat, userLon, destLat, destLon);
+            finalSegments.add(SegmentoResponseDTO.builder()
+                    .tipo("WALKING")
+                    .descripcion("Caminar directamente al destino")
+                    .directions(walkDirect)
+                    .build());
+            totalSeconds = walkDirect.getTimeSeconds();
+            totalMeters = walkDirect.getDistanceMeters();
+        } else {
+            // 2. Segment the path into BUS and TRANSFER segments
+            List<SegmentoResponseDTO> busSegments = pathSegmenter.segmentPath(corePath);
 
-        // Bus & Transfer segments
-        for (SegmentoResponseDTO segment : busSegments) {
-            finalSegments.add(segment);
-            totalSeconds += segment.getDirections().getTimeSeconds();
-            totalMeters += segment.getDirections().getDistanceMeters();
+            // 3. Assemble final itinerary with initial and final walking legs
+            // Initial walk: User -> First RouteVertex
+            GraphBuilderService.RouteVertex first = corePath.get(0);
+            DirectionsResponse walkToStart = mapboxService.getWalkingDirections(userLat, userLon, first.lat(), first.lon());
+            finalSegments.add(SegmentoResponseDTO.builder()
+                    .tipo("WALKING")
+                    .descripcion("Caminar hasta el punto de abordaje")
+                    .directions(walkToStart)
+                    .build());
+            totalSeconds += walkToStart.getTimeSeconds();
+            totalMeters += walkToStart.getDistanceMeters();
+
+            // Bus & Transfer segments
+            for (SegmentoResponseDTO segment : busSegments) {
+                finalSegments.add(segment);
+                totalSeconds += segment.getDirections().getTimeSeconds();
+                totalMeters += segment.getDirections().getDistanceMeters();
+            }
+
+            // Final walk: Last RouteVertex -> Destination
+            GraphBuilderService.RouteVertex last = corePath.get(corePath.size() - 1);
+            DirectionsResponse walkToDest = mapboxService.getWalkingDirections(last.lat(), last.lon(), destLat, destLon);
+            finalSegments.add(SegmentoResponseDTO.builder()
+                    .tipo("WALKING")
+                    .descripcion("Caminar hasta tu destino final")
+                    .directions(walkToDest)
+                    .build());
+            totalSeconds += walkToDest.getTimeSeconds();
+            totalMeters += walkToDest.getDistanceMeters();
         }
-
-        // Final walk: Last RouteVertex -> Destination
-        GraphBuilderService.RouteVertex last = corePath.get(corePath.size() - 1);
-        DirectionsResponse walkToDest = mapboxService.getWalkingDirections(last.lat(), last.lon(), destLat, destLon);
-        finalSegments.add(SegmentoResponseDTO.builder()
-                .tipo("WALKING")
-                .descripcion("Caminar hasta tu destino final")
-                .directions(walkToDest)
-                .build());
-        totalSeconds += walkToDest.getTimeSeconds();
-        totalMeters += walkToDest.getDistanceMeters();
 
         return ItineraryResponseDTO.builder()
                 .segmentos(finalSegments)
