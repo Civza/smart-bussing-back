@@ -22,7 +22,7 @@ public class AlgoService {
 
     private static final double BOARDING_PENALTY_KM = 1.0;
     private static final int MAX_CANDIDATES = 5;
-    private static final double MAX_SEARCH_DIST_KM = 2.0;
+    private static final double MAX_SEARCH_DIST_KM = Double.MAX_VALUE;
 
     /**
      * Finds the optimal path between two coordinates using A* on the polyline-vertex graph.
@@ -78,8 +78,10 @@ public class AlgoService {
         }
 
         // Final check: Is direct walking better than the best bus option?
-        double directWalkCost = haversine(startLat, startLon, endLat, endLon) * GraphBuilderService.WALK_PENALTY_FACTOR;
-        if (directWalkCost < minTotalCost) {
+        // Only recommend 'just walk' if the destination is reasonably close (under 2km).
+        double directWalkDist = haversine(startLat, startLon, endLat, endLon);
+        double directWalkCost = directWalkDist * GraphBuilderService.WALK_PENALTY_FACTOR;
+        if (directWalkCost < minTotalCost && directWalkDist < 2.0) {
             return Collections.emptyList(); // AlgoService returns empty to signal "just walk"
         }
 
