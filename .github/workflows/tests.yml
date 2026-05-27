@@ -54,7 +54,7 @@ jobs:
       env:
         PGPASSWORD: bussword
     - name: Run unit tests + integration tests
-      run: mvn clean test "-Dspring.config.name=application-test"
+      run: mvn clean verify "-Dspring.config.name=application-test"
       env:
         MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
 
