@@ -36,6 +36,7 @@ public class Ruta {
     private RutaType tipo_ruta;
     private String horario_ruta;
     private boolean active;
+    @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean bidirectional = true;
 
     @OneToMany(mappedBy = "ruta", cascade = CascadeType.ALL)

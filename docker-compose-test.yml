@@ -1,9 +1,24 @@
 version: '3.9'
 
 services:
+  schema-dump:
+    image: node:20-alpine
+    container_name: smartbussing_schema_dump
+    environment:
+      DB_URL: ${SPRING_DATASOURCE_URL}
+    volumes:
+      - ./database:/database
+    command: >
+      sh -c "npm install -g supabase --silent &&
+             sleep 5 &&
+             npx supabase db dump --db-url \"$$SPRING_DATASOURCE_URL\" -s public -f /database/schema_backup.sql"
+
   postgres-test:
     image: postgres:15
     container_name: smartbussing_test_container
+    depends_on:
+      schema-dump:
+        condition: service_completed_successfully
 
     environment:
       POSTGRES_DB: smartbuss_test

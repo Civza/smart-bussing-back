@@ -51,7 +51,7 @@ public class RutaControllerIntegrationTest {
                         "route_short_name": "R1",
                         "route_color": "red",
                         "route_text_color": "white",
-                        "route_type": "LineString"
+                        "route_type": "URBANA"
                       },
                       "geometry": {
                         "type": "LineString",
@@ -73,7 +73,7 @@ public class RutaControllerIntegrationTest {
                 .andExpect(jsonPath("$.response.nombre_corto_ruta").value("R1"))
                 .andExpect(jsonPath("$.response.color_ruta").value("red"))
                 .andExpect(jsonPath("$.response.color_texto_ruta").value("white"))
-                .andExpect(jsonPath("$.response.tipo_ruta").value("LineString"))
+                .andExpect(jsonPath("$.response.tipo_ruta").value("URBANA"))
                 .andExpect(jsonPath("$.response.active").value(true))
                 .andExpect(jsonPath("$.response.id_ruta").exists())
                 .andExpect(jsonPath("$.error").doesNotExist());
@@ -87,7 +87,7 @@ public class RutaControllerIntegrationTest {
                     "nombre_corto_ruta": "R1",
                     "color_ruta": "red",
                     "color_texto_ruta": "white",
-                    "tipo_ruta": "LineString",
+                    "tipo_ruta": "URBANA",
                     "horario_ruta": "10:00-18:00",
                     "active": true
                 }
@@ -109,7 +109,7 @@ public class RutaControllerIntegrationTest {
                     "nombre_corto_ruta": "R1",
                     "color_ruta": "red",
                     "color_texto_ruta": "white",
-                    "tipo_ruta": "LineString",
+                    "tipo_ruta": "URBANA",
                     "horario_ruta": "10:00-18:00",
                     "active": true
                 }
