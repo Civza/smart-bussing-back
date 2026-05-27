@@ -5,13 +5,13 @@ services:
     image: node:20-alpine
     container_name: smartbussing_schema_dump
     environment:
-      DB_URL: ${SPRING_DATASOURCE_URL}
+      PROD_DB_URL: ${PROD_DB_URL}
     volumes:
       - ./database:/database
     command: >
       sh -c "npm install -g supabase --silent &&
              sleep 5 &&
-             npx supabase db dump --db-url \"$$SPRING_DATASOURCE_URL\" -s public -f /database/schema_backup.sql"
+             npx supabase db dump --db-url \"$$PROD_DB_URL\" -s public -f /database/schema_backup.sql"
 
   postgres-test:
     image: postgres:15
