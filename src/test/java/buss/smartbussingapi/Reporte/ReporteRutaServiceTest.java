@@ -47,8 +47,7 @@ class ReporteRutaServiceTest {
     @Test
     void getReportesRuta_Success() {
         when(reporteRutaRepository.findAll()).thenReturn(List.of(reporteMock));
-        when(reporteRutaRepository.getAllLikes(any())).thenReturn(List.of(1));
-        
+
         List<ReporteRuta> result = reporteRutaService.getReportesRuta();
         assertEquals(1, result.size());
     }

@@ -2,19 +2,17 @@ version: '3.9'
 
 services:
   schema-dump:
-    image: node:20-alpine
+    image: postgres:17-alpine
     container_name: smartbussing_schema_dump
     environment:
-      PROD_DB_URL: ${PROD_DB_URL}
+      PG_DB_URL: ${PG_DB_URL}
     volumes:
       - ./database:/database
     command: >
-      sh -c "npm install -g supabase --silent &&
-             sleep 5 &&
-             npx supabase db dump --db-url \"$$PROD_DB_URL\" -s public -f /database/schema_backup.sql"
+      sh -c "PGSSLMODE=require pg_dump --schema-only --schema=public \"$$PG_DB_URL\" | grep -v 'CREATE SCHEMA public' > /database/schema_backup.sql && echo 'Schema dump complete.'"
 
   postgres-test:
-    image: postgres:15
+    image: postgres:17-alpine
     container_name: smartbussing_test_container
     depends_on:
       schema-dump:
