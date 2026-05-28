@@ -162,6 +162,44 @@ public class RutaServiceTest {
     }
 
     @Test
+    void getRutaById_Success() {
+        Ruta r = new Ruta();
+        r.setId_ruta(1);
+        r.setNombre_ruta("Test Ruta");
+        when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
+        Ruta result = rutaService.getRutaById(1);
+        assertNotNull(result);
+        assertEquals("Test Ruta", result.getNombre_ruta());
+    }
+
+    @Test
+    void getRutaById_NotFound() {
+        when(rutaRepository.findById(1)).thenReturn(java.util.Optional.empty());
+        assertThrows(buss.smartbussingapi.commons.exceptions.NotFoundException.class, () -> rutaService.getRutaById(1));
+    }
+
+    @Test
+    void getAllRutas() {
+        Ruta r = new Ruta();
+        when(rutaRepository.findAll()).thenReturn(java.util.List.of(r));
+        assertEquals(1, rutaService.getAllRutas().size());
+    }
+
+    @Test
+    void getCoordenadasRuta_Success() {
+        Ruta r = new Ruta();
+        r.setId_ruta(1);
+        buss.smartbussingapi.Coordenadas.Coordenadas c = new buss.smartbussingapi.Coordenadas.Coordenadas();
+        c.setLatitud(1.0);
+        c.setLongitud(1.0);
+        r.setCoordenadas(java.util.List.of(c));
+        when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
+        java.util.List<buss.smartbussingapi.Coordenadas.Coordenadas> coords = rutaService.getCoordenadasRuta(1);
+        assertEquals(1, coords.size());
+        assertEquals(1.0, coords.get(0).getLatitud());
+    }
+
+    @Test
     void getCoordenadasRuta_notFound() {
         when(rutaRepository.findById(1)).thenReturn(java.util.Optional.empty());
         assertThrows(buss.smartbussingapi.commons.exceptions.NotFoundException.class, () -> rutaService.getCoordenadasRuta(1));

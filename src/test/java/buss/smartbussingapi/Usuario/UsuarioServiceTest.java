@@ -80,6 +80,12 @@ class UsuarioServiceTest {
     }
 
     @Test
+    void getUsuarioIdByEmail_NotFound() {
+        when(usuarioRepository.findByEmail("test@test.com")).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> usuarioService.getUsuarioIdByEmail("test@test.com"));
+    }
+
+    @Test
     void verifyCredential_Success() {
         when(usuarioRepository.findByEmail("test@test.com")).thenReturn(Optional.of(user));
         assertTrue(usuarioService.verifyCredential("test@test.com", "secret"));
@@ -145,6 +151,12 @@ class UsuarioServiceTest {
     }
 
     @Test
+    void editProfileName_NotFound() {
+        when(usuarioRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> usuarioService.editProfileName(1, "New Name"));
+    }
+
+    @Test
     void editProfileName_EmptyName() {
         assertThrows(InvalidDataException.class, () -> usuarioService.editProfileName(1, ""));
     }
@@ -162,6 +174,12 @@ class UsuarioServiceTest {
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(user));
         usuarioService.editPassword(1, "secret");
         verify(usuarioRepository, times(1)).save(user);
+    }
+
+    @Test
+    void editPassword_NotFound() {
+        when(usuarioRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> usuarioService.editPassword(1, "newpass"));
     }
 
     @Test

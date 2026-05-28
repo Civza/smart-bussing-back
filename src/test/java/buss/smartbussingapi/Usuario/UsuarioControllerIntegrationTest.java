@@ -183,4 +183,36 @@ public class UsuarioControllerIntegrationTest {
         mockMvc.perform(get("/api/v1/user/999"))
                 .andExpect(status().is4xxClientError());
     }
+
+    @Test
+    void shouldReturn404WhenGetUsuarioByEmailNotFound() throws Exception {
+        mockMvc.perform(get("/api/v1/user/email").param("email", "nonexistent@test.com"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void shouldFailToRegisterWhenEmailExists() throws Exception {
+        String jsonUser = """
+                {
+                    "nombre": "Test User",
+                    "email": "test@test.com",
+                    "password": "password123"
+                }
+                """;
+        Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
+        usuarioRepository.save(user);
+
+        String jsonBody = """
+                {
+                    "nombre": "New User",
+                    "email": "test@test.com",
+                    "password": "password123",
+                    "profilePhotoURL": "http://photo.url"
+                }
+                """;
+        mockMvc.perform(post("/api/v1/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody))
+                .andExpect(status().is4xxClientError());
+    }
 }

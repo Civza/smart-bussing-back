@@ -131,4 +131,37 @@ public class RutaControllerIntegrationTest {
                 .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    void shouldGetCoordenadasByRuta() throws Exception {
+        String jsonRuta = """
+                {
+                    "nombre_ruta": "Ruta 1",
+                    "nombre_corto_ruta": "R1",
+                    "color_ruta": "red",
+                    "color_texto_ruta": "white",
+                    "tipo_ruta": "URBANA",
+                    "horario_ruta": "10:00-18:00",
+                    "active": true
+                }
+                """;
+        Ruta ruta = objectMapper.readValue(jsonRuta, Ruta.class);
+        buss.smartbussingapi.Coordenadas.Coordenadas coord = new buss.smartbussingapi.Coordenadas.Coordenadas();
+        coord.setLatitud(31.86);
+        coord.setLongitud(-116.59);
+        ruta.setCoordenadas(java.util.List.of(coord));
+        ruta = rutaRepository.save(ruta);
+
+        mockMvc.perform(get("/api/v1/ruta/coordenadas/" + ruta.getId_ruta()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.info").value("Coordinates retrieved"))
+                .andExpect(jsonPath("$.response[0].latitud").value(31.86))
+                .andExpect(jsonPath("$.response[0].longitud").value(-116.59));
+    }
+
+    @Test
+    void shouldReturn404Or400WhenCoordenadasNotFound() throws Exception {
+        mockMvc.perform(get("/api/v1/ruta/coordenadas/999"))
+                .andExpect(status().is4xxClientError());
+    }
+
 }
