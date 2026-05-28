@@ -110,7 +110,7 @@ public class ReporteRutaControllerIntegrationTest {
         ReporteRuta reporteRuta = objectMapper.readValue(jsonReporte, ReporteRuta.class);
         reporteRuta = reporteRutaRepository.save(reporteRuta);
 
-        mockMvc.perform(get("/api/v1/reporteRuta/" + reporteRuta.getId_reporteRuta()))
+        mockMvc.perform(get("/api/v1/reporteRuta/" + reporteRuta.getIdReporteRuta()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Route report retrieved"))
                 .andExpect(jsonPath("$.response.descripcion").value("Reporte de prueba"));

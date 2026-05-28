@@ -41,7 +41,7 @@ class ReporteRutaServiceTest {
     @BeforeEach
     void setUp() {
         reporteMock = new ReporteRuta();
-        reporteMock.setId_reporteRuta(1);
+        reporteMock.setIdReporteRuta(1);
     }
 
     @Test
@@ -72,7 +72,7 @@ class ReporteRutaServiceTest {
         when(reporteRutaRepository.findById(1)).thenReturn(Optional.of(reporteMock));
         
         ReporteRuta result = reporteRutaService.getReporteRutaById(1);
-        assertEquals(1, result.getId_reporteRuta());
+        assertEquals(1, result.getIdReporteRuta());
     }
 
     @Test

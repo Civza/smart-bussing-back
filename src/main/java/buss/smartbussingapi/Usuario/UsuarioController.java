@@ -5,7 +5,15 @@ import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,8 +36,8 @@ public class UsuarioController {
 
     @GetMapping(path = "/{id_user}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Usuario> getUsuarioById(@PathVariable int id_user) {
-        return new ApiResponse<>("User retrieved", usuarioService.getUsuarioById(id_user), null);
+    public ApiResponse<Usuario> getUsuarioById(@PathVariable("id_user") int idUser) {
+        return new ApiResponse<>("User retrieved", usuarioService.getUsuarioById(idUser), null);
     }
 
     @GetMapping("/email")
@@ -58,15 +66,15 @@ public class UsuarioController {
 
     @PatchMapping(path = "/mn/{id_user}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Void> modifyUserName(@PathVariable("id_user") int id_user, @RequestParam String name) {
-        usuarioService.editProfileName(id_user, name);
+    public ApiResponse<Void> modifyUserName(@PathVariable("id_user") int idUser, @RequestParam String name) {
+        usuarioService.editProfileName(idUser, name);
         return new ApiResponse<>("Username updated", null, null);
     }
 
     @PatchMapping(path = "/mp/{id_user}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Void> modifyPassword(@PathVariable("id_user") int id_user, @RequestParam String password) {
-        usuarioService.editPassword(id_user, password);
+    public ApiResponse<Void> modifyPassword(@PathVariable("id_user") int idUser, @RequestParam String password) {
+        usuarioService.editPassword(idUser, password);
         return new ApiResponse<>("Password updated", null, null);
     }
 }

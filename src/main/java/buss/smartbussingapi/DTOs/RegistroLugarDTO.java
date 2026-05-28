@@ -1,9 +1,9 @@
 package buss.smartbussingapi.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -13,7 +13,8 @@ public class RegistroLugarDTO {
     //Para los datos de la empresa
     private String nombreEmpresa;
     //private String paisEmpresa;
-    private String correo_empresa;
+    @JsonProperty("correo_empresa")
+    private String correoEmpresa;
 
     //Para registrar el lugar
     private String nombreLugar;

@@ -123,11 +123,11 @@ public class RutaServiceTest {
         
         assertNotNull(result.getParadas());
         assertEquals(1, result.getParadas().size());
-        assertEquals("Parada 1", result.getParadas().get(0).getNombre_parada());
-        assertEquals("Primera parada", result.getParadas().get(0).getDescripcion_parada());
-        assertNotNull(result.getParadas().get(0).getCoordenadas_parada());
-        assertEquals(-116.595, result.getParadas().get(0).getCoordenadas_parada().getLongitud());
-        assertEquals(31.865, result.getParadas().get(0).getCoordenadas_parada().getLatitud());
+        assertEquals("Parada 1", result.getParadas().get(0).getNombreParada());
+        assertEquals("Primera parada", result.getParadas().get(0).getDescripcionParada());
+        assertNotNull(result.getParadas().get(0).getCoordenadasParada());
+        assertEquals(-116.595, result.getParadas().get(0).getCoordenadasParada().getLongitud());
+        assertEquals(31.865, result.getParadas().get(0).getCoordenadasParada().getLatitud());
         
         verify(rutaRepository, times(1)).save(any(Ruta.class));
     }

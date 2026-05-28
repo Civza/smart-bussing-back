@@ -19,7 +19,11 @@ public class ReporteRutaService {
     private final RutaRepository rutaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public ReporteRutaService(ReporteRutaRepository reporteRutaRepository, RutaRepository rutaRepository, UsuarioRepository usuarioRepository) {
+    public ReporteRutaService(
+            ReporteRutaRepository reporteRutaRepository,
+            RutaRepository rutaRepository,
+            UsuarioRepository usuarioRepository
+    ) {
         this.reporteRutaRepository = reporteRutaRepository;
         this.rutaRepository = rutaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -38,14 +42,14 @@ public class ReporteRutaService {
         return reportes;
     }
 
-    public ReporteRuta getReporteRutaById(int id_reporteRuta) {
-        return reporteRutaRepository.findById(id_reporteRuta)
-                .orElseThrow(() -> new NotFoundException("Report with ID " + id_reporteRuta + " not found"));
+    public ReporteRuta getReporteRutaById(int idReporteRuta) {
+        return reporteRutaRepository.findById(idReporteRuta)
+                .orElseThrow(() -> new NotFoundException("Report with ID " + idReporteRuta + " not found"));
     }
 
-    public ReporteRuta createNewReporteRuta(ReporteRutaDTO reporteRutaDTO, Integer id_ruta, String email) {
-        Ruta ruta = rutaRepository.findById(id_ruta)
-                .orElseThrow(() -> new NotFoundException("Route with ID " + id_ruta + " not found"));
+    public ReporteRuta createNewReporteRuta(ReporteRutaDTO reporteRutaDTO, Integer idRuta, String email) {
+        Ruta ruta = rutaRepository.findById(idRuta)
+                .orElseThrow(() -> new NotFoundException("Route with ID " + idRuta + " not found"));
 
         Usuario user = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));

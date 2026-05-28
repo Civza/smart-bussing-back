@@ -23,9 +23,9 @@ public class ViajesService {
     private final AlgoService algoService;
     private final PathSegmenterService pathSegmenter;
 
-    public Viaje getViajebyId(int id_viaje) {
-        return viajeRepository.findById(id_viaje)
-                .orElseThrow(() -> new NotFoundException("Viaje with ID " + id_viaje + " not found"));
+    public Viaje getViajebyId(int idViaje) {
+        return viajeRepository.findById(idViaje)
+                .orElseThrow(() -> new NotFoundException("Viaje with ID " + idViaje + " not found"));
     }
 
     public List<Viaje> getAllViajes() {
@@ -34,7 +34,8 @@ public class ViajesService {
 
     public ItineraryResponseDTO getDraftRoute(double userLat, double userLon, double destLat, double destLon) {
         // 1. Calculate the core path using polyline-vertex graph
-        List<GraphBuilderService.RouteVertex> corePath = algoService.findOptimalRoute(userLat, userLon, destLat, destLon);
+        List<GraphBuilderService.RouteVertex> corePath =
+                algoService.findOptimalRoute(userLat, userLon, destLat, destLon);
         
         List<SegmentoResponseDTO> finalSegments = new ArrayList<>();
         double totalSeconds = 0;
@@ -57,7 +58,8 @@ public class ViajesService {
             // 3. Assemble final itinerary with initial and final walking legs
             // Initial walk: User -> First RouteVertex
             GraphBuilderService.RouteVertex first = corePath.get(0);
-            DirectionsResponse walkToStart = mapboxService.getWalkingDirections(userLat, userLon, first.lat(), first.lon());
+            DirectionsResponse walkToStart =
+                    mapboxService.getWalkingDirections(userLat, userLon, first.lat(), first.lon());
             finalSegments.add(SegmentoResponseDTO.builder()
                     .tipo("WALKING")
                     .descripcion("Caminar hasta el punto de abordaje")
@@ -75,7 +77,8 @@ public class ViajesService {
 
             // Final walk: Last RouteVertex -> Destination
             GraphBuilderService.RouteVertex last = corePath.get(corePath.size() - 1);
-            DirectionsResponse walkToDest = mapboxService.getWalkingDirections(last.lat(), last.lon(), destLat, destLon);
+            DirectionsResponse walkToDest =
+                    mapboxService.getWalkingDirections(last.lat(), last.lon(), destLat, destLon);
             finalSegments.add(SegmentoResponseDTO.builder()
                     .tipo("WALKING")
                     .descripcion("Caminar hasta tu destino final")

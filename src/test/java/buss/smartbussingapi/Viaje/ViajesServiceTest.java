@@ -40,11 +40,11 @@ class ViajesServiceTest {
     @Test
     void testGetViajebyId_Success() {
         Viaje v = new Viaje();
-        v.setId_viaje(1);
+        v.setIdViaje(1);
         when(viajeRepository.findById(1)).thenReturn(Optional.of(v));
 
         Viaje result = viajesService.getViajebyId(1);
-        assertEquals(1, result.getId_viaje());
+        assertEquals(1, result.getIdViaje());
     }
 
     @Test

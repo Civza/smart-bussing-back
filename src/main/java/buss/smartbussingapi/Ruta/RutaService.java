@@ -5,7 +5,6 @@ import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.GraphBuilderService;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class RutaService {
     }
 
     public Ruta createNewRouteFromGeoJSON(GeoJsonRouteDTO geoJsonRouteDTO) {
-        if(!"route".equals(geoJsonRouteDTO.getProperties().getFeature_type())){
+        if (!"route".equals(geoJsonRouteDTO.getProperties().getFeatureType())) {
             throw new InvalidDataException("The type of the feature needs to be 'route'");
         }
 
@@ -60,7 +59,7 @@ public class RutaService {
         }
 
         //Validation para no pasar el area de Ensenada
-        for(List<Double> coor : coords){
+        for (List<Double> coor : coords) {
             double longitud = coor.get(0);
             double latitud = coor.get(1);
 
@@ -73,12 +72,12 @@ public class RutaService {
         }
 
         Ruta ruta = new Ruta();
-        ruta.setNombre_ruta(geoJsonRouteDTO.getProperties().getRoute_long_name());
-        ruta.setNombre_corto_ruta(geoJsonRouteDTO.getProperties().getRoute_short_name());
-        ruta.setColor_ruta(geoJsonRouteDTO.getProperties().getRoute_color());
-        ruta.setColor_texto_ruta(geoJsonRouteDTO.getProperties().getRoute_text_color());
-        String tipoRutaStr = geoJsonRouteDTO.getProperties().getRoute_type();
-        ruta.setTipo_ruta(tipoRutaStr != null ? RutaType.valueOf(tipoRutaStr.toUpperCase()) : RutaType.URBANA);
+        ruta.setNombreRuta(geoJsonRouteDTO.getProperties().getRouteLongName());
+        ruta.setNombreCortoRuta(geoJsonRouteDTO.getProperties().getRouteShortName());
+        ruta.setColorRuta(geoJsonRouteDTO.getProperties().getRouteColor());
+        ruta.setColorTextoRuta(geoJsonRouteDTO.getProperties().getRouteTextColor());
+        String tipoRutaStr = geoJsonRouteDTO.getProperties().getRouteType();
+        ruta.setTipoRuta(tipoRutaStr != null ? RutaType.valueOf(tipoRutaStr.toUpperCase()) : RutaType.URBANA);
 
         List<Coordenadas> coordenadasList = coords.stream().map(coord -> {
             Coordenadas curr = new Coordenadas();
@@ -151,11 +150,11 @@ public class RutaService {
         String defaultSentido = routeProps.has("sentido") ? routeProps.get("sentido").asText() : "AMBOS";
 
         Ruta ruta = new Ruta();
-        ruta.setNombre_ruta(nombreRuta);
-        ruta.setNombre_corto_ruta(nombreCortoRuta);
-        ruta.setColor_ruta(colorRuta);
-        ruta.setColor_texto_ruta(colorTextoRuta);
-        ruta.setTipo_ruta(tipoRuta);
+        ruta.setNombreRuta(nombreRuta);
+        ruta.setNombreCortoRuta(nombreCortoRuta);
+        ruta.setColorRuta(colorRuta);
+        ruta.setColorTextoRuta(colorTextoRuta);
+        ruta.setTipoRuta(tipoRuta);
         ruta.setBidirectional(bidirectional);
         ruta.setActive(true);
 
@@ -191,8 +190,8 @@ public class RutaService {
             String descripcionParada = stopProps.has("stop_description") ? stopProps.get("stop_description").asText() : "";
 
             Parada parada = new Parada();
-            parada.setNombre_parada(nombreParada);
-            parada.setDescripcion_parada(descripcionParada);
+            parada.setNombreParada(nombreParada);
+            parada.setDescripcionParada(descripcionParada);
 
 
             JsonNode stopGeom = stopFeature.get("geometry");
@@ -204,7 +203,7 @@ public class RutaService {
                     Coordenadas coord = new Coordenadas();
                     coord.setLongitud(lon);
                     coord.setLatitud(lat);
-                    parada.setCoordenadas_parada(coord);
+                    parada.setCoordenadasParada(coord);
                 }
             }
             paradas.add(parada);

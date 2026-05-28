@@ -33,7 +33,7 @@ class UsuarioServiceTest {
     @BeforeEach
     void setUp() {
         user = new Usuario();
-        user.setId_usuario(1);
+        user.setIdUsuario(1);
         user.setNombre("John Doe");
         user.setEmail("test@test.com");
         user.setPassword("secret");

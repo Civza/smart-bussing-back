@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ParadaRepository extends JpaRepository<Parada, Integer> {
 
-    @Query("SELECT r FROM Ruta r JOIN r.paradas p WHERE p.id_parada = :idParada")
+    @Query("SELECT r FROM Ruta r JOIN r.paradas p WHERE p.idParada = :idParada")
     List<Ruta> findRutasByParadaId(@Param("idParada") int idParada);
 }

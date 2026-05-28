@@ -24,9 +24,9 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario getUsuarioById(int id_usuario) {
-        return usuarioRepository.findById(id_usuario)
-                .orElseThrow(() -> new NotFoundException("User with ID " + id_usuario + " not found"));
+    public Usuario getUsuarioById(int idUsuario) {
+        return usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + idUsuario + " not found"));
     }
 
     public UsuarioDTO getUsuarioByEmail(String email) {
@@ -43,7 +43,7 @@ public class UsuarioService {
     public int getUsuarioIdByEmail(String email) {
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"))
-                .getId_usuario();
+                .getIdUsuario();
     }
 
     public boolean verifyCredential(String correo, String password) {
@@ -71,24 +71,24 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public void editProfileName(int id_usuario, String nombre) {
+    public void editProfileName(int idUsuario, String nombre) {
         if (nombre == null || nombre.isBlank()) {
             throw new InvalidDataException("Name cannot be empty");
         }
-        Usuario usuarioEditado = usuarioRepository.findById(id_usuario)
-                .orElseThrow(() -> new NotFoundException("User with ID " + id_usuario + " not found"));
+        Usuario usuarioEditado = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + idUsuario + " not found"));
         if (!usuarioEditado.getNombre().equals(nombre)) {
             usuarioEditado.setNombre(nombre);
         }
         usuarioRepository.save(usuarioEditado);
     }
 
-    public void editPassword(int id_usuario, String newPassword) {
+    public void editPassword(int idUsuario, String newPassword) {
         if (newPassword == null || newPassword.isBlank()) {
             throw new InvalidDataException("Password cannot be empty");
         }
-        Usuario usuarioEditado = usuarioRepository.findById(id_usuario)
-                .orElseThrow(() -> new NotFoundException("User with ID " + id_usuario + " not found"));
+        Usuario usuarioEditado = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + idUsuario + " not found"));
         if (!usuarioEditado.getPassword().equals(newPassword)) {
             usuarioEditado.setPassword(newPassword);
         }

@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface RutaRepository extends JpaRepository<Ruta, Integer> {
 
-    @Query("SELECT r FROM Ruta r WHERE r.nombre_ruta = :nombre_ruta")
-    Ruta findRutaByNombre_ruta(@Param("nombre_ruta") String nombre_ruta);
+    @Query("SELECT r FROM Ruta r WHERE r.nombreRuta = :nombreRuta")
+    Ruta findRutaByNombreRuta(@Param("nombreRuta") String nombreRuta);
     @Query("""
             SELECT DISTINCT r
             FROM Ruta r

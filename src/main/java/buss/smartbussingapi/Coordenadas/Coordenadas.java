@@ -2,7 +2,16 @@ package buss.smartbussingapi.Coordenadas;
 
 import buss.smartbussingapi.Ruta.Ruta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +33,9 @@ public class Coordenadas {
     @Id
     @SequenceGenerator(name = "coordenada_sequence", sequenceName = "coordenada_sequence" , allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "coordenada_sequence")
-    private int id_coordenada;
+    @Column(name = "id_coordenada")
+    @JsonProperty("id_coordenada")
+    private int idCoordenada;
     private Double longitud;
     private Double latitud;
     private String sentido; // e.g., "IDA", "REGRESO", "AMBOS"

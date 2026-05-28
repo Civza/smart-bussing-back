@@ -23,7 +23,9 @@ public class PathSegmenterService {
     private final RutaRepository rutaRepository;
 
     public List<SegmentoResponseDTO> segmentPath(List<GraphBuilderService.RouteVertex> path) {
-        if (path == null || path.isEmpty()) return Collections.emptyList();
+        if (path == null || path.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         List<SegmentoResponseDTO> segments = new ArrayList<>();
         List<GraphBuilderService.RouteVertex> currentGroup = new ArrayList<>();
@@ -63,7 +65,9 @@ public class PathSegmenterService {
     }
 
     private SegmentoResponseDTO createBusSegment(List<GraphBuilderService.RouteVertex> vertices) {
-        if (vertices.isEmpty()) return null;
+        if (vertices.isEmpty()) {
+            return null;
+        }
         int rutaId = vertices.get(0).rutaId();
         Ruta ruta = rutaRepository.findById(rutaId).orElseThrow(() -> new NotFoundException("Ruta " + rutaId));
 
@@ -78,12 +82,13 @@ public class PathSegmenterService {
 
         return SegmentoResponseDTO.builder()
                 .tipo("BUS")
-                .descripcion("Subir al autobús: " + ruta.getNombre_ruta())
+                .descripcion("Subir al autobús: " + ruta.getNombreRuta())
                 .directions(directions)
                 .build();
     }
 
-    private SegmentoResponseDTO createWalkSegment(GraphBuilderService.RouteVertex from, GraphBuilderService.RouteVertex to) {
+    private SegmentoResponseDTO createWalkSegment(
+            GraphBuilderService.RouteVertex from, GraphBuilderService.RouteVertex to) {
         double distKm = haversine(from.lat(), from.lon(), to.lat(), to.lon());
         List<List<Double>> coords = List.of(List.of(from.lon(), from.lat()), List.of(to.lon(), to.lat()));
 
@@ -103,7 +108,12 @@ public class PathSegmenterService {
     private double calculateDistance(List<GraphBuilderService.RouteVertex> vertices) {
         double total = 0;
         for (int i = 0; i < vertices.size() - 1; i++) {
-            total += haversine(vertices.get(i).lat(), vertices.get(i).lon(), vertices.get(i+1).lat(), vertices.get(i+1).lon());
+            total += haversine(
+                    vertices.get(i).lat(),
+                    vertices.get(i).lon(),
+                    vertices.get(i + 1).lat(),
+                    vertices.get(i + 1).lon()
+            );
         }
         return total;
     }

@@ -7,7 +7,6 @@ import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.GraphBuilderService;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,24 +19,27 @@ public class ParadaService {
     private final RutaRepository rutaRepository;
     private final GraphBuilderService graphBuilderService;
 
-    @SuppressWarnings("EI_EXPOSE_REP2") // This is a Java bean that needs to be injected with the reference to the object
-    public ParadaService(ParadaRepository paradaRepository, RutaRepository rutaRepository, GraphBuilderService graphBuilderService) {
+    // This is a Java bean that needs to be injected with the reference to the object
+    @SuppressWarnings("EI_EXPOSE_REP2")
+    public ParadaService(ParadaRepository paradaRepository,
+                         RutaRepository rutaRepository,
+                         GraphBuilderService graphBuilderService) {
         this.paradaRepository = paradaRepository;
         this.rutaRepository = rutaRepository;
         this.graphBuilderService = graphBuilderService;
     }
 
-    public List<Parada> getParadasList(){
+    public List<Parada> getParadasList() {
         return paradaRepository.findAll();
     }
 
-    public Parada getParadaById(int parada_id) {
-        return paradaRepository.findById(parada_id)
-                .orElseThrow(() -> new NotFoundException("Parada with ID " + parada_id + " not found"));
+    public Parada getParadaById(int paradaId) {
+        return paradaRepository.findById(paradaId)
+                .orElseThrow(() -> new NotFoundException("Parada with ID " + paradaId + " not found"));
     }
 
-    public Parada addParada(GeoJsonStopDTO geoJsonStopDTO){
-        if(!"stop".equals(geoJsonStopDTO.getProperties().getFeature_type())){
+    public Parada addParada(GeoJsonStopDTO geoJsonStopDTO) {
+        if (!"stop".equals(geoJsonStopDTO.getProperties().getFeatureType())) {
             throw new InvalidDataException("The type of the feature needs to be 'route'");
         }
 
@@ -64,22 +66,22 @@ public class ParadaService {
         }
 
         Parada parada = new Parada();
-        parada.setNombre_parada(geoJsonStopDTO.getProperties().getStop_name());
-        parada.setDescripcion_parada(geoJsonStopDTO.getProperties().getStop_description());
+        parada.setNombreParada(geoJsonStopDTO.getProperties().getStopName());
+        parada.setDescripcionParada(geoJsonStopDTO.getProperties().getStopDescription());
 
         Coordenadas newCoor = new Coordenadas();
         newCoor.setLatitud(latitud);
         newCoor.setLongitud(longitud);
 
-        parada.setCoordenadas_parada(newCoor);
+        parada.setCoordenadasParada(newCoor);
 
-        if(geoJsonStopDTO.getProperties().getRoutes_names() != null){
-            for(String routeName : geoJsonStopDTO.getProperties().getRoutes_names()){
-                Ruta curr_route = rutaRepository.findRutaByNombre_ruta(routeName);
-                if(curr_route == null){
+        if (geoJsonStopDTO.getProperties().getRoutesNames() != null) {
+            for (String routeName : geoJsonStopDTO.getProperties().getRoutesNames()) {
+                Ruta currRoute = rutaRepository.findRutaByNombreRuta(routeName);
+                if (currRoute == null) {
                     throw new NotFoundException("The route with name : " + routeName + "doesnt exist");
                 }
-                curr_route.getParadas().add(parada);
+                currRoute.getParadas().add(parada);
             }
         }
 
