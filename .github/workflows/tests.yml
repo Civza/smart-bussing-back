@@ -50,7 +50,7 @@ jobs:
     - name: SQL Dump
       run: |
         sleep 5
-        PGSSLMODE=require /usr/lib/postgresql/17/bin/pg_dump --schema-only --no-privileges --schema=public "$DB_URL" | grep -v 'CREATE SCHEMA public' > database/schema_backup.sql
+        PGSSLMODE=require /usr/lib/postgresql/17/bin/pg_dump --schema-only --no-privileges --no-owner --schema=public "$DB_URL" | grep -v 'CREATE SCHEMA public' > database/schema_backup.sql
       env:
         DB_URL: ${{ secrets.DB_URL }}
     - name: Load database schema
