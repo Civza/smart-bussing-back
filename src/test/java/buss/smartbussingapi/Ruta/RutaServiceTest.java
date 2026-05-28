@@ -160,4 +160,197 @@ public class RutaServiceTest {
             rutaService.agregarRutaDesdeGeoJson(payload);
         });
     }
+
+    @Test
+    void getCoordenadasRuta_notFound() {
+        when(rutaRepository.findById(1)).thenReturn(java.util.Optional.empty());
+        assertThrows(buss.smartbussingapi.commons.exceptions.NotFoundException.class, () -> rutaService.getCoordenadasRuta(1));
+    }
+
+    @Test
+    void getCoordenadasRuta_emptyCoords() {
+        Ruta r = new Ruta();
+        r.setId_ruta(1);
+        r.setCoordenadas(new java.util.ArrayList<>());
+        when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
+        assertThrows(buss.smartbussingapi.commons.exceptions.NotFoundException.class, () -> rutaService.getCoordenadasRuta(1));
+    }
+
+    @Test
+    void createNewRouteFromGeoJSON_invalidLatitude() throws Exception {
+        String json = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [-116.59, 95.0]
+                ]
+              }
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload = mapper.readValue(json, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payload));
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_nullPayload() {
+        assertThrows(InvalidDataException.class, () -> rutaService.agregarRutaDesdeGeoJson(null));
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_customSentidoAndBidirectionalFalse() throws Exception {
+        String json = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route",
+                    "bidirectional": false
+                  },
+                  "geometry": {
+                    "type": "LineString",
+                    "coordinates": [
+                      [-116.59, 31.86, "IDA"]
+                    ]
+                  }
+                }
+              ]
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        GeoJsonFeatureCollectionDTO payload = mapper.readValue(json, GeoJsonFeatureCollectionDTO.class);
+        
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        
+        Ruta result = rutaService.agregarRutaDesdeGeoJson(payload);
+        assertNotNull(result);
+        assertEquals("IDA", result.getCoordenadas().get(0).getSentido());
+    }
+
+    @Test
+    void createNewRouteFromGeoJSON_MissingRouteType_And_LatLonCoverage() throws Exception {
+        String json = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [-181.0, 0.0]
+                ]
+              }
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload1 = mapper.readValue(json, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payload1));
+
+        String json2 = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [181.0, 0.0]
+                ]
+              }
+            }
+            """;
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload2 = mapper.readValue(json2, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payload2));
+
+        String json3 = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [0.0, -91.0]
+                ]
+              }
+            }
+            """;
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload3 = mapper.readValue(json3, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payload3));
+
+        String json4 = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [0.0, 0.0]
+                ]
+              }
+            }
+            """;
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload4 = mapper.readValue(json4, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        Ruta res = rutaService.createNewRouteFromGeoJSON(payload4);
+        assertEquals(RutaType.URBANA, res.getTipo_ruta());
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_MissingPropertiesBranches() throws Exception {
+        String json = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route"
+                  },
+                  "geometry": {
+                    "type": "LineString",
+                    "coordinates": [
+                      [-116.59, 31.86]
+                    ]
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "stop"
+                  }
+                },
+                {
+                  "type": "Feature"
+                }
+              ]
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        GeoJsonFeatureCollectionDTO payload = mapper.readValue(json, GeoJsonFeatureCollectionDTO.class);
+        
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        Ruta res = rutaService.agregarRutaDesdeGeoJson(payload);
+        
+        assertEquals("", res.getNombre_ruta());
+        assertEquals("", res.getNombre_corto_ruta());
+        assertEquals("#000000", res.getColor_ruta());
+        assertEquals("#FFFFFF", res.getColor_texto_ruta());
+        assertEquals(RutaType.URBANA, res.getTipo_ruta());
+        assertTrue(res.isBidirectional());
+        assertEquals("AMBOS", res.getCoordenadas().get(0).getSentido());
+    }
 }

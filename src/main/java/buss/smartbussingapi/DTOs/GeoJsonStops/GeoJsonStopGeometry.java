@@ -10,5 +10,12 @@ import java.util.List;
 public class GeoJsonStopGeometry {
         private String type;
         private List<Double> coordinates; // [[lon, lat], [lon, lat]]
+
+        public GeoJsonStopGeometry() {}
+
+        public GeoJsonStopGeometry(String type, List<Double> coordinates) {
+            this.type = type;
+            this.coordinates = coordinates;
+        }
 }
 

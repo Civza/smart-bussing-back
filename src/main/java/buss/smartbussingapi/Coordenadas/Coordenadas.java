@@ -34,5 +34,9 @@ public class Coordenadas {
     private List<Ruta> rutaList = new ArrayList<>();
 
 
-
+    public Coordenadas(double v, double v1, String ida) {
+        this.latitud = v;
+        this.longitud = v1;
+        this.sentido = ida;
+    }
 }
