@@ -77,7 +77,7 @@ public class ViajeControllerIntegrationTest {
         Viaje viaje = objectMapper.readValue(jsonViaje, Viaje.class);
         viaje = viajeRepository.save(viaje);
 
-        mockMvc.perform(get("/api/v1/viaje/" + viaje.getId_viaje()))
+        mockMvc.perform(get("/api/v1/viaje/" + viaje.getIdViaje()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Viaje retrieved"))
                 .andExpect(jsonPath("$.response.costo_viaje").value(150.50));

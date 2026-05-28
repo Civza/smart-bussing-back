@@ -45,8 +45,8 @@ public class MapboxService {
         return allStops.stream()
                 .min(Comparator.comparingDouble((Parada p) ->
                     haversine(lat, lon,
-                            p.getCoordenadas_parada().getLatitud(),
-                            p.getCoordenadas_parada().getLongitud()
+                            p.getCoordenadasParada().getLatitud(),
+                            p.getCoordenadasParada().getLongitud()
                     )
                 ))
                 .orElseThrow(() -> new NotFoundException("No se encontró ninguna parada cercana"));
@@ -66,8 +66,8 @@ public class MapboxService {
      */
     public DirectionsResponse getWalkingDirections(double userLat, double userLon, Parada parada) {
         return getWalkingDirections(userLat, userLon,
-                parada.getCoordenadas_parada().getLatitud(),
-                parada.getCoordenadas_parada().getLongitud());
+                parada.getCoordenadasParada().getLatitud(),
+                parada.getCoordenadasParada().getLongitud());
     }
 
     /**
@@ -75,8 +75,8 @@ public class MapboxService {
      */
     public DirectionsResponse getWalkingDirections(Parada parada, double destLat, double destLon) {
         return getWalkingDirections(
-                parada.getCoordenadas_parada().getLatitud(),
-                parada.getCoordenadas_parada().getLongitud(),
+                parada.getCoordenadasParada().getLatitud(),
+                parada.getCoordenadasParada().getLongitud(),
                 destLat, destLon);
     }
 

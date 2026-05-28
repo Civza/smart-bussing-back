@@ -30,12 +30,12 @@ public class BuildBusGeoJson {
 
         // Índice en el trayecto más cercano a la parada de abordaje
         int idxOrigen = indiceMasCercano(
-                paradasRuta.get(0).getCoordenadas_parada(), trayectoCompleto
+                paradasRuta.get(0).getCoordenadasParada(), trayectoCompleto
         );
 
         // Índice en el trayecto más cercano a la parada de descenso
         int idxDestino = indiceMasCercano(
-                paradasRuta.get(paradasRuta.size() - 1).getCoordenadas_parada(), trayectoCompleto
+                paradasRuta.get(paradasRuta.size() - 1).getCoordenadasParada(), trayectoCompleto
         );
 
         // Asegura que origen < destino
@@ -56,15 +56,15 @@ public class BuildBusGeoJson {
      */
     private Ruta findCommonRoute(Parada origen, Parada destino) {
         List<Integer> idsRutasOrigen = origen.getRutas().stream()
-                .map(Ruta::getId_ruta)
+                .map(Ruta::getIdRuta)
                 .toList();
 
         return destino.getRutas().stream()
-                .filter(r -> idsRutasOrigen.contains(r.getId_ruta()))
+                .filter(r -> idsRutasOrigen.contains(r.getIdRuta()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(
-                        "No se encontró una ruta común entre la parada '" + origen.getNombre_parada()
-                        + "' y '" + destino.getNombre_parada() + "'"
+                        "No se encontró una ruta común entre la parada '" + origen.getNombreParada()
+                        + "' y '" + destino.getNombreParada() + "'"
                 ));
     }
 

@@ -48,10 +48,10 @@ class ParadaServiceTest {
     @Test
     void getParadaById_Success() {
         Parada p = new Parada();
-        p.setId_parada(1);
+        p.setIdParada(1);
         when(paradaRepository.findById(1)).thenReturn(Optional.of(p));
 
-        assertEquals(1, paradaService.getParadaById(1).getId_parada());
+        assertEquals(1, paradaService.getParadaById(1).getIdParada());
     }
 
     @Test
@@ -64,7 +64,7 @@ class ParadaServiceTest {
     void addParada_InvalidFeatureType() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         dto.setProperties(new GeoJsonStopProperties());
-        dto.getProperties().setFeature_type("route"); // should be "stop"
+        dto.getProperties().setFeatureType("route"); // should be "stop"
 
         assertThrows(InvalidDataException.class, () -> paradaService.addParada(dto));
     }
@@ -73,7 +73,7 @@ class ParadaServiceTest {
     void addParada_InvalidGeometry() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         dto.setProperties(new GeoJsonStopProperties());
-        dto.getProperties().setFeature_type("stop");
+        dto.getProperties().setFeatureType("stop");
         dto.setGeometry(new GeoJsonStopGeometry("LineString", List.of())); // should be "Point"
 
         assertThrows(InvalidDataException.class, () -> paradaService.addParada(dto));
@@ -83,7 +83,7 @@ class ParadaServiceTest {
     void addParada_EmptyCoordinates() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         dto.setProperties(new GeoJsonStopProperties());
-        dto.getProperties().setFeature_type("stop");
+        dto.getProperties().setFeatureType("stop");
         dto.setGeometry(new GeoJsonStopGeometry("Point", Collections.emptyList()));
 
         assertThrows(InvalidDataException.class, () -> paradaService.addParada(dto));
@@ -93,7 +93,7 @@ class ParadaServiceTest {
     void addParada_InvalidLongitude() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         dto.setProperties(new GeoJsonStopProperties());
-        dto.getProperties().setFeature_type("stop");
+        dto.getProperties().setFeatureType("stop");
         dto.setGeometry(new GeoJsonStopGeometry("Point", List.of(190.0, 10.0)));
 
         assertThrows(InvalidDataException.class, () -> paradaService.addParada(dto));
@@ -103,7 +103,7 @@ class ParadaServiceTest {
     void addParada_InvalidLatitude() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         dto.setProperties(new GeoJsonStopProperties());
-        dto.getProperties().setFeature_type("stop");
+        dto.getProperties().setFeatureType("stop");
         dto.setGeometry(new GeoJsonStopGeometry("Point", List.of(10.0, 95.0)));
 
         assertThrows(InvalidDataException.class, () -> paradaService.addParada(dto));
@@ -113,12 +113,12 @@ class ParadaServiceTest {
     void addParada_RouteNotFound() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         GeoJsonStopProperties props = new GeoJsonStopProperties();
-        props.setFeature_type("stop");
-        props.setRoutes_names(List.of("Ruta 99"));
+        props.setFeatureType("stop");
+        props.setRoutesNames(List.of("Ruta 99"));
         dto.setProperties(props);
         dto.setGeometry(new GeoJsonStopGeometry("Point", List.of(-84.0, 10.0)));
 
-        when(rutaRepository.findRutaByNombre_ruta("Ruta 99")).thenReturn(null);
+        when(rutaRepository.findRutaByNombreRuta("Ruta 99")).thenReturn(null);
 
         assertThrows(NotFoundException.class, () -> paradaService.addParada(dto));
     }
@@ -127,24 +127,24 @@ class ParadaServiceTest {
     void addParada_Success() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         GeoJsonStopProperties props = new GeoJsonStopProperties();
-        props.setFeature_type("stop");
-        props.setStop_name("Parada 1");
-        props.setRoutes_names(List.of("Ruta 1"));
+        props.setFeatureType("stop");
+        props.setStopName("Parada 1");
+        props.setRoutesNames(List.of("Ruta 1"));
         dto.setProperties(props);
         dto.setGeometry(new GeoJsonStopGeometry("Point", List.of(-84.0, 10.0)));
 
         Ruta mockRuta = new Ruta();
         mockRuta.setParadas(new ArrayList<>());
-        when(rutaRepository.findRutaByNombre_ruta("Ruta 1")).thenReturn(mockRuta);
+        when(rutaRepository.findRutaByNombreRuta("Ruta 1")).thenReturn(mockRuta);
         
         when(paradaRepository.save(any(Parada.class))).thenAnswer(i -> i.getArgument(0));
 
         Parada result = paradaService.addParada(dto);
 
         assertNotNull(result);
-        assertEquals("Parada 1", result.getNombre_parada());
-        assertEquals(-84.0, result.getCoordenadas_parada().getLongitud());
-        assertEquals(10.0, result.getCoordenadas_parada().getLatitud());
+        assertEquals("Parada 1", result.getNombreParada());
+        assertEquals(-84.0, result.getCoordenadasParada().getLongitud());
+        assertEquals(10.0, result.getCoordenadasParada().getLatitud());
         assertEquals(1, mockRuta.getParadas().size()); // Added to route
         verify(graphBuilderService, times(1)).rebuildGraph();
     }
@@ -153,9 +153,9 @@ class ParadaServiceTest {
     void addParada_NullRoutesNames() {
         GeoJsonStopDTO dto = new GeoJsonStopDTO();
         GeoJsonStopProperties props = new GeoJsonStopProperties();
-        props.setFeature_type("stop");
-        props.setStop_name("Parada Sin Rutas");
-        props.setRoutes_names(null);
+        props.setFeatureType("stop");
+        props.setStopName("Parada Sin Rutas");
+        props.setRoutesNames(null);
         dto.setProperties(props);
         dto.setGeometry(new GeoJsonStopGeometry("Point", List.of(-84.0, 10.0)));
 
@@ -164,8 +164,8 @@ class ParadaServiceTest {
         Parada result = paradaService.addParada(dto);
 
         assertNotNull(result);
-        assertEquals("Parada Sin Rutas", result.getNombre_parada());
-        verify(rutaRepository, never()).findRutaByNombre_ruta(anyString());
+        assertEquals("Parada Sin Rutas", result.getNombreParada());
+        verify(rutaRepository, never()).findRutaByNombreRuta(anyString());
         verify(graphBuilderService, times(1)).rebuildGraph();
     }
 }

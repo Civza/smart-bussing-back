@@ -4,7 +4,14 @@ import buss.smartbussingapi.DTOs.ReporteRutaDTO;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -27,20 +34,38 @@ public class ReporteRutaController {
 
     @GetMapping("/{reporte_ruta_id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ReporteRuta> getReporteRutaById(@PathVariable("reporte_ruta_id") int reporte_ruta_id) {
-        return new ApiResponse<>("Route report retrieved", reporteRutaService.getReporteRutaById(reporte_ruta_id), null);
+    public ApiResponse<ReporteRuta> getReporteRutaById(
+            @PathVariable("reporte_ruta_id") int reporteRutaId
+    ) {
+        return new ApiResponse<>(
+                "Route report retrieved",
+                reporteRutaService.getReporteRutaById(reporteRutaId),
+                null
+        );
     }
 
     @GetMapping("/byRuta")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ReporteRuta>> getReporteRutaByRouteName(@RequestParam String routeName) {
-        return new ApiResponse<>("Route reports retrieved", reporteRutaService.getReportesRutaByRouteName(routeName), null);
+        return new ApiResponse<>(
+                "Route reports retrieved",
+                reporteRutaService.getReportesRutaByRouteName(routeName),
+                null
+        );
     }
 
     @PostMapping("/{id_ruta}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<ReporteRuta> createNewReporteRuta(@PathVariable("id_ruta") Integer id_ruta, @RequestBody ReporteRutaDTO reporteRutaDTO, @RequestParam("email") String email) {
-        return new ApiResponse<>("Nuevo reporte en la ruta : " + id_ruta + " fue creado exitosamente", reporteRutaService.createNewReporteRuta(reporteRutaDTO, id_ruta, email), null);
+    public ApiResponse<ReporteRuta> createNewReporteRuta(
+            @PathVariable("id_ruta") Integer idRuta,
+            @RequestBody ReporteRutaDTO reporteRutaDTO,
+            @RequestParam("email") String email
+    ) {
+        return new ApiResponse<>(
+                "Nuevo reporte en la ruta : " + idRuta + " fue creado exitosamente",
+                reporteRutaService.createNewReporteRuta(reporteRutaDTO, idRuta, email),
+                null
+        );
     }
 
 }

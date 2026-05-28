@@ -79,7 +79,7 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         user = usuarioRepository.save(user);
 
-        mockMvc.perform(get("/api/v1/user/" + user.getId_usuario()))
+        mockMvc.perform(get("/api/v1/user/" + user.getIdUsuario()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("User retrieved"))
                 .andExpect(jsonPath("$.response.nombre").value("Test User"));
@@ -154,7 +154,7 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         user = usuarioRepository.save(user);
 
-        mockMvc.perform(patch("/api/v1/user/mn/" + user.getId_usuario())
+        mockMvc.perform(patch("/api/v1/user/mn/" + user.getIdUsuario())
                         .param("name", "New Name"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Username updated"));
@@ -172,7 +172,7 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         user = usuarioRepository.save(user);
 
-        mockMvc.perform(patch("/api/v1/user/mp/" + user.getId_usuario())
+        mockMvc.perform(patch("/api/v1/user/mp/" + user.getIdUsuario())
                         .param("password", "newpassword"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Password updated"));

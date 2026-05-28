@@ -5,7 +5,7 @@ import java.util.List;
 
 public record GeoJsonFeatureCollectionDTO(String type, List<JsonNode> features) {
 
-    public GeoJsonFeatureCollectionDTO{
+    public GeoJsonFeatureCollectionDTO {
         features = List.copyOf(features);
     }
 

@@ -12,7 +12,12 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static buss.smartbussingapi.commons.Methods.haversine;
@@ -66,14 +71,19 @@ public class GraphBuilderService {
     }
     @Transactional
     public DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {
-        if (cachedGraph == null) rebuildGraph();
-        DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> graphCopy = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        if (cachedGraph == null) {
+            rebuildGraph();
+        }
+        DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> graphCopy =
+                new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
         Graphs.addGraph(graphCopy, cachedGraph);
         return graphCopy;
     }
     @Transactional
     public Map<Integer, RouteVertex> getNodeMap() {
-        if (nodeMap == null) rebuildGraph();
+        if (nodeMap == null) {
+            rebuildGraph();
+        }
         return nodeMap;
     }
 
@@ -95,7 +105,9 @@ public class GraphBuilderService {
         for (Ruta ruta : rutas) {
 
             List<Coordenadas> polyline = ruta.getCoordenadas();
-            if (polyline == null || polyline.isEmpty()) continue;
+            if (polyline == null || polyline.isEmpty()) {
+                continue;
+            }
 
             List<RouteVertex> routeVertices = new ArrayList<>(polyline.size());
 
@@ -105,12 +117,12 @@ public class GraphBuilderService {
                 int nodeId = idCounter.getAndIncrement();
 
                 RouteVertex rv = new RouteVertex(
-                        nodeId, ruta.getId_ruta(), i,
+                        nodeId, ruta.getIdRuta(), i,
                         c.getLatitud(), c.getLongitud(), c.getSentido()
                 );
 
                 newNodeMap.put(nodeId, rv);
-                newVertexLookup.put(ruta.getId_ruta() + ":" + i, nodeId);
+                newVertexLookup.put(ruta.getIdRuta() + ":" + i, nodeId);
                 graph.addVertex(nodeId);
                 routeVertices.add(rv);
             }
@@ -128,16 +140,20 @@ public class GraphBuilderService {
                 // Forward edge: A -> B
                 if (canGoForward(sentidoA, sentidoB, isBidirectional)) {
                     DefaultWeightedEdge e = graph.addEdge(a.nodeId(), b.nodeId());
-                    if (e != null) graph.setEdgeWeight(e, dist);
+                    if (e != null) {
+                        graph.setEdgeWeight(e, dist);
+                    }
                 }
 
                 // Backward edge: B -> A
                 if (canGoBackward(sentidoA, sentidoB, isBidirectional)) {
                     DefaultWeightedEdge e = graph.addEdge(b.nodeId(), a.nodeId());
-                    if (e != null) graph.setEdgeWeight(e, dist);
+                    if (e != null) {
+                        graph.setEdgeWeight(e, dist);
+                    }
                 }
             }
-            verticesByRuta.put(ruta.getId_ruta(), routeVertices);
+            verticesByRuta.put(ruta.getIdRuta(), routeVertices);
         }
 
         // Add transfer edges (Inter-route and Intra-route)
@@ -153,12 +169,16 @@ public class GraphBuilderService {
     }
 
     private boolean canGoForward(String s1, String s2, boolean routeBidirectional) {
-        if (s1 == null || s2 == null) return true; // Default to forward if no metadata
+        if (s1 == null || s2 == null) {
+            return true; // Default to forward if no metadata
+        }
         return (s1.equals("IDA") || s1.equals("AMBOS")) && (s2.equals("IDA") || s2.equals("AMBOS"));
     }
 
     private boolean canGoBackward(String s1, String s2, boolean routeBidirectional) {
-        if (s1 == null || s2 == null) return routeBidirectional;
+        if (s1 == null || s2 == null) {
+            return routeBidirectional;
+        }
         return (s1.equals("REGRESO") || s1.equals("AMBOS")) && (s2.equals("REGRESO") || s2.equals("AMBOS"));
     }
 
@@ -190,11 +210,16 @@ public class GraphBuilderService {
                 for (long dx = -1; dx <= 1; dx++) {
                     for (long dy = -1; dy <= 1; dy++) {
                         List<RouteVertex> cellNodes = grid.get(getGridKeyFromCells(cellX + dx, cellY + dy));
-                        if (cellNodes == null) continue;
+                        if (cellNodes == null) {
+                            continue;
+                        }
 
                         for (RouteVertex vb : cellNodes) {
                             // Pruning: Skip same node or immediate neighbors in same route
-                            if (va.rutaId() == vb.rutaId() && Math.abs(va.vertexIndex() - vb.vertexIndex()) <= 2) continue;
+                            if (va.rutaId() == vb.rutaId()
+                                    && Math.abs(va.vertexIndex() - vb.vertexIndex()) <= 2) {
+                                continue;
+                            }
 
                             double dist = haversine(va.lat(), va.lon(), vb.lat(), vb.lon());
                             if (dist <= MAX_TRANSFER_WALK_KM) {
@@ -276,10 +301,18 @@ public class GraphBuilderService {
         double minLat = Double.MAX_VALUE, maxLat = -Double.MAX_VALUE;
         double minLon = Double.MAX_VALUE, maxLon = -Double.MAX_VALUE;
         for (RouteVertex v : vertices) {
-            if (v.lat() < minLat) minLat = v.lat();
-            if (v.lat() > maxLat) maxLat = v.lat();
-            if (v.lon() < minLon) minLon = v.lon();
-            if (v.lon() > maxLon) maxLon = v.lon();
+            if (v.lat() < minLat) {
+                minLat = v.lat();
+            }
+            if (v.lat() > maxLat) {
+                maxLat = v.lat();
+            }
+            if (v.lon() < minLon) {
+                minLon = v.lon();
+            }
+            if (v.lon() > maxLon) {
+                maxLon = v.lon();
+            }
         }
         return new double[]{minLat, maxLat, minLon, maxLon};
     }

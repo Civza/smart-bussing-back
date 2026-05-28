@@ -61,10 +61,10 @@ class MapboxServiceTest {
     @Test
     void testFindNearestStop_Success() {
         Parada p1 = new Parada();
-        p1.setCoordenadas_parada(new Coordenadas(10.0, -84.0, "IDA")); // nearest
+        p1.setCoordenadasParada(new Coordenadas(10.0, -84.0, "IDA")); // nearest
 
         Parada p2 = new Parada();
-        p2.setCoordenadas_parada(new Coordenadas(10.5, -84.5, "IDA")); // far
+        p2.setCoordenadasParada(new Coordenadas(10.5, -84.5, "IDA")); // far
 
         when(paradaService.getParadasList()).thenReturn(List.of(p1, p2));
 
@@ -141,7 +141,7 @@ class MapboxServiceTest {
     @Test
     void testGetWalkingDirectionsWithParadaOverloads() {
         Parada p = new Parada();
-        p.setCoordenadas_parada(new Coordenadas(10.0, -84.0, "IDA"));
+        p.setCoordenadasParada(new Coordenadas(10.0, -84.0, "IDA"));
         
         String mockJsonResponse = """
                 {

@@ -89,7 +89,7 @@ public class ParadaControllerIntegrationTest {
         Parada parada = objectMapper.readValue(jsonParada, Parada.class);
         parada = paradaRepository.save(parada);
 
-        mockMvc.perform(get("/api/v1/parada/" + parada.getId_parada()))
+        mockMvc.perform(get("/api/v1/parada/" + parada.getIdParada()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Parada retrieved"))
                 .andExpect(jsonPath("$.response.nombre_parada").value("Parada Central"));

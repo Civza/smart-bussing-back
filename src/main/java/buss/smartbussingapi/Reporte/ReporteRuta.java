@@ -2,7 +2,16 @@ package buss.smartbussingapi.Reporte;
 
 import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Usuario.Usuario;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +30,9 @@ public class ReporteRuta {
     @Id
     @SequenceGenerator(name = "reporte_sequence", sequenceName = "reporte_sequence" , allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "reporte_sequence")
-    private int id_reporteRuta;
+    @Column(name = "id_reporte_ruta")
+    @JsonProperty("id_reporte_ruta")
+    private int idReporteRuta;
     private String descripcion;
     private int likeRoute;
     private String[] urlPhotos;

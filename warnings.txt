@@ -1,0 +1,596 @@
+﻿
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1386:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\ApiResponse.java:3:30: '(' está 
+precedido de espacio en blanco. [MethodParamPad]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1387:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\ApiResponse.java:3:69: '{' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1388:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\ApiResponse.java:3:69: '{' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1389:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\ApiResponse.java:3:70: '}' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1390:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:7:16: El nombre 'R' 
+debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1391:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:10:33: '/' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1392:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:10:33: '/' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1393:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:10:52: '/' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1394:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:10:52: '/' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1395:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:12:32: '/' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1396:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:12:32: '/' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1397:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:12:51: '/' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1398:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:12:51: '/' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1399:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:13:60: '-' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1400:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\commons\Methods.java:13:60: '-' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1401:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Contrato\Contrato.java:5:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1402:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Contrato\Contrato.java:27:17: El nombre 
+'id_contrato' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1403:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Contrato\Contrato.java:28:18: El nombre 
+'fecha_inicio' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1404:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Contrato\Contrato.java:29:18: El nombre 
+'fecha_fin' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1405:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Coordenadas\Coordenadas.java:5:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1406:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Coordenadas\Coordenadas.java:27:17: El 
+nombre 'id_coordenada' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1407:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\DirectionsResponse.java:6:8: 
+Importación no usada - lombok.Data. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1408:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonFeatureCollectionDTO.java:8:39: '{' 
+no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1409:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteGeometry.java:3:14: 
+Usar la importación con '.*' debería evitarse - lombok.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1410:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:9:24: El nombre 'feature_type' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1411:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:10:24: El nombre 'route_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1412:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:11:24: El nombre 'route_short_name' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1413:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:12:24: El nombre 'route_long_name' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1414:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:13:24: El nombre 'route_color' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1415:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:14:24: El nombre 'route_text_color' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1416:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonRoute\GeoJsonRouteProperties.ja
+va:15:24: El nombre 'route_type' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1417:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopGeometry.java:14:38: 
+'{' no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1418:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopGeometry.java:14:39: 
+'}' no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1419:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopProperties.jav
+a:11:24: El nombre 'feature_type' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1420:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopProperties.jav
+a:12:24: El nombre 'stop_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1421:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopProperties.jav
+a:13:24: El nombre 'stop_name' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1422:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopProperties.jav
+a:14:24: El nombre 'stop_description' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1423:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\GeoJsonStops\GeoJsonStopProperties.jav
+a:15:30: El nombre 'routes_names' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1424:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\ItineraryDTOs\ItineraryResponseDTO.jav
+a:3:14: Usar la importación con '.*' debería evitarse - lombok.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1425:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\ItineraryDTOs\SegmentoResponseDTO.java:4:8: 
+Importación no usada - buss.smartbussingapi.Parada.Parada. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1426:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\ItineraryDTOs\SegmentoResponseDTO.java:6:8: 
+Importación no usada - lombok.Data. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1427:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\ItineraryDTOs\SegmentoResponseDTO.java:10:8: 
+Importación no usada - java.util.List. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1428:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarController.java:3:8: 
+Importación no usada - buss.smartbussingapi.Contrato.Contrato. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1429:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarController.java:5:8: 
+Importación no usada - buss.smartbussingapi.Empresa.EmpresaRepository. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1430:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarDTO.java:6:8: 
+Importación no usada - java.util.Date. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1431:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarDTO.java:16:20: El 
+nombre 'correo_empresa' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1432:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:3:8: 
+Importación no usada - buss.smartbussingapi.Contrato.Contrato. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1433:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:22: La línea 
+es mayor de 120 caracteres (encontrado 141). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1434:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:31:9: 'if' 
+no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1435:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:37:9: 'if' 
+no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1436:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:41:9: 'if' 
+no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1437:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:66:67: '{' 
+no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1438:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:69:9: 'if' 
+no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1439:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:73:9: 'if' 
+no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1440:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RegistroLugarMapper.java:77:9: 'if' 
+no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1441:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\DTOs\RutaRequestDTO.java:3: La línea es 
+mayor de 120 caracteres (encontrado 172). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1442:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Empresa\Empresa.java:5:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1443:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Empresa\Empresa.java:24:17: El nombre 
+'id_empresa' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1444:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Empresa\Empresa.java:27:20: El nombre 
+'metodo_pago' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1445:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Interesado\Interesado.java:3:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1446:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Interesado\InteresadoController.java:4:8: 
+Importación no usada - lombok.AllArgsConstructor. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1447:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Interesado\InteresadoController.java:5:8: 
+Importación no usada - org.springframework.beans.factory.annotation.Autowired. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1448:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Interesado\InteresadoController.java:7:47: 
+Usar la importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1449:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Interesado\InteresadoController.java:16: 
+La línea es mayor de 120 caracteres (encontrado 121). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1450:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Interesado\InteresadoService.java:9:8: 
+Importación no usada - java.util.Optional. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1451:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Lugar\Lugar.java:5:27: Usar la importación 
+con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1452:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Lugar\Lugar.java:26:17: El nombre 
+'lugar_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1453:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Lugar\LugarController.java:6:47: Usar la 
+importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1454:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Lugar\LugarController.java:29:70: El 
+nombre 'id_lugar' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1455:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Lugar\LugarService.java:23:36: El nombre 
+'id_lugar' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1456:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\Parada.java:6:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1457:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\Parada.java:7:14: Usar la 
+importación con '.*' debería evitarse - lombok.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1458:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\Parada.java:25:17: El nombre 
+'id_parada' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1459:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\Parada.java:26:20: El nombre 
+'nombre_parada' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1460:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\Parada.java:27:20: El nombre 
+'descripcion_parada' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1461:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\Parada.java:30:25: El nombre 
+'coordenadas_parada' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1462:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaController.java:5:8: 
+Importación no usada - org.springframework.beans.factory.annotation.Autowired. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1463:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaController.java:7:47: Usar la 
+importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1464:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaController.java:18: La línea 
+es mayor de 120 caracteres (encontrado 121). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1465:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaController.java:31:77: El 
+nombre 'id_parada' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1466:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:10:8: 
+Importación no usada - org.springframework.beans.factory.annotation.Autowired. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1467:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:23: La línea es 
+mayor de 120 caracteres (encontrado 121). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1468:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:24: La línea es 
+mayor de 120 caracteres (encontrado 133). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1469:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:30:41: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1470:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:34:37: El nombre 
+'parada_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1471:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:39:59: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1472:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:40:9: 'if' no 
+está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1473:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:40:77: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1474:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:76:9: 'if' no 
+está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1475:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:76:69: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1476:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:77:13: 'for' no 
+está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1477:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:77:85: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1478:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:78:22: El nombre 
+'curr_route' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [LocalVariableName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1479:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:79:17: 'if' no 
+está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1480:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Parada\ParadaService.java:79:39: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1481:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRuta.java:5:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1482:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRuta.java:24:17: El nombre 
+'id_reporteRuta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1483:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:7:47: 
+Usar la importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1484:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:30:93: 
+El nombre 'reporte_ruta_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1485:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:31: La 
+línea es mayor de 120 caracteres (encontrado 121). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1486:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:37: La 
+línea es mayor de 120 caracteres (encontrado 124). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1487:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:42: La 
+línea es mayor de 120 caracteres (encontrado 181). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1488:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:42:91: 
+El nombre 'id_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1489:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaController.java:43: La 
+línea es mayor de 120 caracteres (encontrado 182). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1490:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaService.java:22: La 
+línea es mayor de 120 caracteres (encontrado 144). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1491:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaService.java:41:47: El 
+nombre 'id_reporteRuta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1492:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Reporte\ReporteRutaService.java:46:84: El 
+nombre 'id_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1493:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:7:27: Usar la importación 
+con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1494:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:14:8: Importación no usada 
+- java.time.LocalDate. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1495:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:15:8: Importación no usada 
+- java.time.LocalTime. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1496:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:30:21: El nombre 'id_ruta' 
+debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1497:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:31:20: El nombre 
+'nombre_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1498:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:32:20: El nombre 
+'nombre_corto_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1499:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:33:20: El nombre 
+'color_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1500:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:34:20: El nombre 
+'color_texto_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1501:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:36:22: El nombre 
+'tipo_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1502:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\Ruta.java:37:20: El nombre 
+'horario_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1503:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaController.java:8:47: Usar la 
+importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1504:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaController.java:31:67: El nombre 
+'id_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1505:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaController.java:37:93: El nombre 
+'id_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1506:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaController.java:50: La línea es 
+mayor de 120 caracteres (encontrado 127). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1507:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaRepository.java:14:10: El nombre 
+'findRutaByNombre_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MethodName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1508:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaRepository.java:14:61: El nombre 
+'nombre_ruta' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1509:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:8:8: Importación no 
+usada - org.springframework.beans.factory.annotation.Autowired. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1510:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:22: La línea es 
+mayor de 120 caracteres (encontrado 121). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1511:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:28:33: El nombre 
+'ruta_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1512:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:37:53: El nombre 
+'ruta_id' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1513:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:47:9: 'if' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1514:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:47:79: '{' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1515:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:63:9: 'for' no está 
+seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1516:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:63:40: '{' no está 
+precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1517:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:147: La línea es 
+mayor de 120 caracteres (encontrado 125). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1518:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Ruta\RutaService.java:191: La línea es 
+mayor de 120 caracteres (encontrado 123). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1519:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\Usuario.java:5:27: Usar la 
+importación con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1520:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\Usuario.java:6:14: Usar la 
+importación con '.*' debería evitarse - lombok.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1521:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\Usuario.java:22:17: El nombre 
+'id_usuario' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1522:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioController.java:8:47: Usar 
+la importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1523:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioController.java:31:66: El 
+nombre 'id_user' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1524:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioController.java:61:74: El 
+nombre 'id_user' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1525:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioController.java:68:74: El 
+nombre 'id_user' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1526:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioRepository.java:4:8: 
+Importación no usada - org.springframework.data.repository.CrudRepository. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1527:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioRepository.java:10:73: '>' 
+es seguido por un carácter ilegal. [GenericWhitespace]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1528:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioRepository.java:10:74: '{' 
+no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1529:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioService.java:27:39: El 
+nombre 'id_usuario' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1530:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioService.java:74:37: El 
+nombre 'id_usuario' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1531:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Usuario\UsuarioService.java:86:34: El 
+nombre 'id_usuario' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1532:
+[WARN] 
+C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\AlgoService.java:42:9: 
+La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1533:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:15:17: Usar la importación con '.*' debería evitarse - java.util.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1534:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:59:7: '{' no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1535:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:59:8: '}' no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1536:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:69:9: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1537:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:70: La línea es mayor de 120 caracteres (encontrado 141). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1538:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:76:9: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1539:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:98:13: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1540:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:131:21: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1541:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:137:21: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1542:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:156:9: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1543:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:161:9: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1544:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:193:25: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1545:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:197: La línea es mayor de 120 caracteres (encontrado 123). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1546:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:197:29: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1547:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:279:13: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1548:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:280:13: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1549:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:281:13: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1550:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\GraphBuilderServ
+ice.java:282:13: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1551:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:26:9: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1552:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:66:9: La construcción 'if' debe usar '{}' (llaves). [NeedBraces]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1553:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:86: La línea es mayor de 120 caracteres (encontrado 125). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1554:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:106: La línea es mayor de 120 caracteres (encontrado 127). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1555:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:106:92: '+' no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1556:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:106:92: '+' no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1557:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:106:117: '+' no está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1558:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\CreatingOptimistPath\PathSegmenterSer
+vice.java:106:117: '+' no está seguido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1559:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:5:27: Usar la importación 
+con '.*' debería evitarse - jakarta.persistence.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1560:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:6:14: Usar la importación 
+con '.*' debería evitarse - lombok.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1561:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:23:17: El nombre 
+'id_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1562:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:24:17: El nombre 
+'tiempo_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1563:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:25:20: El nombre 
+'costo_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1564:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:31:45: '(' está seguido 
+de espacios en blanco. [ParenPad]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1565:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:33:24: El nombre 
+'rutas_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1566:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\Viaje.java:41:26: El nombre 
+'paradas_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [MemberName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1567:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:3:8: 
+Importación no usada - buss.smartbussingapi.Coordenadas.Coordenadas. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1568:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:6:8: 
+Importación no usada - buss.smartbussingapi.Parada.Parada. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1569:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:9:8: 
+Importación no usada - org.springframework.beans.factory.annotation.Autowired. [UnusedImports]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1570:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:11:47: Usar la 
+importación con '.*' debería evitarse - org.springframework.web.bind.annotation.*. [AvoidStarImport]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1571:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:29:70: El 
+nombre 'id_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1572:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:51: La línea es 
+mayor de 120 caracteres (encontrado 229). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1573:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:51:229: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1574:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:59: La línea es 
+mayor de 120 caracteres (encontrado 148). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1575:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:59:148: '{' no 
+está precedido de espacio en blanco. [WhitespaceAround]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1576:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajeController.java:61: La línea es 
+mayor de 120 caracteres (encontrado 122). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1577:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajesService.java:26:35: El nombre 
+'id_viaje' debe coincidir con el patrón '^[a-z][a-zA-Z0-9]*$'. [ParameterName]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1578:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajesService.java:37: La línea es 
+mayor de 120 caracteres (encontrado 122). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1579:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajesService.java:60: La línea es 
+mayor de 120 caracteres (encontrado 124). [LineLength]
+C:\Users\emili\.gemini\antigravity\brain\7797da7c-a3c2-4f44-8b7d-c4e6b2c34ada\.system_generated\tasks\task-50.log:1580:
+[WARN] C:\Users\emili\smart-bussing-back\src\main\java\buss\smartbussingapi\Viaje\ViajesService.java:78: La línea es 
+mayor de 120 caracteres (encontrado 121). [LineLength]
+
+

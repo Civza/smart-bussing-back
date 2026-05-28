@@ -33,17 +33,17 @@ class BuildBusGeoJsonTest {
     @Test
     void testBuildBusGeoJson_NoCommonRoute_ThrowsNotFoundException() {
         Ruta ruta1 = new Ruta();
-        ruta1.setId_ruta(1);
+        ruta1.setIdRuta(1);
         
         Ruta ruta2 = new Ruta();
-        ruta2.setId_ruta(2);
+        ruta2.setIdRuta(2);
 
         Parada origen = new Parada();
-        origen.setNombre_parada("Origen");
+        origen.setNombreParada("Origen");
         origen.setRutas(List.of(ruta1));
 
         Parada destino = new Parada();
-        destino.setNombre_parada("Destino");
+        destino.setNombreParada("Destino");
         destino.setRutas(List.of(ruta2)); // No shared route
 
         List<Parada> paradas = List.of(origen, destino);
@@ -54,7 +54,7 @@ class BuildBusGeoJsonTest {
     @Test
     void testBuildBusGeoJson_Success() {
         Ruta ruta = new Ruta();
-        ruta.setId_ruta(1);
+        ruta.setIdRuta(1);
 
         // Trayecto of the route
         Coordenadas c1 = new Coordenadas(10.0, -84.0, "IDA");
@@ -64,11 +64,11 @@ class BuildBusGeoJsonTest {
         ruta.setCoordenadas(List.of(c1, c2, c3, c4));
 
         Parada origen = new Parada();
-        origen.setCoordenadas_parada(c2); // closest to index 1
+        origen.setCoordenadasParada(c2); // closest to index 1
         origen.setRutas(List.of(ruta));
 
         Parada destino = new Parada();
-        destino.setCoordenadas_parada(c4); // closest to index 3
+        destino.setCoordenadasParada(c4); // closest to index 3
         destino.setRutas(List.of(ruta));
 
         List<Parada> paradas = List.of(origen, destino);
@@ -86,7 +86,7 @@ class BuildBusGeoJsonTest {
     @Test
     void testBuildBusGeoJson_Success_ReversedOrder() {
         Ruta ruta = new Ruta();
-        ruta.setId_ruta(1);
+        ruta.setIdRuta(1);
 
         Coordenadas c1 = new Coordenadas(10.0, -84.0, "IDA");
         Coordenadas c2 = new Coordenadas(10.1, -84.1, "IDA");
@@ -95,11 +95,11 @@ class BuildBusGeoJsonTest {
 
         // Origen closest to c3, destino closest to c1 (reversed indices)
         Parada origen = new Parada();
-        origen.setCoordenadas_parada(c3);
+        origen.setCoordenadasParada(c3);
         origen.setRutas(List.of(ruta));
 
         Parada destino = new Parada();
-        destino.setCoordenadas_parada(c1);
+        destino.setCoordenadasParada(c1);
         destino.setRutas(List.of(ruta));
 
         List<Parada> paradas = List.of(origen, destino);

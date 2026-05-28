@@ -20,8 +20,8 @@ public class LugarService {
         return lugarRepository.findAll();
     }
 
-    public Lugar findLugarById(int id_lugar) {
-        return lugarRepository.findById(id_lugar)
-                .orElseThrow(() -> new NotFoundException("Lugar with ID " + id_lugar + " not found"));
+    public Lugar findLugarById(int idLugar) {
+        return lugarRepository.findById(idLugar)
+                .orElseThrow(() -> new NotFoundException("Lugar with ID " + idLugar + " not found"));
     }
 }

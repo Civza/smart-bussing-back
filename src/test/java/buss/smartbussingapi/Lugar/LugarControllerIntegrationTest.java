@@ -63,7 +63,7 @@ public class LugarControllerIntegrationTest {
         Lugar lugar = objectMapper.readValue(jsonLugar, Lugar.class);
         lugar = lugarRepository.save(lugar);
 
-        mockMvc.perform(get("/api/v1/lugar/" + lugar.getLugar_id()))
+        mockMvc.perform(get("/api/v1/lugar/" + lugar.getLugarId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Lugar retrieved"))
                 .andExpect(jsonPath("$.response.name").value("Lugar Central"));

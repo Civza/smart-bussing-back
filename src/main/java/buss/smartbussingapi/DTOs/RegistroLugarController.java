@@ -1,8 +1,6 @@
 package buss.smartbussingapi.DTOs;
 
-import buss.smartbussingapi.Contrato.Contrato;
 import buss.smartbussingapi.Empresa.Empresa;
-import buss.smartbussingapi.Empresa.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
