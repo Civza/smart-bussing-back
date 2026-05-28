@@ -12,9 +12,10 @@ import java.util.List;
 @RequestMapping("api/v1/parada")
 public class ParadaController {
 
-    @Autowired
+
     private final ParadaService paradaService;
 
+    @SuppressWarnings("EI_EXPOSE_REP2") // This is a Java bean that needs to be injected with the reference to the object
     public ParadaController(ParadaService paradaService) {
         this.paradaService = paradaService;
     }

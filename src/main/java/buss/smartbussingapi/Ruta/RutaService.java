@@ -17,10 +17,9 @@ import buss.smartbussingapi.Parada.Parada;
 @Service
 public class RutaService {
 
-    @Autowired
     private final RutaRepository rutaRepository;
     private final GraphBuilderService graphBuilderService;
-
+    @SuppressWarnings("EI_EXPOSE_REP2") // This is a Java bean that needs to be injected with the reference to the object
     public RutaService(RutaRepository rutaRepository, GraphBuilderService graphBuilderService) {
         this.rutaRepository = rutaRepository;
         this.graphBuilderService = graphBuilderService;

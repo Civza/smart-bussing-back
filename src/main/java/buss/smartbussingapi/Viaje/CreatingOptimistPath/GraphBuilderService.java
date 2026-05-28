@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,9 @@ public class GraphBuilderService {
     @Transactional
     public DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {
         if (cachedGraph == null) rebuildGraph();
-        return cachedGraph;
+        DefaultDirectedWeightedGraph<Integer, DefaultWeightedEdge> graphCopy = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        Graphs.addGraph(graphCopy, cachedGraph);
+        return graphCopy;
     }
     @Transactional
     public Map<Integer, RouteVertex> getNodeMap() {

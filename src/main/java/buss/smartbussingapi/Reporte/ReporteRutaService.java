@@ -27,7 +27,6 @@ public class ReporteRutaService {
 
     public List<ReporteRuta> getReportesRuta() {
         List<ReporteRuta> rr = reporteRutaRepository.findAll();
-        List<Integer> likes = reporteRutaRepository.getAllLikes(rr);
         return rr;
     }
 

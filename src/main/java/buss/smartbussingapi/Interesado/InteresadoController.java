@@ -12,9 +12,8 @@ import java.util.List;
 @RequestMapping("api/v1/interesado")
 public class InteresadoController {
 
-    @Autowired
     private final InteresadoService interesadoService;
-
+    @SuppressWarnings("EI_EXPOSE_REP2") // This is a Java bean that needs to be injected with the reference to the object
     public InteresadoController(InteresadoService interesadoService) {
         this.interesadoService = interesadoService;
     }

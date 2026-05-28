@@ -15,11 +15,12 @@ import java.util.List;
 @Service
 public class ParadaService {
 
-    @Autowired
+
     private final ParadaRepository paradaRepository;
     private final RutaRepository rutaRepository;
     private final GraphBuilderService graphBuilderService;
 
+    @SuppressWarnings("EI_EXPOSE_REP2") // This is a Java bean that needs to be injected with the reference to the object
     public ParadaService(ParadaRepository paradaRepository, RutaRepository rutaRepository, GraphBuilderService graphBuilderService) {
         this.paradaRepository = paradaRepository;
         this.rutaRepository = rutaRepository;

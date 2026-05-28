@@ -15,7 +15,7 @@ public class GeoJsonStopGeometry {
 
         public GeoJsonStopGeometry(String type, List<Double> coordinates) {
             this.type = type;
-            this.coordinates = coordinates;
+            this.coordinates = coordinates == null ? null : new java.util.ArrayList<>(coordinates);
         }
 }
 
