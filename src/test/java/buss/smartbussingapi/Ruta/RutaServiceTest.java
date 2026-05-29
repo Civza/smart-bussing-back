@@ -107,11 +107,11 @@ public class RutaServiceTest {
         Ruta result = rutaService.agregarRutaDesdeGeoJson(payload);
         
         assertNotNull(result);
-        assertEquals("Ruta de prueba", result.getNombre_ruta());
-        assertEquals("RP", result.getNombre_corto_ruta());
-        assertEquals("#FF0000", result.getColor_ruta());
-        assertEquals("#FFFFFF", result.getColor_texto_ruta());
-        assertEquals(RutaType.MICROBUS, result.getTipo_ruta());
+        assertEquals("Ruta de prueba", result.getNombreRuta());
+        assertEquals("RP", result.getNombreCortoRuta());
+        assertEquals("#FF0000", result.getColorRuta());
+        assertEquals("#FFFFFF", result.getColorTextoRuta());
+        assertEquals(RutaType.MICROBUS, result.getTipoRuta());
         assertTrue(result.isActive());
         
         assertNotNull(result.getCoordenadas());
@@ -164,12 +164,12 @@ public class RutaServiceTest {
     @Test
     void getRutaById_Success() {
         Ruta r = new Ruta();
-        r.setId_ruta(1);
-        r.setNombre_ruta("Test Ruta");
+        r.setIdRuta(1);
+        r.setNombreRuta("Test Ruta");
         when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
         Ruta result = rutaService.getRutaById(1);
         assertNotNull(result);
-        assertEquals("Test Ruta", result.getNombre_ruta());
+        assertEquals("Test Ruta", result.getNombreRuta());
     }
 
     @Test
@@ -188,7 +188,7 @@ public class RutaServiceTest {
     @Test
     void getCoordenadasRuta_Success() {
         Ruta r = new Ruta();
-        r.setId_ruta(1);
+        r.setIdRuta(1);
         buss.smartbussingapi.Coordenadas.Coordenadas c = new buss.smartbussingapi.Coordenadas.Coordenadas();
         c.setLatitud(1.0);
         c.setLongitud(1.0);
@@ -208,7 +208,7 @@ public class RutaServiceTest {
     @Test
     void getCoordenadasRuta_emptyCoords() {
         Ruta r = new Ruta();
-        r.setId_ruta(1);
+        r.setIdRuta(1);
         r.setCoordenadas(new java.util.ArrayList<>());
         when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
         assertThrows(buss.smartbussingapi.commons.exceptions.NotFoundException.class, () -> rutaService.getCoordenadasRuta(1));
@@ -344,7 +344,7 @@ public class RutaServiceTest {
         buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload4 = mapper.readValue(json4, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
         when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
         Ruta res = rutaService.createNewRouteFromGeoJSON(payload4);
-        assertEquals(RutaType.URBANA, res.getTipo_ruta());
+        assertEquals(RutaType.URBANA, res.getTipoRuta());
     }
 
     @Test
@@ -383,11 +383,11 @@ public class RutaServiceTest {
         when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
         Ruta res = rutaService.agregarRutaDesdeGeoJson(payload);
         
-        assertEquals("", res.getNombre_ruta());
-        assertEquals("", res.getNombre_corto_ruta());
-        assertEquals("#000000", res.getColor_ruta());
-        assertEquals("#FFFFFF", res.getColor_texto_ruta());
-        assertEquals(RutaType.URBANA, res.getTipo_ruta());
+        assertEquals("", res.getNombreRuta());
+        assertEquals("", res.getNombreCortoRuta());
+        assertEquals("#000000", res.getColorRuta());
+        assertEquals("#FFFFFF", res.getColorTextoRuta());
+        assertEquals(RutaType.URBANA, res.getTipoRuta());
         assertTrue(res.isBidirectional());
         assertEquals("AMBOS", res.getCoordenadas().get(0).getSentido());
     }
