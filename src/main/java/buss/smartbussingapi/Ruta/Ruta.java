@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -83,6 +84,7 @@ public class Ruta {
             joinColumns = @JoinColumn(name = "ruta_id"),
             inverseJoinColumns = @JoinColumn(name = "coordenadas_id")
     )
+    @OrderBy("idCoordenada ASC")
     private List<Coordenadas> coordenadas = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
