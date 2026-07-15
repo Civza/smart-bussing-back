@@ -86,7 +86,7 @@ public class GraphBuilderServiceTest {
     void testRebuildGraph_Coverage() {
         // Route with empty polyline
         Ruta emptyRoute = new Ruta();
-        emptyRoute.setId_ruta(1);
+        emptyRoute.setIdRuta(1);
         emptyRoute.setCoordenadas(new ArrayList<>());
         
         // Routes to test forward/backward directions
@@ -136,11 +136,11 @@ public class GraphBuilderServiceTest {
 
     private Ruta createMockRuta(int id, String name, double... coords) {
         Ruta r = new Ruta();
-        r.setId_ruta(id);
-        r.setNombre_ruta(name);
+        r.setIdRuta(id);
+        r.setNombreRuta(name);
         r.setActive(true);
         r.setBidirectional(true);
-        r.setTipo_ruta(RutaType.MICROBUS);
+        r.setTipoRuta(RutaType.MICROBUS);
         
         List<Coordenadas> polyline = new ArrayList<>();
         for (int i = 0; i < coords.length; i += 2) {

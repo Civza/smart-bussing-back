@@ -117,7 +117,7 @@ public class RutaControllerIntegrationTest {
         Ruta ruta = objectMapper.readValue(jsonRuta, Ruta.class);
         ruta = rutaRepository.save(ruta);
 
-        mockMvc.perform(get("/api/v1/ruta/" + ruta.getId_ruta()))
+        mockMvc.perform(get("/api/v1/ruta/" + ruta.getIdRuta()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Route retrieved"))
                 .andExpect(jsonPath("$.response.nombre_ruta").value("Ruta 1"));
@@ -151,7 +151,7 @@ public class RutaControllerIntegrationTest {
         ruta.setCoordenadas(java.util.List.of(coord));
         ruta = rutaRepository.save(ruta);
 
-        mockMvc.perform(get("/api/v1/ruta/coordenadas/" + ruta.getId_ruta()))
+        mockMvc.perform(get("/api/v1/ruta/coordenadas/" + ruta.getIdRuta()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Coordinates retrieved"))
                 .andExpect(jsonPath("$.response[0].latitud").value(31.86))

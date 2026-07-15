@@ -74,7 +74,7 @@ public class ReporteRutaControllerIntegrationTest {
                 }
                 """;
 
-        mockMvc.perform(post("/api/v1/reporteRuta/" + ruta.getId_ruta())
+        mockMvc.perform(post("/api/v1/reporteRuta/" + ruta.getIdRuta())
                         .param("email", "test@test.com")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))

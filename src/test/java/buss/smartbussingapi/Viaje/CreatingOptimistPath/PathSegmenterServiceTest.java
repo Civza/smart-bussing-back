@@ -35,12 +35,12 @@ class PathSegmenterServiceTest {
     @BeforeEach
     void setUp() {
         ruta1 = new Ruta();
-        ruta1.setId_ruta(1);
-        ruta1.setNombre_ruta("Ruta 1");
+        ruta1.setIdRuta(1);
+        ruta1.setNombreRuta("Ruta 1");
 
         ruta2 = new Ruta();
-        ruta2.setId_ruta(2);
-        ruta2.setNombre_ruta("Ruta 2");
+        ruta2.setIdRuta(2);
+        ruta2.setNombreRuta("Ruta 2");
     }
 
     @Test

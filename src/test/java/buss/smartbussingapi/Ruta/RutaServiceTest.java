@@ -11,10 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
@@ -107,11 +104,11 @@ public class RutaServiceTest {
         Ruta result = rutaService.agregarRutaDesdeGeoJson(payload);
         
         assertNotNull(result);
-        assertEquals("Ruta de prueba", result.getNombre_ruta());
-        assertEquals("RP", result.getNombre_corto_ruta());
-        assertEquals("#FF0000", result.getColor_ruta());
-        assertEquals("#FFFFFF", result.getColor_texto_ruta());
-        assertEquals(RutaType.MICROBUS, result.getTipo_ruta());
+        assertEquals("Ruta de prueba", result.getNombreRuta());
+        assertEquals("RP", result.getNombreCortoRuta());
+        assertEquals("#FF0000", result.getColorRuta());
+        assertEquals("#FFFFFF", result.getColorTextoRuta());
+        assertEquals(RutaType.MICROBUS, result.getTipoRuta());
         assertTrue(result.isActive());
         
         assertNotNull(result.getCoordenadas());
@@ -164,12 +161,12 @@ public class RutaServiceTest {
     @Test
     void getRutaById_Success() {
         Ruta r = new Ruta();
-        r.setId_ruta(1);
-        r.setNombre_ruta("Test Ruta");
+        r.setIdRuta(1);
+        r.setNombreRuta("Test Ruta");
         when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
         Ruta result = rutaService.getRutaById(1);
         assertNotNull(result);
-        assertEquals("Test Ruta", result.getNombre_ruta());
+        assertEquals("Test Ruta", result.getNombreRuta());
     }
 
     @Test
@@ -188,7 +185,7 @@ public class RutaServiceTest {
     @Test
     void getCoordenadasRuta_Success() {
         Ruta r = new Ruta();
-        r.setId_ruta(1);
+        r.setIdRuta(1);
         buss.smartbussingapi.Coordenadas.Coordenadas c = new buss.smartbussingapi.Coordenadas.Coordenadas();
         c.setLatitud(1.0);
         c.setLongitud(1.0);
@@ -208,7 +205,7 @@ public class RutaServiceTest {
     @Test
     void getCoordenadasRuta_emptyCoords() {
         Ruta r = new Ruta();
-        r.setId_ruta(1);
+        r.setIdRuta(1);
         r.setCoordenadas(new java.util.ArrayList<>());
         when(rutaRepository.findById(1)).thenReturn(java.util.Optional.of(r));
         assertThrows(buss.smartbussingapi.commons.exceptions.NotFoundException.class, () -> rutaService.getCoordenadasRuta(1));
@@ -344,7 +341,7 @@ public class RutaServiceTest {
         buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload4 = mapper.readValue(json4, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
         when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
         Ruta res = rutaService.createNewRouteFromGeoJSON(payload4);
-        assertEquals(RutaType.URBANA, res.getTipo_ruta());
+        assertEquals(RutaType.URBANA, res.getTipoRuta());
     }
 
     @Test
@@ -383,12 +380,287 @@ public class RutaServiceTest {
         when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
         Ruta res = rutaService.agregarRutaDesdeGeoJson(payload);
         
-        assertEquals("", res.getNombre_ruta());
-        assertEquals("", res.getNombre_corto_ruta());
-        assertEquals("#000000", res.getColor_ruta());
-        assertEquals("#FFFFFF", res.getColor_texto_ruta());
-        assertEquals(RutaType.URBANA, res.getTipo_ruta());
+        assertEquals("", res.getNombreRuta());
+        assertEquals("", res.getNombreCortoRuta());
+        assertEquals("#000000", res.getColorRuta());
+        assertEquals("#FFFFFF", res.getColorTextoRuta());
+        assertEquals(RutaType.URBANA, res.getTipoRuta());
         assertTrue(res.isBidirectional());
         assertEquals("AMBOS", res.getCoordenadas().get(0).getSentido());
+    }
+
+    @Test
+    void createNewRouteFromGeoJSON_invalidFeatureType() throws Exception {
+        String json = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "not-route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [[0.0, 0.0]]
+              }
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload = mapper.readValue(json, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payload));
+    }
+
+    @Test
+    void createNewRouteFromGeoJSON_invalidGeometryType() throws Exception {
+        String json = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [0.0, 0.0]
+              }
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload = mapper.readValue(json, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payload));
+    }
+
+    @Test
+    void createNewRouteFromGeoJSON_nullOrEmptyCoordinates() throws Exception {
+        String jsonNull = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString"
+              }
+            }
+            """;
+        String jsonEmpty = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": []
+              }
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payloadNull = mapper.readValue(jsonNull, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payloadEmpty = mapper.readValue(jsonEmpty, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payloadNull));
+        assertThrows(InvalidDataException.class, () -> rutaService.createNewRouteFromGeoJSON(payloadEmpty));
+    }
+
+    @Test
+    void createNewRouteFromGeoJSON_boundaryCoordinates() throws Exception {
+        String json = """
+            {
+              "type": "Feature",
+              "properties": {
+                "feature_type": "route"
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [-180.0, -90.0],
+                  [180.0, 90.0]
+                ]
+              }
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO payload = mapper.readValue(json, buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO.class);
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        Ruta res = rutaService.createNewRouteFromGeoJSON(payload);
+        assertNotNull(res);
+        assertEquals(-180.0, res.getCoordenadas().get(0).getLongitud());
+        assertEquals(-90.0, res.getCoordenadas().get(0).getLatitud());
+        assertEquals(180.0, res.getCoordenadas().get(1).getLongitud());
+        assertEquals(90.0, res.getCoordenadas().get(1).getLatitud());
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_nullFeatures() {
+        GeoJsonFeatureCollectionDTO payload = new GeoJsonFeatureCollectionDTO("FeatureCollection", null);
+        assertThrows(InvalidDataException.class, () -> rutaService.agregarRutaDesdeGeoJson(payload));
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_nullRouteGeometryAndNonArrayCoords() throws Exception {
+        String json = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route"
+                  }
+                }
+              ]
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        GeoJsonFeatureCollectionDTO payload = mapper.readValue(json, GeoJsonFeatureCollectionDTO.class);
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        Ruta res = rutaService.agregarRutaDesdeGeoJson(payload);
+        assertNotNull(res);
+        assertTrue(res.getCoordenadas().isEmpty());
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_routeGeomNoCoordsAndNotArray() throws Exception {
+        String jsonNoCoords = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route"
+                  },
+                  "geometry": {
+                    "type": "LineString"
+                  }
+                }
+              ]
+            }
+            """;
+        String jsonCoordsNotArray = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route"
+                  },
+                  "geometry": {
+                    "type": "LineString",
+                    "coordinates": "not-an-array"
+                  }
+                }
+              ]
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        GeoJsonFeatureCollectionDTO payloadNoCoords = mapper.readValue(jsonNoCoords, GeoJsonFeatureCollectionDTO.class);
+        GeoJsonFeatureCollectionDTO payloadNotArray = mapper.readValue(jsonCoordsNotArray, GeoJsonFeatureCollectionDTO.class);
+        
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        
+        Ruta res1 = rutaService.agregarRutaDesdeGeoJson(payloadNoCoords);
+        Ruta res2 = rutaService.agregarRutaDesdeGeoJson(payloadNotArray);
+        
+        assertTrue(res1.getCoordenadas().isEmpty());
+        assertTrue(res2.getCoordenadas().isEmpty());
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_coordPairNotArrayOrSizeLessThanTwo() throws Exception {
+        String json = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route"
+                  },
+                  "geometry": {
+                    "type": "LineString",
+                    "coordinates": [
+                      "not-an-array",
+                      [1.0],
+                      [1.0, 2.0]
+                    ]
+                  }
+                }
+              ]
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        GeoJsonFeatureCollectionDTO payload = mapper.readValue(json, GeoJsonFeatureCollectionDTO.class);
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        
+        Ruta res = rutaService.agregarRutaDesdeGeoJson(payload);
+        assertEquals(1, res.getCoordenadas().size());
+        assertEquals(1.0, res.getCoordenadas().get(0).getLongitud());
+        assertEquals(2.0, res.getCoordenadas().get(0).getLatitud());
+    }
+
+    @Test
+    void agregarRutaDesdeGeoJson_stopGeomMissingOrNoCoordinatesOrInvalidCoordinates() throws Exception {
+        String json = """
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "route"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "stop",
+                    "stop_name": "Parada Sin Geom"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "stop",
+                    "stop_name": "Parada Geom No Coords"
+                  },
+                  "geometry": {
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "stop",
+                    "stop_name": "Parada Coords Not Array"
+                  },
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": "not-array"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "feature_type": "stop",
+                    "stop_name": "Parada Coords Size One"
+                  },
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [1.0]
+                  }
+                }
+              ]
+            }
+            """;
+        ObjectMapper mapper = new ObjectMapper();
+        GeoJsonFeatureCollectionDTO payload = mapper.readValue(json, GeoJsonFeatureCollectionDTO.class);
+        when(rutaRepository.save(any(Ruta.class))).thenAnswer(i -> i.getArguments()[0]);
+        
+        Ruta res = rutaService.agregarRutaDesdeGeoJson(payload);
+        assertEquals(4, res.getParadas().size());
+        assertNull(res.getParadas().get(0).getCoordenadasParada());
+        assertNull(res.getParadas().get(1).getCoordenadasParada());
+        assertNull(res.getParadas().get(2).getCoordenadasParada());
+        assertNull(res.getParadas().get(3).getCoordenadasParada());
     }
 }

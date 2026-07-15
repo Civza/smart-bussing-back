@@ -89,7 +89,7 @@ class ReporteRutaServiceTest {
         dto.setUrlPhoto(new String[]{"url1"});
 
         Ruta r = new Ruta();
-        r.setId_ruta(1);
+        r.setIdRuta(1);
 
         Usuario u = new Usuario();
         u.setEmail("test@test.com");
