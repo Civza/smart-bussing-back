@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Appender a consola habitual para desarrollo -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- Appender JSON para Wazuh -->
+    <appender name="WAZUH_JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/smart-bussing.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/smart-bussing-%d{yyyy-MM-dd}.json</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- Incluye MDC (variables contextuales) automáticamente en el JSON -->
+            <includeMdcKeyName>*</includeMdcKeyName>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="WAZUH_JSON_FILE"/>
+    </root>
+</configuration>
