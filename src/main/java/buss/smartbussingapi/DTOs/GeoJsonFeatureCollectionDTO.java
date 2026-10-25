@@ -6,7 +6,7 @@ import java.util.List;
 public record GeoJsonFeatureCollectionDTO(String type, List<JsonNode> features) {
 
     public GeoJsonFeatureCollectionDTO {
-        features = List.copyOf(features);
+        features = features != null ? List.copyOf(features) : null;
     }
 
 }
