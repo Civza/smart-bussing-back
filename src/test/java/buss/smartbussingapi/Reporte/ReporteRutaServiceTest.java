@@ -6,6 +6,7 @@ import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Usuario.Usuario;
 import buss.smartbussingapi.Usuario.UsuarioRepository;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
+import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,37 +50,55 @@ class ReporteRutaServiceTest {
         when(reporteRutaRepository.findAll()).thenReturn(List.of(reporteMock));
 
         List<ReporteRuta> result = reporteRutaService.getReportesRuta();
+
+        assertNotNull(result);
         assertEquals(1, result.size());
+        assertEquals(1, result.get(0).getIdReporteRuta());
+        verify(reporteRutaRepository, times(1)).findAll();
     }
 
     @Test
     void getReportesRutaByRouteName_Success() {
-        when(reporteRutaRepository.getReporteRutasByRouteName("Ruta 1")).thenReturn(List.of(reporteMock));
-        
+        when(reporteRutaRepository.getReporteRutasByRouteName("Ruta 1"))
+                .thenReturn(List.of(reporteMock));
+
         List<ReporteRuta> result = reporteRutaService.getReportesRutaByRouteName("Ruta 1");
+
+        assertNotNull(result);
         assertEquals(1, result.size());
+        verify(reporteRutaRepository, times(1)).getReporteRutasByRouteName("Ruta 1");
     }
 
     @Test
     void getReportesRutaByRouteName_NotFound() {
-        when(reporteRutaRepository.getReporteRutasByRouteName("Ruta 1")).thenReturn(Collections.emptyList());
-        
-        assertThrows(NotFoundException.class, () -> reporteRutaService.getReportesRutaByRouteName("Ruta 1"));
+        when(reporteRutaRepository.getReporteRutasByRouteName("Ruta Inexistente"))
+                .thenReturn(Collections.emptyList());
+
+        assertThrows(NotFoundException.class, () ->
+                reporteRutaService.getReportesRutaByRouteName("Ruta Inexistente")
+        );
+        verify(reporteRutaRepository, times(1)).getReporteRutasByRouteName("Ruta Inexistente");
     }
 
     @Test
     void getReporteRutaById_Success() {
         when(reporteRutaRepository.findById(1)).thenReturn(Optional.of(reporteMock));
-        
+
         ReporteRuta result = reporteRutaService.getReporteRutaById(1);
+
+        assertNotNull(result);
         assertEquals(1, result.getIdReporteRuta());
+        verify(reporteRutaRepository, times(1)).findById(1);
     }
 
     @Test
     void getReporteRutaById_NotFound() {
-        when(reporteRutaRepository.findById(1)).thenReturn(Optional.empty());
-        
-        assertThrows(NotFoundException.class, () -> reporteRutaService.getReporteRutaById(1));
+        when(reporteRutaRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () ->
+                reporteRutaService.getReporteRutaById(99)
+        );
+        verify(reporteRutaRepository, times(1)).findById(99);
     }
 
     @Test
@@ -113,6 +132,17 @@ class ReporteRutaServiceTest {
         when(rutaRepository.findById(1)).thenReturn(Optional.empty());
         
         assertThrows(NotFoundException.class, () -> reporteRutaService.createNewReporteRuta(dto, 1, "test@test.com"));
+    }
+
+    @Test
+    void createNewReporteRuta_RouteBlocked() {
+        ReporteRutaDTO dto = new ReporteRutaDTO();
+        Ruta r = new Ruta();
+        r.setIdRuta(1);
+        r.setActive(false);
+        when(rutaRepository.findById(1)).thenReturn(Optional.of(r));
+
+        assertThrows(ResourceBlockedException.class, () -> reporteRutaService.createNewReporteRuta(dto, 1, "test@test.com"));
     }
 
     @Test
