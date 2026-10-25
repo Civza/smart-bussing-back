@@ -418,7 +418,7 @@ public class RutaServiceTest {
               },
               "geometry": {
                 "type": "Point",
-                "coordinates": [0.0, 0.0]
+                "coordinates": [[0.0, 0.0]]
               }
             }
             """;
