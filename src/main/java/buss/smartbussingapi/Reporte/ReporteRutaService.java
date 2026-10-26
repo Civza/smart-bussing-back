@@ -6,6 +6,7 @@ import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Usuario.Usuario;
 import buss.smartbussingapi.Usuario.UsuarioRepository;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
+import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,7 @@ public class ReporteRutaService {
     }
 
     public List<ReporteRuta> getReportesRuta() {
-        List<ReporteRuta> rr = reporteRutaRepository.findAll();
-        return rr;
+        return reporteRutaRepository.findAll();
     }
 
     public List<ReporteRuta> getReportesRutaByRouteName(String routeName) {
@@ -50,6 +50,10 @@ public class ReporteRutaService {
     public ReporteRuta createNewReporteRuta(ReporteRutaDTO reporteRutaDTO, Integer idRuta, String email) {
         Ruta ruta = rutaRepository.findById(idRuta)
                 .orElseThrow(() -> new NotFoundException("Route with ID " + idRuta + " not found"));
+
+        if (!ruta.isActive()) {
+            throw new ResourceBlockedException("No se pueden registrar reportes para la ruta con ID " + idRuta + " porque se encuentra temporalmente bloqueada");
+        }
 
         Usuario user = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));

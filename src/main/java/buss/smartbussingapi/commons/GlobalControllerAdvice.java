@@ -4,6 +4,8 @@ import buss.smartbussingapi.commons.exceptions.AlreadyExistsException;
 import buss.smartbussingapi.commons.exceptions.InvalidCredentialsException;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
+import buss.smartbussingapi.commons.exceptions.RateLimitExceededException;
+import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,6 +36,18 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse<Void> handleInvalidCredentials(InvalidCredentialsException e) {
         return new ApiResponse<>("Unauthorized", null, e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiResponse<Void> handleResourceBlocked(ResourceBlockedException e) {
+        return new ApiResponse<>("Forbidden", null, e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public ApiResponse<Void> handleRateLimitExceeded(RateLimitExceededException e) {
+        return new ApiResponse<>("Too Many Requests", null, e.getMessage());
     }
 
     @ExceptionHandler

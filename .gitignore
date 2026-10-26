@@ -38,3 +38,4 @@ src/main/resources/application.properties
 ## Agent Context ##
 AGENT_CONTEXT/
 AGENT_CONTEXT/CLAUDE.md
+logs/
