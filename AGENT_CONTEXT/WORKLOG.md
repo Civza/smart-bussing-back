@@ -3,6 +3,36 @@
 This document keeps a chronological record of work sessions, in-progress tasks, important
 decisions, and pending items. This ensures context is never lost between sessions.
 
+## Session: 2026-11-04 (Role-Based Access Control, Supabase OAuth Sync & Database Hardening)
+
+**What we implemented this session:**
+- **Database & Supabase OAuth Sync Trigger**:
+  - Restored and updated `database/schema_backup.sql` with the `rol VARCHAR(20) DEFAULT 'USER' NOT NULL` column and `usuario_email_key` unique constraint.
+  - Authored `database/migrations/V1__add_rol_and_supabase_oauth_sync.sql` providing an idempotent migration script and the `public.handle_new_user()` trigger for automated Google OAuth sync from `auth.users` to `public.usuario`.
+- **Spring Boot RBAC & Authorization Layer**:
+  - Created `buss.smartbussingapi.Usuario.Rol` enum (`USER`, `ADMIN`).
+  - Added `rol` attribute in `Usuario.java` and `UsuarioDTO.java`, updating `UsuarioService` and `GlobalControllerAdvice`.
+  - Created `buss.smartbussingapi.Usuario.RoleAuthorizationService` with real-time MDC security auditing (`unauthorized_admin_access`, HTTP 403) for Wazuh SIEM detection.
+  - Protected administrative endpoints (`POST /api/v1/ruta`, `POST /api/v1/parada`, `POST /api/v1/registrarLugar`, and `GET /api/v1/user`).
+- **Web Dashboard Authorization & Supervisor Guard**:
+  - Updated `AuthContext.jsx` in `smart-bussing` web to query backend role for the authenticated Google account.
+  - Enhanced `ProtectedRoute.jsx` with an explicit "Acceso Denegado" view for non-admin accounts.
+  - Injected `X-User-Email` header in `NewRoutePage.jsx` when submitting new GeoJSON route payloads.
+- **Test Suite Verification**:
+  - Created `RoleAuthorizationServiceTest.java` (5 unit tests).
+  - Updated `UsuarioControllerTest.java` and `UsuarioServiceTest.java` (134 total unit tests passing with 0 failures).
+
+**What is in progress:**
+- Executing the SQL migration in Supabase and assigning the initial admin email.
+
+**Blockers:**
+- None.
+
+**Next steps in priority order:**
+1. Paste and run `database/migrations/V1__add_rol_and_supabase_oauth_sync.sql` in the Supabase SQL Editor.
+2. Promote the primary supervisor to administrator via `UPDATE public.usuario SET rol = 'ADMIN' WHERE email = 'tu_correo@cetys.mx';`.
+3. Log in via Google OAuth on the Web Dashboard and verify route creation.
+
 ## Session: 2026-11-04 (DataFog Core DLP, Content Moderation & Wazuh SIEM Integration)
 
 **What we implemented this session:**
