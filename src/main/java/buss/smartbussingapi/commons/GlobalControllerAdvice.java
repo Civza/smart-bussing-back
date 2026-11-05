@@ -1,5 +1,6 @@
 package buss.smartbussingapi.commons;
 
+import buss.smartbussingapi.commons.exceptions.AccessDeniedException;
 import buss.smartbussingapi.commons.exceptions.AlreadyExistsException;
 import buss.smartbussingapi.commons.exceptions.DlpViolationException;
 import buss.smartbussingapi.commons.exceptions.InvalidCredentialsException;
@@ -55,6 +56,12 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse<Void> handleInvalidCredentials(InvalidCredentialsException e) {
         return new ApiResponse<>("Unauthorized", null, e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiResponse<Void> handleAccessDenied(AccessDeniedException e) {
+        return new ApiResponse<>("Forbidden", null, e.getMessage());
     }
 
     @ExceptionHandler(ResourceBlockedException.class)
