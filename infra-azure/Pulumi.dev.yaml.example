@@ -1,0 +1,16 @@
+config:
+  azure-native:location: eastus
+  smart-bussing-infra-azure:environment: dev
+  smart-bussing-infra-azure:dbName: smartbussing
+  smart-bussing-infra-azure:dbAdminUsername: smartbusser
+  # Set using: pulumi config set --secret dbAdminPassword "<your-strong-password>"
+  smart-bussing-infra-azure:dbAdminPassword:
+    secure: <encrypted-db-password>
+  # Set using: pulumi config set --secret mapboxToken "<your-mapbox-token>"
+  smart-bussing-infra-azure:mapboxToken:
+    secure: <encrypted-mapbox-token>
+  # Student budget safety limit and email alert
+  smart-bussing-infra-azure:budgetLimit: 80
+  smart-bussing-infra-azure:alertEmail: your-email@university.edu
+  smart-bussing-infra-azure:appCpu: 0.5
+  smart-bussing-infra-azure:appMemory: 1.0Gi

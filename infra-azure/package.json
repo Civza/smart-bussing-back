@@ -1,0 +1,17 @@
+{
+  "name": "smart-bussing-infra-azure",
+  "version": "1.0.0",
+  "description": "Pulumi Infrastructure as Code for SmartBussing Backend on Microsoft Azure (Container Apps, PostgreSQL Flexible Server, ACR)",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.130.0",
+    "@pulumi/azure-native": "^2.60.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.4.5"
+  }
+}

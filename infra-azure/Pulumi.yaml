@@ -1,0 +1,3 @@
+name: smart-bussing-infra-azure
+runtime: nodejs
+description: Pulumi Infrastructure for SmartBussing backend on Azure (Container Apps, PostgreSQL Flexible Server, ACR)
