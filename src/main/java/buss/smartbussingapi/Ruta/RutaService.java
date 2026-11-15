@@ -5,6 +5,7 @@ import buss.smartbussingapi.DTOs.GeoJsonRoute.GeoJsonRouteDTO;
 import buss.smartbussingapi.Viaje.CreatingOptimistPath.GraphBuilderService;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
+import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,8 +26,12 @@ public class RutaService {
     }
 
     public Ruta getRutaById(int ruta_id) {
-        return rutaRepository.findById(ruta_id)
+        Ruta ruta = rutaRepository.findById(ruta_id)
                 .orElseThrow(() -> new NotFoundException("Route with ID " + ruta_id + " not found"));
+        if (!ruta.isActive()) {
+            throw new ResourceBlockedException("La ruta con ID " + ruta_id + " se encuentra inactiva o bloqueada por administracion");
+        }
+        return ruta;
     }
 
     public List<Ruta> getAllRutas() {
@@ -36,6 +41,9 @@ public class RutaService {
     public List<Coordenadas> getCoordenadasRuta(int ruta_id) {
         Ruta ruta = rutaRepository.findById(ruta_id)
                 .orElseThrow(() -> new NotFoundException("Route with ID " + ruta_id + " not found"));
+        if (!ruta.isActive()) {
+            throw new ResourceBlockedException("Las coordenadas de la ruta con ID " + ruta_id + " no estan disponibles porque el recurso se encuentra bloqueado");
+        }
         if (ruta.getCoordenadas().isEmpty()) {
             throw new NotFoundException("No coordinates found for route with ID " + ruta_id);
         }
@@ -95,25 +103,6 @@ public class RutaService {
         graphBuilderService.rebuildGraph();
         return saved;
     }
-
-    
-
-    /*
-    public void agregarCoordenadas(int ruta_id, List<Coordenadas> coordenadas) {
-        if (coordenadas == null || coordenadas.isEmpty()) {
-            throw new InvalidDataException("Coordinates list cannot be empty");
-        }
-        Ruta ruta = rutaRepository.findById(ruta_id)
-                .orElseThrow(() -> new NotFoundException("Route with ID " + ruta_id + " not found"));
-
-        ruta.getCoordenadas().addAll(coordenadas);
-        rutaRepository.save(ruta);
-    }
-    
-    /*
-
-
-     */
 
     public Ruta agregarRutaDesdeGeoJson(GeoJsonFeatureCollectionDTO payload) {
         if (payload == null || payload.features() == null) {

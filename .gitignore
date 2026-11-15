@@ -35,6 +35,11 @@ build/
 .env
 src/main/resources/application.properties
 
-## Agent Context ##
-AGENT_CONTEXT/
-AGENT_CONTEXT/CLAUDE.md
+## Python / DLP Service ##
+dlp-service/venv/
+*/venv/
+venv/
+__pycache__/
+*.pyc
+
+logs/

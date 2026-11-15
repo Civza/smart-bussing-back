@@ -6,6 +6,7 @@ import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Usuario.Usuario;
 import buss.smartbussingapi.Usuario.UsuarioRepository;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
+import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,24 +15,26 @@ import java.util.List;
 @Service
 public class ReporteRutaService {
 
-    @Autowired
     private final ReporteRutaRepository reporteRutaRepository;
     private final RutaRepository rutaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final DlpValidationService dlpValidationService;
 
+    @Autowired
     public ReporteRutaService(
             ReporteRutaRepository reporteRutaRepository,
             RutaRepository rutaRepository,
-            UsuarioRepository usuarioRepository
+            UsuarioRepository usuarioRepository,
+            DlpValidationService dlpValidationService
     ) {
         this.reporteRutaRepository = reporteRutaRepository;
         this.rutaRepository = rutaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.dlpValidationService = dlpValidationService;
     }
 
     public List<ReporteRuta> getReportesRuta() {
-        List<ReporteRuta> rr = reporteRutaRepository.findAll();
-        return rr;
+        return reporteRutaRepository.findAll();
     }
 
     public List<ReporteRuta> getReportesRutaByRouteName(String routeName) {
@@ -50,6 +53,13 @@ public class ReporteRutaService {
     public ReporteRuta createNewReporteRuta(ReporteRutaDTO reporteRutaDTO, Integer idRuta, String email) {
         Ruta ruta = rutaRepository.findById(idRuta)
                 .orElseThrow(() -> new NotFoundException("Route with ID " + idRuta + " not found"));
+
+        if (!ruta.isActive()) {
+            throw new ResourceBlockedException("No se pueden registrar reportes para la ruta con ID " + idRuta + " porque se encuentra temporalmente bloqueada");
+        }
+
+        // Inspección y prevención de lenguaje obsceno / fuga de datos con DataFog DLP
+        dlpValidationService.validateComment(reporteRutaDTO.getDescripcion(), idRuta, email);
 
         Usuario user = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));

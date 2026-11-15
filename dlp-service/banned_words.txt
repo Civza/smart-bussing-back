@@ -1,0 +1,23 @@
+# Lista de terminos y palabras no permitidas en comentarios de Smart Bussing
+# Puedes agregar palabras o patrones que infrinjan las normas comunitarias (una por linea)
+groseria
+insulto
+ofensivo
+agresion
+estupido
+idiota
+incompetente
+corrupto
+maldito
+basura
+pendejo
+pendeja
+chingar
+chinga
+verga
+culero
+puto
+puta
+pinche
+cabron
+mierda

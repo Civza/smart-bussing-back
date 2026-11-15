@@ -65,6 +65,7 @@ class UsuarioServiceTest {
         assertEquals("John Doe", dto.getNombre());
         assertEquals("test@test.com", dto.getEmail());
         assertEquals("http://photo.com", dto.getUrlPhoto());
+        assertEquals(Rol.USER, dto.getRol());
     }
 
     @Test

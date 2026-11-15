@@ -5,13 +5,22 @@ import buss.smartbussingapi.commons.exceptions.AlreadyExistsException;
 import buss.smartbussingapi.commons.exceptions.InvalidCredentialsException;
 import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
+import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UsuarioService {
+
+    public static final int MAX_FAILED_ATTEMPTS = 5;
+    public static final long LOCKOUT_DURATION_MILLIS = 15 * 60 * 1000L; // 15 minutos
+
+    private final Map<String, Integer> failedAttempts = new ConcurrentHashMap<>();
+    private final Map<String, Long> lockoutExpiry = new ConcurrentHashMap<>();
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
@@ -37,6 +46,7 @@ public class UsuarioService {
         usuarioDTO.setNombre(usuarioMain.getNombre());
         usuarioDTO.setEmail(usuarioMain.getEmail());
         usuarioDTO.setUrlPhoto(usuarioMain.getProfilePhotoURL());
+        usuarioDTO.setRol(usuarioMain.getRol());
         return usuarioDTO;
     }
 
@@ -47,15 +57,49 @@ public class UsuarioService {
     }
 
     public boolean verifyCredential(String correo, String password) {
+        long now = System.currentTimeMillis();
+
+        // Verificar si la cuenta esta temporalmente bloqueada por ataques de fuerza bruta
+        Long expiry = lockoutExpiry.get(correo);
+        if (expiry != null) {
+            if (now < expiry) {
+                throw new ResourceBlockedException(
+                        "La cuenta se encuentra temporalmente bloqueada por multiples intentos fallidos. Intente de nuevo mas tarde."
+                );
+            } else {
+                // El tiempo de bloqueo ya expiro, se remueve el bloqueo
+                lockoutExpiry.remove(correo);
+                failedAttempts.remove(correo);
+            }
+        }
+
         Usuario usuario = usuarioRepository.findByEmail(correo)
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
+
         if (!usuario.getPassword().equals(password)) {
+            int currentFailures = failedAttempts.getOrDefault(correo, 0) + 1;
+            failedAttempts.put(correo, currentFailures);
+
+            if (currentFailures >= MAX_FAILED_ATTEMPTS) {
+                lockoutExpiry.put(correo, now + LOCKOUT_DURATION_MILLIS);
+                throw new ResourceBlockedException(
+                        "La cuenta ha sido bloqueada temporalmente por haber superado el maximo de 5 intentos fallidos."
+                );
+            }
+
             throw new InvalidCredentialsException("Invalid credentials");
         }
+
+        // Si la autenticacion fue exitosa, limpiamos intentos fallidos acumulados
+        failedAttempts.remove(correo);
+        lockoutExpiry.remove(correo);
         return true;
     }
 
     public void registerUsuario(Usuario usuario) {
+        if (usuario.getRol() == null) {
+            usuario.setRol(Rol.USER);
+        }
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             throw new AlreadyExistsException("User with email " + usuario.getEmail() + " already exists");
         }
@@ -93,5 +137,10 @@ public class UsuarioService {
             usuarioEditado.setPassword(newPassword);
         }
         usuarioRepository.save(usuarioEditado);
+    }
+
+    public void resetLockout(String email) {
+        failedAttempts.remove(email);
+        lockoutExpiry.remove(email);
     }
 }

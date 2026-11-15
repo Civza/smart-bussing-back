@@ -69,7 +69,7 @@ public class Ruta {
     @JsonProperty("horario_ruta")
     private String horarioRuta;
 
-    private boolean active;
+    private boolean active = true;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean bidirectional = true;
