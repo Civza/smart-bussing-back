@@ -1,9 +1,9 @@
 name: tests.yml
 on:
   push:
-    branches: [ main ]
+    branches: [ main, staging ]
   pull_request:
-    branches: [ main, ciberseguridad ]
+    branches: [ main, staging, ciberseguridad ]
 
 jobs:
   test:

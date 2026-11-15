@@ -1,0 +1,34 @@
+# Render Blueprint - STAGING environment for smart-bussing-back.
+# See docs/STAGING.md. No secret values belong in this file: every
+# `sync: false` variable is entered in the Render dashboard on first sync.
+services:
+  - type: web
+    name: smart-bussing-back-staging
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    branch: staging
+    autoDeploy: true
+    plan: free
+    region: virginia # closest to the Supabase staging DB (us-east-1)
+    # Unauthenticated GET that also touches the DB (returns [] on an empty DB).
+    healthCheckPath: /api/v1/ruta
+    envVars:
+      # Spring Boot listens on 8080 (Dockerfile EXPOSE); tells Render which port to route.
+      - key: PORT
+        value: "8080"
+      # Supabase STAGING session pooler, never the prod URL:
+      # jdbc:postgresql://<pooler-host>:5432/postgres?sslmode=require
+      - key: PROD_DB_URL
+        sync: false
+      # postgres.vldfjrqwnlzrgxwnarou
+      - key: PROD_DB_USERNAME
+        sync: false
+      - key: PROD_DB_PASSWORD
+        sync: false
+      - key: MAPBOX_API_KEY
+        sync: false
+      # Full URL of a reachable dlp-service, e.g. https://<host>/api/dlp/scan.
+      # The app falls back to a local filter if it is unreachable.
+      - key: DLP_SERVICE_URL
+        sync: false
