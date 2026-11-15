@@ -50,21 +50,11 @@ public class UsuarioControllerIntegrationTest {
     }
 
     @Test
-    void shouldGetAllUsuarios() throws Exception {
-        String jsonUser = """
-                {
-                    "nombre": "Test User",
-                    "email": "test@test.com",
-                    "password": "password123"
-                }
-                """;
-        Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
-        usuarioRepository.save(user);
-
+    void shouldReturn403WhenGettingAllUsuariosWithoutAdmin() throws Exception {
         mockMvc.perform(get("/api/v1/user"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.info").value("All users retrieved"))
-                .andExpect(jsonPath("$.response[0].nombre").value("Test User"));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.info").value("Forbidden"))
+                .andExpect(jsonPath("$.error").exists());
     }
 
     @Test

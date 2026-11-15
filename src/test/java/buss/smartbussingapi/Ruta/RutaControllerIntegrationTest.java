@@ -38,7 +38,7 @@ public class RutaControllerIntegrationTest {
 
 
     @Test
-    void shouldCreateRutaAndReturn201() throws Exception {
+    void shouldReturn403WhenCreatingRutaWithoutAdmin() throws Exception {
         String body = """ 
                 {
                   "type": "FeatureCollection",
@@ -67,16 +67,9 @@ public class RutaControllerIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body)
                 )
-                .andExpect(status().isCreated())                                    // HTTP 201
-                .andExpect(jsonPath("$.info").value("Route created"))
-                .andExpect(jsonPath("$.response.nombre_ruta").value("Ruta 1"))
-                .andExpect(jsonPath("$.response.nombre_corto_ruta").value("R1"))
-                .andExpect(jsonPath("$.response.color_ruta").value("red"))
-                .andExpect(jsonPath("$.response.color_texto_ruta").value("white"))
-                .andExpect(jsonPath("$.response.tipo_ruta").value("URBANA"))
-                .andExpect(jsonPath("$.response.active").value(true))
-                .andExpect(jsonPath("$.response.id_ruta").exists())
-                .andExpect(jsonPath("$.error").doesNotExist());
+                .andExpect(status().isForbidden())                                  // HTTP 403: endpoint requiere rol ADMIN
+                .andExpect(jsonPath("$.info").value("Forbidden"))
+                .andExpect(jsonPath("$.error").exists());
     }
 
     @Test
