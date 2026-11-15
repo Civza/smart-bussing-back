@@ -3,6 +3,34 @@
 This document keeps a chronological record of work sessions, in-progress tasks, important
 decisions, and pending items. This ensures context is never lost between sessions.
 
+## Session: 2026-11-15 (Branch cleanup, DataFog merge, PR #20 CI diagnosis)
+
+**What was done:**
+- `transbordo-viaje`: reverted the audit sandbox commit `7c7f985` with `bcc9fd5` (removes `database/audit_seed.sql` and `docs/AUDIT_SANDBOX_SETUP.md`). Local only, not pushed.
+- Confirmed `ciberseguridad` is fully contained in `DataFog` (0 unique commits).
+- Created local `ciberseguridad` from `origin/ciberseguridad` and merged `DataFog` into it with `--no-ff`: `3954cbd`.
+- Fast-forwarded local `main` to `origin/main`, then merged `ciberseguridad` with `--no-ff`: `4c8e4a5`. Local `main` is 30 commits ahead of `origin/main`. Not pushed.
+- Read-only checks on Supabase project `SmartBussingREBUILD`: `usuario.rol` and `usuario_email_key` are missing; `on_auth_user_created` trigger exists but runs an older `handle_new_user()` that inserts into a non-existent `auth_id` column. 2 users, no duplicate emails, `usuario_sequence` exists.
+- Diagnosed PR #20 (`DataFog` → `ciberseguridad`) CI failure: 171 tests, 37 errors, all in Spring-context integration tests, all caused by `Schema-validation: missing column [rol] in table [usuario]`. CI rebuilds `database/schema_backup.sql` by dumping the live DB (`secrets.DB_URL`), which lacks `rol`.
+- Confirmed (read-only) that the CI dump matches SmartBussingREBUILD: same 16 public tables; the other project is paused.
+- Found that PR #20 was opened against `main` (run 43532620827 at 00:12:42Z) and retargeted to `ciberseguridad` at 00:13:58Z. `tests.yml` only triggers on PRs into `main`, so new pushes to `DataFog` will not run CI on PR #20.
+- With user approval, applied `V1__add_rol_and_supabase_oauth_sync.sql` to SmartBussingREBUILD as tracked migration `v1_add_rol_and_supabase_oauth_sync`. Verified: `rol` column and `usuario_email_key` exist; `handle_new_user()` replaced; `on_auth_user_created` trigger enabled. Existing users (2) set to `USER`.
+- Admin: `juan.sandoval@cetys.edu.mx` existed in `auth.users` but had no `usuario` row (lost to the old broken trigger). Inserted the row from `auth.users` with `rol = 'ADMIN'`, `password = 'OAUTH_GOOGLE'` (`id_usuario` 70).
+- Re-ran CI run 43532620827 (attempt 2): schema error gone. 171 tests, 4 failures, 0 errors, all `expected 200/201 but was 403` in `RutaControllerIntegrationTest.shouldCreateRutaAndReturn201`, `ParadaControllerIntegrationTest.shouldAddParadaAndReturn201`, `RegistroLugarControllerIntegrationTest.shouldRegistrarLugarAndReturn200`, `UsuarioControllerIntegrationTest.shouldGetAllUsuarios`.
+- User confirmed the 4 endpoints are meant to be admin-only and explicitly approved changing the tests. On `DataFog`, rewrote the 4 tests to expect `403 Forbidden` (`info = "Forbidden"`, `error` present) when called without an admin identity:
+  - `RutaControllerIntegrationTest.shouldReturn403WhenCreatingRutaWithoutAdmin`
+  - `ParadaControllerIntegrationTest.shouldReturn403WhenAddingParadaWithoutAdmin`
+  - `RegistroLugarControllerIntegrationTest.shouldReturn403WhenRegistrarLugarWithoutAdmin`
+  - `UsuarioControllerIntegrationTest.shouldReturn403WhenGettingAllUsuariosWithoutAdmin`
+- Added `ciberseguridad` to the `pull_request` trigger in `.github/workflows/tests.yml` so PR #20 runs CI.
+- Verified locally with `./mvnw test-compile` (compiles). Integration tests not run locally (need the CI Postgres service).
+- No production code changed.
+
+**Next steps by priority:**
+1. Confirm PR #20 CI passes after the push.
+2. Add tests for the admin happy path (request with an ADMIN identity returns 200/201).
+3. Replace `X-User-Email` trust with server-side Supabase JWT verification.
+
 ## Session: 2026-11-04 (Role-Based Access Control, Supabase OAuth Sync & Database Hardening)
 
 **What we implemented this session:**
