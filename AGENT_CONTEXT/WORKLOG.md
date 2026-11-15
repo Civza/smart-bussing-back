@@ -26,8 +26,11 @@ decisions, and pending items. This ensures context is never lost between session
 - Verified locally with `./mvnw test-compile` (compiles). Integration tests not run locally (need the CI Postgres service).
 - No production code changed.
 
+- Committed on `DataFog`: `0e73360` (tests), `74399d3` (workflow trigger), `624fc05` (worklog). Pushed to `origin/DataFog`.
+- PR #20 CI run 43749969498 on `624fc05`: 171 tests, 0 failures, 0 errors, BUILD SUCCESS.
+
 **Next steps by priority:**
-1. Confirm PR #20 CI passes after the push.
+1. Merge PR #20 into `ciberseguridad`, then PR #19 into `main`.
 2. Add tests for the admin happy path (request with an ADMIN identity returns 200/201).
 3. Replace `X-User-Email` trust with server-side Supabase JWT verification.
 
