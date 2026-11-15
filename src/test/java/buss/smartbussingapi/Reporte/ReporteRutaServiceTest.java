@@ -5,6 +5,7 @@ import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Usuario.Usuario;
 import buss.smartbussingapi.Usuario.UsuarioRepository;
+import buss.smartbussingapi.commons.exceptions.DlpViolationException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,9 @@ class ReporteRutaServiceTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private DlpValidationService dlpValidationService;
 
     @InjectMocks
     private ReporteRutaService reporteRutaService;
@@ -118,19 +122,39 @@ class ReporteRutaServiceTest {
         when(reporteRutaRepository.save(any(ReporteRuta.class))).thenAnswer(i -> i.getArgument(0));
 
         ReporteRuta result = reporteRutaService.createNewReporteRuta(dto, 1, "test@test.com");
-        
+
         assertEquals("Buen viaje", result.getDescripcion());
         assertEquals("url1", result.getUrlPhotos()[0]);
         assertEquals(r, result.getRuta());
         assertEquals(u, result.getUsuario());
         assertEquals(0, result.getLikeRoute());
+        verify(dlpValidationService, times(1)).validateComment("Buen viaje", 1, "test@test.com");
+    }
+
+    @Test
+    void createNewReporteRuta_DlpViolationThrowsException() {
+        ReporteRutaDTO dto = new ReporteRutaDTO();
+        dto.setDescripcion("Comentario inapropiado");
+
+        Ruta r = new Ruta();
+        r.setIdRuta(1);
+
+        when(rutaRepository.findById(1)).thenReturn(Optional.of(r));
+        doThrow(new DlpViolationException("Contenido inapropiado"))
+                .when(dlpValidationService).validateComment("Comentario inapropiado", 1, "test@test.com");
+
+        assertThrows(DlpViolationException.class, () ->
+                reporteRutaService.createNewReporteRuta(dto, 1, "test@test.com")
+        );
+
+        verify(reporteRutaRepository, never()).save(any());
     }
 
     @Test
     void createNewReporteRuta_RouteNotFound() {
         ReporteRutaDTO dto = new ReporteRutaDTO();
         when(rutaRepository.findById(1)).thenReturn(Optional.empty());
-        
+
         assertThrows(NotFoundException.class, () -> reporteRutaService.createNewReporteRuta(dto, 1, "test@test.com"));
     }
 
@@ -149,10 +173,10 @@ class ReporteRutaServiceTest {
     void createNewReporteRuta_UserNotFound() {
         ReporteRutaDTO dto = new ReporteRutaDTO();
         Ruta r = new Ruta();
-        
+
         when(rutaRepository.findById(1)).thenReturn(Optional.of(r));
         when(usuarioRepository.findByEmail("test@test.com")).thenReturn(Optional.empty());
-        
+
         assertThrows(NotFoundException.class, () -> reporteRutaService.createNewReporteRuta(dto, 1, "test@test.com"));
     }
 }

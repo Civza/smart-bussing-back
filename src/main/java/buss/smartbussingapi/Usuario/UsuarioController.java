@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,16 +22,20 @@ import java.util.List;
 @RequestMapping(path = "api/v1/user")
 public class UsuarioController {
 
-    @Autowired
     private final UsuarioService usuarioService;
+    private final RoleAuthorizationService roleAuthorizationService;
 
-    public UsuarioController(UsuarioService usuarioService) {
+    @Autowired
+    public UsuarioController(UsuarioService usuarioService, RoleAuthorizationService roleAuthorizationService) {
         this.usuarioService = usuarioService;
+        this.roleAuthorizationService = roleAuthorizationService;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<Usuario>> getUsuarios() {
+    public ApiResponse<List<Usuario>> getUsuarios(
+            @RequestHeader(value = "X-User-Email", required = false) String userEmail) {
+        roleAuthorizationService.requireAdmin(userEmail);
         return new ApiResponse<>("All users retrieved", usuarioService.getUsuarios(), null);
     }
 

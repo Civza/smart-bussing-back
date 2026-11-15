@@ -2,6 +2,7 @@ package buss.smartbussingapi.Ruta;
 
 import buss.smartbussingapi.Coordenadas.Coordenadas;
 import buss.smartbussingapi.DTOs.GeoJsonFeatureCollectionDTO;
+import buss.smartbussingapi.Usuario.RoleAuthorizationService;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,13 @@ import java.util.List;
 @RequestMapping("/api/v1/ruta")
 public class RutaController {
 
-    @Autowired
     private final RutaService rutaService;
+    private final RoleAuthorizationService roleAuthorizationService;
 
-    public RutaController(RutaService rutaService) {
+    @Autowired
+    public RutaController(RutaService rutaService, RoleAuthorizationService roleAuthorizationService) {
         this.rutaService = rutaService;
+        this.roleAuthorizationService = roleAuthorizationService;
     }
 
     @GetMapping
@@ -40,7 +43,10 @@ public class RutaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Ruta> addNewRuta(@RequestBody GeoJsonFeatureCollectionDTO payload) {
+    public ApiResponse<Ruta> addNewRuta(
+            @RequestHeader(value = "X-User-Email", required = false) String userEmail,
+            @RequestBody GeoJsonFeatureCollectionDTO payload) {
+        roleAuthorizationService.requireAdmin(userEmail);
         return new ApiResponse<>("Route created", rutaService.agregarRutaDesdeGeoJson(payload), null);
     }
 

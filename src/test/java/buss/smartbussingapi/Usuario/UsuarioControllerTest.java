@@ -22,6 +22,9 @@ class UsuarioControllerTest {
     @Mock
     private UsuarioService usuarioService;
 
+    @Mock
+    private RoleAuthorizationService roleAuthorizationService;
+
     @InjectMocks
     private UsuarioController usuarioController;
 
@@ -40,7 +43,8 @@ class UsuarioControllerTest {
     @Test
     void getUsuarios() {
         when(usuarioService.getUsuarios()).thenReturn(List.of(user));
-        ApiResponse<List<Usuario>> response = usuarioController.getUsuarios();
+        ApiResponse<List<Usuario>> response = usuarioController.getUsuarios("admin@cetys.mx");
+        verify(roleAuthorizationService).requireAdmin("admin@cetys.mx");
         assertNotNull(response);
         assertEquals("All users retrieved", response.info());
         assertEquals(1, response.response().size());

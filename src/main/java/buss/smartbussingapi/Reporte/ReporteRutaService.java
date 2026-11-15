@@ -15,19 +15,22 @@ import java.util.List;
 @Service
 public class ReporteRutaService {
 
-    @Autowired
     private final ReporteRutaRepository reporteRutaRepository;
     private final RutaRepository rutaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final DlpValidationService dlpValidationService;
 
+    @Autowired
     public ReporteRutaService(
             ReporteRutaRepository reporteRutaRepository,
             RutaRepository rutaRepository,
-            UsuarioRepository usuarioRepository
+            UsuarioRepository usuarioRepository,
+            DlpValidationService dlpValidationService
     ) {
         this.reporteRutaRepository = reporteRutaRepository;
         this.rutaRepository = rutaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.dlpValidationService = dlpValidationService;
     }
 
     public List<ReporteRuta> getReportesRuta() {
@@ -54,6 +57,9 @@ public class ReporteRutaService {
         if (!ruta.isActive()) {
             throw new ResourceBlockedException("No se pueden registrar reportes para la ruta con ID " + idRuta + " porque se encuentra temporalmente bloqueada");
         }
+
+        // Inspección y prevención de lenguaje obsceno / fuga de datos con DataFog DLP
+        dlpValidationService.validateComment(reporteRutaDTO.getDescripcion(), idRuta, email);
 
         Usuario user = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));

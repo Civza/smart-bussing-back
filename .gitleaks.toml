@@ -1,0 +1,27 @@
+[extend]
+useDefault = true
+
+# 1. Detectar tokens SECRETOS de Mapbox (los que verdaderamente nunca deben subirse)
+[[rules]]
+id = "mapbox-secret-token"
+description = "Deteccion de Mapbox Secret Token (sk.*)"
+regex = '''sk\.[0-9a-zA-Z_-]{40,}'''
+keywords = ["mapbox", "sk."]
+
+# 2. Si deseas auditar tokens publicos reales pero ignorar mocks de test
+[[rules]]
+id = "mapbox-public-token-audit"
+description = "Auditoria de Mapbox Public Token en codigo fuente"
+regex = '''pk\.[0-9a-zA-Z_-]{40,}'''
+keywords = ["mapbox", "pk."]
+
+[rules.allowlist]
+description = "Ignorar tokens mock/dummy y archivos de pruebas"
+regexes = [
+    '''\.dummy$''',
+    '''dummy'''
+]
+paths = [
+    '''src/test/resources/.*''',
+    '''target/.*'''
+]

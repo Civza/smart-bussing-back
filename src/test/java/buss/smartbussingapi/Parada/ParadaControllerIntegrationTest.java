@@ -34,7 +34,7 @@ public class ParadaControllerIntegrationTest {
     }
 
     @Test
-    void shouldAddParadaAndReturn201() throws Exception {
+    void shouldReturn403WhenAddingParadaWithoutAdmin() throws Exception {
         String jsonBody = """
                 {
                     "type": "Feature",
@@ -53,8 +53,9 @@ public class ParadaControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/parada")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.info").value("Parada created"));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.info").value("Forbidden"))
+                .andExpect(jsonPath("$.error").exists());
     }
 
     @Test

@@ -46,6 +46,7 @@ public class UsuarioService {
         usuarioDTO.setNombre(usuarioMain.getNombre());
         usuarioDTO.setEmail(usuarioMain.getEmail());
         usuarioDTO.setUrlPhoto(usuarioMain.getProfilePhotoURL());
+        usuarioDTO.setRol(usuarioMain.getRol());
         return usuarioDTO;
     }
 
@@ -96,6 +97,9 @@ public class UsuarioService {
     }
 
     public void registerUsuario(Usuario usuario) {
+        if (usuario.getRol() == null) {
+            usuario.setRol(Rol.USER);
+        }
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             throw new AlreadyExistsException("User with email " + usuario.getEmail() + " already exists");
         }

@@ -115,6 +115,12 @@ public class SecurityAuditFilter implements Filter {
             } else if (status == 404) {
                 MDC.put("event_type", "resource_not_found");
                 log.info("Recurso no encontrado (HTTP 404)");
+            } else if (status == 400) {
+                // Si ya fue clasificado como alerta de seguridad (ej. DLP), no sobreescribir el evento
+                if (!"security_alert".equals(MDC.get("event_type"))) {
+                    MDC.put("event_type", "bad_request");
+                    log.warn("Peticion con datos invalidos o malformados (HTTP 400)");
+                }
             } else {
                 MDC.put("event_type", "access_success");
                 log.info("Acceso web procesado exitosamente");

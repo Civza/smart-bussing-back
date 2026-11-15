@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  dlp-service:
+    build:
+      context: ./dlp-service
+      dockerfile: Dockerfile
+    container_name: smart-bussing-dlp
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - smart-bussing-net
+
+  # Si deseas correr la API completa en Docker:
+  # api:
+  #   build: .
+  #   container_name: smart-bussing-api
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - DLP_SERVICE_URL=http://dlp-service:8000/api/dlp/scan
+  #   volumes:
+  #     - ./logs:/app/logs
+  #   networks:
+  #     - smart-bussing-net
+
+networks:
+  smart-bussing-net:
+    driver: bridge
