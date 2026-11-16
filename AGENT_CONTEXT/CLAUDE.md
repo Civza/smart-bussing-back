@@ -62,6 +62,26 @@ when working on Smart Bussing API.
 3. **Surgical Changes**: Touch only what you must. Clean up only your own mess. Don't "improve" adjacent code, comments, or formatting. Don't refactor things that aren't broken. Match existing style, even if you'd do it differently.
 4. **Goal-Driven Execution**: Define success criteria. Loop until verified. Transform tasks into verifiable goals ("Add validation" → "Write tests for invalid inputs, then make them pass").
 
+## Branching Workflow (mandatory)
+`staging` is the integration branch. It auto-deploys to the Render staging service, the
+test deployment (see `docs/STAGING.md`).
+
+1. **Every feature starts on its own sub-branch cut from `staging`.** Never build features directly
+   on `staging` or `main`.
+2. Work, commit and test on that feature branch until the feature is considered done
+   (all its issues closed, tests green).
+3. Only then merge the feature branch into `staging` (PR into `staging`). Verify it on the staging deployment.
+4. `staging` → `main` happens through a separate, audited PR. That PR is the production gate.
+5. Never push (`git push`) without explicit user instruction.
+
+## Test-First Development (mandatory)
+1. **Write the tests FIRST**: unit tests and integration tests that describe the intended behaviour,
+   before any production code for the feature.
+2. Run them and confirm they fail for the expected reason (red).
+3. Then write the minimum production code to make them pass (green), and refactor.
+4. **Never adjust tests to fit the code.** Tests define the intended behaviour. If the code fails a test,
+   fix the code. If a test itself looks wrong, stop and ask the user; do not edit, skip, disable or delete it.
+
 ## Working Process
 1. Analyse requirements and the current codebase before proposing solutions.
 2. Make iterative, small, and testable changes.

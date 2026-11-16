@@ -3,6 +3,21 @@
 This document keeps a chronological record of work sessions, in-progress tasks, important
 decisions, and pending items. This ensures context is never lost between sessions.
 
+## Session: 2026-11-16 (CLAUDE.md workflow rules, auth feature planning)
+
+**Request:** Add the staging feature-branch workflow and the test-first rule to CLAUDE.md, then plan an auth branch (Supabase JWT on endpoints, new auth layer, admin-only web dashboard).
+
+**What was done:**
+- Modified `AGENT_CONTEXT/CLAUDE.md`: added "Branching Workflow (mandatory)" (features on sub-branches cut from `staging`, merged into `staging` only when done; `staging` auto-deploys to Render staging) and "Test-First Development (mandatory)" (tests first, red → green, never adjust tests to fit code).
+- Worktree branch `Dusuan/docs-claude-md-staging` is at `539c541` (same as `staging`). No commits, no branch created, nothing pushed.
+- Read-only audit for the auth branch. Findings: admin checks trust the spoofable `X-User-Email` header. Google-OAuth users have the literal password `OAUTH_GOOGLE`, and `/user/login` compares plaintext, so anyone can log in as them. Passwords are returned in JSON. `PATCH /user/mp|mn/{id}` have no auth. `POST /reporteRuta/{id}?email=` trusts the email query param. The web app's admin role check described in the 2026-11-04 entry is not in any branch of `Dusuan/smart-bussing-web`. `NewRoutePage` sends no credentials, and the web app hardcodes the Railway prod URL.
+- Read-only check: staging Supabase (`vldfjrqwnlzrgxwnarou`) JWKS publishes an ES256 key, so JWTs can be verified via JWKS. The prod Supabase project is not visible to the connected Supabase account.
+
+**Open items / next steps:**
+1. User is clarifying the design decisions: mobile auth strategy, endpoint access matrix, 401 vs 403 for the 4 existing tests, and the web repo branching/test setup.
+2. Then create the auth feature branch off `staging`, write the tests first, and implement.
+3. Commit the CLAUDE.md change (pending user instruction).
+
 ## Session: 2026-11-15 (Branch cleanup, DataFog merge, PR #20 CI diagnosis)
 
 **What was done:**
