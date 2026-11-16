@@ -1,7 +1,13 @@
 package buss.smartbussingapi.Usuario;
 
+import buss.smartbussingapi.DTOs.ChangePasswordRequest;
+import buss.smartbussingapi.DTOs.LoginRequest;
+import buss.smartbussingapi.DTOs.LoginResponse;
+import buss.smartbussingapi.DTOs.RegisterRequest;
+import buss.smartbussingapi.DTOs.UpdateNameRequest;
 import buss.smartbussingapi.DTOs.UsuarioDTO;
 import buss.smartbussingapi.commons.ApiResponse;
+import buss.smartbussingapi.security.JwtTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +30,9 @@ class UsuarioControllerTest {
 
     @Mock
     private RoleAuthorizationService roleAuthorizationService;
+
+    @Mock
+    private JwtTokenService jwtTokenService;
 
     @InjectMocks
     private UsuarioController usuarioController;
@@ -77,12 +86,16 @@ class UsuarioControllerTest {
 
     @Test
     void registerUser() {
-        doNothing().when(usuarioService).registerUsuario(user);
-        ApiResponse<Void> response = usuarioController.registerUser(user);
+        RegisterRequest request = new RegisterRequest("John Doe", "test@test.com", "secret123", "http://photo.com");
+        ApiResponse<Void> response = usuarioController.registerUser(request);
         assertNotNull(response);
         assertEquals("User created", response.info());
         assertNull(response.response());
-        verify(usuarioService, times(1)).registerUsuario(user);
+        verify(usuarioService, times(1)).registerUsuario(argThat(u ->
+                "John Doe".equals(u.getNombre())
+                        && "test@test.com".equals(u.getEmail())
+                        && "secret123".equals(u.getPassword())
+                        && u.getRol() == Rol.USER));
     }
 
     @Test
@@ -90,15 +103,21 @@ class UsuarioControllerTest {
         when(usuarioService.verifyCredential("test@test.com", "secret")).thenReturn(true);
         when(usuarioService.getUsuarioIdByEmail("test@test.com")).thenReturn(1);
         when(usuarioService.getUsuarioById(1)).thenReturn(user);
+        when(jwtTokenService.issueToken(user)).thenReturn("signed.jwt.token");
+        when(jwtTokenService.getTtlSeconds()).thenReturn(3600L);
 
-        ResponseEntity<?> responseEntity = usuarioController.login("test@test.com", "secret");
+        ResponseEntity<?> responseEntity = usuarioController.login(new LoginRequest("test@test.com", "secret"));
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         ApiResponse<?> body = (ApiResponse<?>) responseEntity.getBody();
         assertNotNull(body);
         assertEquals("Login successful", body.info());
-        assertEquals(user, body.response());
+        LoginResponse login = (LoginResponse) body.response();
+        assertEquals("signed.jwt.token", login.token());
+        assertEquals("Bearer", login.tokenType());
+        assertEquals(3600L, login.expiresIn());
+        assertEquals("test@test.com", login.usuario().getEmail());
     }
 
     @Test
@@ -106,7 +125,7 @@ class UsuarioControllerTest {
         // Stub to return false so we hit the otherwise unreachable false branch in login method
         when(usuarioService.verifyCredential("test@test.com", "wrong")).thenReturn(false);
 
-        ResponseEntity<?> responseEntity = usuarioController.login("test@test.com", "wrong");
+        ResponseEntity<?> responseEntity = usuarioController.login(new LoginRequest("test@test.com", "wrong"));
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
 
@@ -118,8 +137,9 @@ class UsuarioControllerTest {
 
     @Test
     void modifyUserName() {
+        when(usuarioService.getUsuarioIdByEmail("test@test.com")).thenReturn(1);
         doNothing().when(usuarioService).editProfileName(1, "New Name");
-        ApiResponse<Void> response = usuarioController.modifyUserName(1, "New Name");
+        ApiResponse<Void> response = usuarioController.updateMyName("test@test.com", new UpdateNameRequest("New Name"));
         assertNotNull(response);
         assertEquals("Username updated", response.info());
         assertNull(response.response());
@@ -128,11 +148,13 @@ class UsuarioControllerTest {
 
     @Test
     void modifyPassword() {
-        doNothing().when(usuarioService).editPassword(1, "newsecret");
-        ApiResponse<Void> response = usuarioController.modifyPassword(1, "newsecret");
+        when(usuarioService.getUsuarioIdByEmail("test@test.com")).thenReturn(1);
+        doNothing().when(usuarioService).changePassword(1, "secret", "newsecret");
+        ApiResponse<Void> response = usuarioController.changeMyPassword("test@test.com",
+                new ChangePasswordRequest("secret", "newsecret"));
         assertNotNull(response);
         assertEquals("Password updated", response.info());
         assertNull(response.response());
-        verify(usuarioService, times(1)).editPassword(1, "newsecret");
+        verify(usuarioService, times(1)).changePassword(1, "secret", "newsecret");
     }
 }

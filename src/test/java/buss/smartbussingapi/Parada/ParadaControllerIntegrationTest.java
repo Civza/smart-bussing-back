@@ -34,7 +34,7 @@ public class ParadaControllerIntegrationTest {
     }
 
     @Test
-    void shouldReturn403WhenAddingParadaWithoutAdmin() throws Exception {
+    void shouldReturn401WhenAddingParadaWithoutToken() throws Exception {
         String jsonBody = """
                 {
                     "type": "Feature",
@@ -53,8 +53,8 @@ public class ParadaControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/parada")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.info").value("Forbidden"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.info").value("Unauthorized"))
                 .andExpect(jsonPath("$.error").exists());
     }
 

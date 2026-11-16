@@ -20,7 +20,7 @@ public class RegistroLugarControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void shouldReturn403WhenRegistrarLugarWithoutAdmin() throws Exception {
+    void shouldRegistrarLugarAnonymouslyAndReturn200() throws Exception {
         String jsonBody = """
                 {
                     "nombreEmpresa": "Empresa Test",
@@ -35,8 +35,8 @@ public class RegistroLugarControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/registrarLugar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.info").value("Forbidden"))
-                .andExpect(jsonPath("$.error").exists());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.info").value("Lugar y empresa registrados exitosamente"))
+                .andExpect(jsonPath("$.response.nombreEmpresa").value("Empresa Test"));
     }
 }

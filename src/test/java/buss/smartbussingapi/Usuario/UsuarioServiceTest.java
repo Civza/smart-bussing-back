@@ -166,7 +166,8 @@ class UsuarioServiceTest {
     void editPassword_Success() {
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(user));
         usuarioService.editPassword(1, "newpass");
-        assertEquals("newpass", user.getPassword());
+        assertTrue(user.getPassword().startsWith("$2"));
+        assertTrue(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().matches("newpass", user.getPassword()));
         verify(usuarioRepository, times(1)).save(user);
     }
 
