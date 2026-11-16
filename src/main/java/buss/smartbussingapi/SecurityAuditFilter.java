@@ -34,6 +34,11 @@ public class SecurityAuditFilter implements Filter {
             "(?i)(<script|javascript:|onerror\\s*=|onload\\s*=|<iframe)"
     );
 
+    /** KAN-18: a parameter literally named password/contrasena in the URL means credentials would leak into logs. */
+    private static final Pattern CREDENTIALS_IN_QUERY_PATTERN = Pattern.compile(
+            "(?i)(^|&)(password|contrase(n|%C3%B1|\u00f1)a)="
+    );
+
     private final RateLimiterService rateLimiterService;
 
     @SuppressWarnings("EI_EXPOSE_REP2")
@@ -51,13 +56,14 @@ public class SecurityAuditFilter implements Filter {
         String clientIp = resolveClientIp(req);
         String requestUri = req.getRequestURI();
         String queryString = req.getQueryString() != null ? req.getQueryString() : "";
+        boolean credentialsInQuery = CREDENTIALS_IN_QUERY_PATTERN.matcher(queryString).find();
 
         try {
             // Contexto MDC inicial para Logstash / Wazuh
             MDC.put("client_ip", clientIp);
             MDC.put("http_method", req.getMethod());
             MDC.put("request_uri", requestUri);
-            MDC.put("query_params", queryString);
+            MDC.put("query_params", credentialsInQuery ? "[REDACTED]" : queryString);
 
             // Inyectar cabeceras de seguridad HTTP recomendadas (Politica 2 y OWASP Top 10)
             injectSecurityHeaders(res);
@@ -77,7 +83,17 @@ public class SecurityAuditFilter implements Filter {
                 return;
             }
 
-            // 2. Control de Tasa de Peticiones (Rate Limiting)
+            // 2. Credenciales en la URL: se rechazan sin llegar al controlador ni a los logs (KAN-18)
+            if (credentialsInQuery) {
+                MDC.put("event_type", "bad_request");
+                MDC.put("http_status", "400");
+                log.warn("Peticion rechazada: credenciales enviadas en la query string de {}", requestUri);
+                sendSecurityErrorResponse(res, HttpServletResponse.SC_BAD_REQUEST,
+                        "Las credenciales deben enviarse en el cuerpo JSON de la peticion, nunca en la URL.");
+                return;
+            }
+
+            // 3. Control de Tasa de Peticiones (Rate Limiting)
             if (!rateLimiterService.isAllowed(clientIp, requestUri)) {
                 MDC.put("event_type", "rate_limit_exceeded");
                 MDC.put("threat_type", "RATE_LIMIT_EXCEEDED");

@@ -4,6 +4,7 @@ import buss.smartbussingapi.DTOs.ReporteRutaDTO;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,7 +60,8 @@ public class ReporteRutaController {
     public ApiResponse<ReporteRuta> createNewReporteRuta(
             @PathVariable("id_ruta") Integer idRuta,
             @RequestBody ReporteRutaDTO reporteRutaDTO,
-            @RequestParam("email") String email
+            // KAN-22: the author is whoever the verified token says, never a request parameter
+            @AuthenticationPrincipal(expression = "claims['email']") String email
     ) {
         return new ApiResponse<>(
                 "Nuevo reporte en la ruta : " + idRuta + " fue creado exitosamente",

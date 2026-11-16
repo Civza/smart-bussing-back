@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,6 +32,18 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<Void> handleInvalidData(InvalidDataException e) {
         return new ApiResponse<>("Invalid data", null, e.getMessage());
+    }
+
+    /** KAN-17: Bean Validation failures on request DTOs. Only field names are echoed, never values. */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Void> handleValidation(MethodArgumentNotValidException e) {
+        String fields = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .sorted()
+                .reduce((a, b) -> a + "; " + b)
+                .orElse("Solicitud invalida");
+        return new ApiResponse<>("Invalid data", null, fields);
     }
 
     @ExceptionHandler(DlpViolationException.class)
