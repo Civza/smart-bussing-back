@@ -25,6 +25,7 @@ feature/* ──PR──▶ staging ──(audited PR)──▶ main
 | `render.yaml` (Blueprint: service, branch, region, plan, health check, env var *names*) | `PROD_DB_URL`, `PROD_DB_USERNAME`, `PROD_DB_PASSWORD` |
 | `Dockerfile`, app code, `application.properties` (reads env vars only) | `MAPBOX_API_KEY` |
 | `database/schema_backup.sql`, `database/migrations/` | `DLP_SERVICE_URL` |
+| | `APP_JWT_SECRET`, `SUPABASE_URL`, `CORS_ALLOWED_ORIGINS` |
 
 Every secret is declared with `sync: false` in `render.yaml`, so Render asks for the value
 when the Blueprint is first applied and never overwrites it from git. Never commit a value.
@@ -45,6 +46,9 @@ Set these in Render → `smart-bussing-back-staging` → Environment:
 | `PROD_DB_PASSWORD` | the staging project's DB password (Supabase → Project Settings → Database) |
 | `MAPBOX_API_KEY` | a Mapbox token (ideally a separate staging token) |
 | `DLP_SERVICE_URL` | full URL of a reachable dlp-service, e.g. `https://<dlp-host>/api/dlp/scan` |
+| `APP_JWT_SECRET` | random secret of at least 32 bytes (`openssl rand -base64 48`), different from prod. The app refuses to start without it |
+| `SUPABASE_URL` | `https://vldfjrqwnlzrgxwnarou.supabase.co` (the app derives the issuer and the JWKS URL from it) |
+| `CORS_ALLOWED_ORIGINS` | comma-separated origins of the staging dashboard, e.g. `https://<staging-preview>.vercel.app,http://localhost:5173` |
 
 The variables are named `PROD_*` because that is what `application.properties` reads; on the
 staging service they must hold **staging** values.
