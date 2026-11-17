@@ -64,16 +64,23 @@ Tests first (red → green), never adjust tests to fit the code, never push with
    `SELECT count(*) FROM public.usuario WHERE password = 'OAUTH_GOOGLE';` → `0`.
 3. **Review and merge the PR.** Check that the 8 existing test files it changes (listed in the PR) match
    the decisions taken (for example 403 → 401 when there is no token).
-4. **Verify the deploy:** `curl -i https://smart-bussing-back-txi2.onrender.com/api/v1/ruta` → 200;
+4. **Deploy by hand** (auto-deploy does not fire, see section 5):
+   `render deploys create srv-dbt15auc6qcc73aed9n0 --commit $(git rev-parse origin/staging) --wait --confirm`.
+5. **Verify the deploy:** `curl -i https://smart-bussing-back-txi2.onrender.com/api/v1/ruta` → 200;
    `curl -i https://smart-bussing-back-txi2.onrender.com/api/v1/user` → 401.
-5. Continue with KAN-35 (Google OAuth on staging Supabase, first ADMIN, web and mobile env vars), then the
+6. Continue with KAN-35 (Google OAuth on staging Supabase, first ADMIN, web and mobile env vars), then the
    web and mobile `feature/auth` PRs, which need this backend.
+
+Open PRs (2026-11-17): backend https://github.com/Civza/smart-bussing-back/pull/21 ·
+web https://github.com/Dusuan/smart-bussing-web/pull/8 · mobile https://github.com/Dusuan/SmartBussingMobile/pull/47
 
 ## 5. Other open items
 
-- Confirm that pushes to `staging` trigger a Render deploy on their own (`render deploys list srv-dbt15auc6qcc73aed9n0`).
-  The `render.yaml` Blueprint is unused: the repo belongs to the personal account `Civza`, which does not
-  have the Render GitHub App. Ask the owner to install it if auto-deploy does not work.
+- **Pushes to `staging` do NOT deploy on their own** (checked 2026-11-17: pushing `601fa0c` created no
+  deploy, although the service says auto-deploy is on). The repo belongs to the personal account `Civza`,
+  which does not have the Render GitHub App, so Render gets no push events; the `render.yaml` Blueprint is
+  unused for the same reason. Until the owner installs the app, deploy by hand after every merge into `staging`:
+  `render deploys create srv-dbt15auc6qcc73aed9n0 --commit $(git rev-parse origin/staging) --wait --confirm`.
 - Health check is not set: `render services update srv-dbt15auc6qcc73aed9n0 --health-check-path /api/v1/ruta`
   (that endpoint queries the DB, so a DB outage also fails the check).
 - Region: service in Oregon, DB in us-east-1 (about 60–70 ms per query). Changing it means a new service in Virginia.
