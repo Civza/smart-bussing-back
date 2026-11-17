@@ -23,10 +23,14 @@ public class AuthTestSupport {
         this.jwtTokenService = jwtTokenService;
     }
 
-    /** Reports reference users, so they must go first. */
+    /**
+     * Reports reference users, so they must go first. Bulk deletes run immediately: with deleteAll()
+     * inside a @Transactional test, Hibernate flushes the users created afterwards before the deletes,
+     * and recreating an existing email violates usuario_email_key.
+     */
     public void deleteAllUsers() {
-        reporteRutaRepository.deleteAll();
-        usuarioRepository.deleteAll();
+        reporteRutaRepository.deleteAllInBatch();
+        usuarioRepository.deleteAllInBatch();
     }
 
     public Usuario createUser(String email, Rol rol) {
