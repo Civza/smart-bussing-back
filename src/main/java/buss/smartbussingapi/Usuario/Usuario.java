@@ -38,6 +38,8 @@ public class Usuario {
     private int idUsuario;
     private String nombre;
     private String email;
+    /** KAN-15: accepted on input, never serialised in any response. */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String profilePhotoURL;
 

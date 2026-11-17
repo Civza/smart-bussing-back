@@ -7,8 +7,12 @@ import buss.smartbussingapi.commons.exceptions.InvalidDataException;
 import buss.smartbussingapi.commons.exceptions.NotFoundException;
 import buss.smartbussingapi.commons.exceptions.ResourceBlockedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +25,10 @@ public class UsuarioService {
 
     private final Map<String, Integer> failedAttempts = new ConcurrentHashMap<>();
     private final Map<String, Long> lockoutExpiry = new ConcurrentHashMap<>();
+
+    /** Placeholder the old Supabase trigger stored for Google accounts; it must never work as a password. */
+    static final String OAUTH_PLACEHOLDER = "OAUTH_GOOGLE";
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
@@ -43,6 +51,7 @@ public class UsuarioService {
                 .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setIdUsuario(usuarioMain.getIdUsuario());
         usuarioDTO.setNombre(usuarioMain.getNombre());
         usuarioDTO.setEmail(usuarioMain.getEmail());
         usuarioDTO.setUrlPhoto(usuarioMain.getProfilePhotoURL());
@@ -76,7 +85,7 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findByEmail(correo)
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
 
-        if (!usuario.getPassword().equals(password)) {
+        if (!passwordMatches(usuario.getPassword(), password)) {
             int currentFailures = failedAttempts.getOrDefault(correo, 0) + 1;
             failedAttempts.put(correo, currentFailures);
 
@@ -90,16 +99,36 @@ public class UsuarioService {
             throw new InvalidCredentialsException("Invalid credentials");
         }
 
+        // KAN-16: migracion transparente de contrasenas guardadas en texto plano
+        if (!isBcryptHash(usuario.getPassword())) {
+            usuario.setPassword(passwordEncoder.encode(password));
+            usuarioRepository.save(usuario);
+        }
+
         // Si la autenticacion fue exitosa, limpiamos intentos fallidos acumulados
         failedAttempts.remove(correo);
         lockoutExpiry.remove(correo);
         return true;
     }
 
-    public void registerUsuario(Usuario usuario) {
-        if (usuario.getRol() == null) {
-            usuario.setRol(Rol.USER);
+    private boolean passwordMatches(String stored, String raw) {
+        if (stored == null || raw == null || OAUTH_PLACEHOLDER.equals(stored)) {
+            return false;
         }
+        if (isBcryptHash(stored)) {
+            return passwordEncoder.matches(raw, stored);
+        }
+        // Legacy plaintext row: constant-time comparison, rehashed by the caller on success
+        return MessageDigest.isEqual(stored.getBytes(StandardCharsets.UTF_8), raw.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static boolean isBcryptHash(String stored) {
+        return stored != null && stored.matches("^\\$2[aby]\\$\\d{2}\\$.{53}$");
+    }
+
+    public void registerUsuario(Usuario usuario) {
+        // KAN-17: el rol nunca se toma del cliente
+        usuario.setRol(Rol.USER);
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             throw new AlreadyExistsException("User with email " + usuario.getEmail() + " already exists");
         }
@@ -112,6 +141,7 @@ public class UsuarioService {
         if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
             throw new InvalidDataException("Password cannot be empty");
         }
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioRepository.save(usuario);
     }
 
@@ -133,10 +163,22 @@ public class UsuarioService {
         }
         Usuario usuarioEditado = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new NotFoundException("User with ID " + idUsuario + " not found"));
-        if (!usuarioEditado.getPassword().equals(newPassword)) {
-            usuarioEditado.setPassword(newPassword);
-        }
+        usuarioEditado.setPassword(passwordEncoder.encode(newPassword));
         usuarioRepository.save(usuarioEditado);
+    }
+
+    /** KAN-18: the current password is required to set a new one. */
+    public void changePassword(int idUsuario, String currentPassword, String newPassword) {
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new InvalidDataException("Password cannot be empty");
+        }
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new NotFoundException("User with ID " + idUsuario + " not found"));
+        if (!passwordMatches(usuario.getPassword(), currentPassword)) {
+            throw new InvalidCredentialsException("Invalid credentials");
+        }
+        usuario.setPassword(passwordEncoder.encode(newPassword));
+        usuarioRepository.save(usuario);
     }
 
     public void resetLockout(String email) {

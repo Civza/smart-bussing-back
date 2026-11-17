@@ -1,11 +1,13 @@
 package buss.smartbussingapi.Usuario;
 
+import buss.smartbussingapi.security.JwtTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +27,21 @@ public class UsuarioControllerIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private JwtTokenService jwtTokenService;
+
+    private String bearerFor(Usuario usuario) {
+        return "Bearer " + jwtTokenService.issueToken(usuario);
+    }
+
+    private String adminBearer() {
+        Usuario admin = new Usuario();
+        admin.setNombre("Admin");
+        admin.setEmail("admin@test.com");
+        admin.setRol(Rol.ADMIN);
+        return bearerFor(usuarioRepository.save(admin));
+    }
 
     @BeforeEach
     public void limpiarBD() {
@@ -50,10 +67,10 @@ public class UsuarioControllerIntegrationTest {
     }
 
     @Test
-    void shouldReturn403WhenGettingAllUsuariosWithoutAdmin() throws Exception {
+    void shouldReturn401WhenGettingAllUsuariosWithoutToken() throws Exception {
         mockMvc.perform(get("/api/v1/user"))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.info").value("Forbidden"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.info").value("Unauthorized"))
                 .andExpect(jsonPath("$.error").exists());
     }
 
@@ -69,7 +86,7 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         user = usuarioRepository.save(user);
 
-        mockMvc.perform(get("/api/v1/user/" + user.getIdUsuario()))
+        mockMvc.perform(get("/api/v1/user/" + user.getIdUsuario()).header(HttpHeaders.AUTHORIZATION, adminBearer()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("User retrieved"))
                 .andExpect(jsonPath("$.response.nombre").value("Test User"));
@@ -87,7 +104,7 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         usuarioRepository.save(user);
 
-        mockMvc.perform(get("/api/v1/user/email").param("email", "test@test.com"))
+        mockMvc.perform(get("/api/v1/user/email").param("email", "test@test.com").header(HttpHeaders.AUTHORIZATION, adminBearer()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("User retrieved"))
                 .andExpect(jsonPath("$.response.email").value("test@test.com"));
@@ -106,11 +123,12 @@ public class UsuarioControllerIntegrationTest {
         usuarioRepository.save(user);
 
         mockMvc.perform(post("/api/v1/user/login")
-                        .param("email", "login@test.com")
-                        .param("password", "password123"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"login@test.com\",\"password\":\"password123\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Login successful"))
-                .andExpect(jsonPath("$.response.email").value("login@test.com"));
+                .andExpect(jsonPath("$.response.usuario.email").value("login@test.com"))
+                .andExpect(jsonPath("$.response.token").exists());
     }
 
     @Test
@@ -126,8 +144,8 @@ public class UsuarioControllerIntegrationTest {
         usuarioRepository.save(user);
 
         mockMvc.perform(post("/api/v1/user/login")
-                        .param("email", "login@test.com")
-                        .param("password", "wrongpassword"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"login@test.com\",\"password\":\"wrongpassword\"}"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.info").value("Unauthorized"));
     }
@@ -144,8 +162,10 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         user = usuarioRepository.save(user);
 
-        mockMvc.perform(patch("/api/v1/user/mn/" + user.getIdUsuario())
-                        .param("name", "New Name"))
+        mockMvc.perform(patch("/api/v1/user/me/name")
+                        .header(HttpHeaders.AUTHORIZATION, bearerFor(user))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nombre\":\"New Name\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Username updated"));
     }
@@ -162,8 +182,10 @@ public class UsuarioControllerIntegrationTest {
         Usuario user = objectMapper.readValue(jsonUser, Usuario.class);
         user = usuarioRepository.save(user);
 
-        mockMvc.perform(patch("/api/v1/user/mp/" + user.getIdUsuario())
-                        .param("password", "newpassword"))
+        mockMvc.perform(patch("/api/v1/user/me/password")
+                        .header(HttpHeaders.AUTHORIZATION, bearerFor(user))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"currentPassword\":\"password123\",\"newPassword\":\"newpassword\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info").value("Password updated"));
     }

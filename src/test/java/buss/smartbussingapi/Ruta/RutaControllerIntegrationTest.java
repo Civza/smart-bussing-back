@@ -38,7 +38,7 @@ public class RutaControllerIntegrationTest {
 
 
     @Test
-    void shouldReturn403WhenCreatingRutaWithoutAdmin() throws Exception {
+    void shouldReturn401WhenCreatingRutaWithoutToken() throws Exception {
         String body = """ 
                 {
                   "type": "FeatureCollection",
@@ -67,8 +67,8 @@ public class RutaControllerIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body)
                 )
-                .andExpect(status().isForbidden())                                  // HTTP 403: endpoint requiere rol ADMIN
-                .andExpect(jsonPath("$.info").value("Forbidden"))
+                .andExpect(status().isUnauthorized())                               // HTTP 401: endpoint requiere token (rol ADMIN)
+                .andExpect(jsonPath("$.info").value("Unauthorized"))
                 .andExpect(jsonPath("$.error").exists());
     }
 

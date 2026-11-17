@@ -3,6 +3,41 @@
 This document keeps a chronological record of work sessions, in-progress tasks, important
 decisions, and pending items. This ensures context is never lost between sessions.
 
+## Session: 2026-11-16 (feature/auth: JWT auth layer, KAN-14 T1-T4, T7, T8, T16-T19)
+
+**Request:** Implement every auth ticket in Jira KAN (epic KAN-14 plus KAN-1/KAN-11) on `feature/auth`, tests first.
+
+**Decisions (user, 2026-11-16):**
+- Own login: the backend signs its own HS256 JWTs (1 h, no refresh). Supabase Google tokens are verified via JWKS. Role comes from `usuario.rol`.
+- No token or invalid token returns 401; insufficient role returns 403.
+- `/registrarLugar` is public and anonymous, published immediately. The dashboard is ADMIN-only.
+- DB and Supabase changes are applied by hand, never by Claude. Each manual step gets a Jira issue assigned to its creator.
+- Existing tests changed only with explicit approval (list in commit `bc193d9`).
+
+**Git:**
+- `f8b87ee` (CLAUDE.md rules) fast-forwarded into local `staging` (worktree `.claude/worktrees/agent-a4774ac001f3bba0a`).
+- `feature/auth` from `staging`: `bc193d9` (tests), `038ec5f` (implementation), `8f03bf8` (V2 migration file, render.yaml, STAGING.md, SPEC.md). Nothing pushed.
+
+**Files:**
+- New: `security/` (SecurityConfig, SecurityProperties, JwtTokenService, SupabaseJwtDecoders, UsuarioRoleConverter, JsonSecurityErrorHandlers), DTOs (Login/Register/ChangePassword/UpdateName/Interesado requests, LoginResponse), `database/migrations/V2__oauth_users_without_password.sql`, plus the tests listed in `bc193d9`.
+- Modified: pom.xml (security, oauth2-resource-server, validation, spring-security-test), CorsConfig, Usuario/UsuarioService/UsuarioController, ReporteRuta(+Controller), RegistroLugarController, Ruta/Parada/Interesado controllers, GlobalControllerAdvice, SecurityAuditFilter, application.properties (main and test), render.yaml, docs/STAGING.md, AGENT_CONTEXT/SPEC.md.
+
+**Verification:**
+- Unit tests: 156/156 pass (134 before, 22 new). `mvn verify -DskipTests` passes (SpotBugs clean, after fixing 4 findings in new code).
+- Integration tests (Postgres on 5433): **not run yet**. Docker was not available; waiting for the user to start it.
+- Fixed one assertion in a test written this session (`JwtTokenServiceTest`): it read `Jwt.getIssuer()`, which only accepts URL issuers. It now reads the raw `iss` claim; the expected value is unchanged.
+
+**Jira (KAN):**
+- Moved to In Progress: KAN-15, 16, 17, 18, 21, 22, 27, 28, 29, 30. Reopened KAN-1 and KAN-11 (marked Done, but the code didn't do it).
+- KAN-10 moved to Done (per the 2026-11-15 session). KAN-28 decision recorded in a comment.
+- Created manual tasks assigned to the user: KAN-32 (apply V2 migration), KAN-33 (backend env vars), KAN-34 (prod Supabase JWT signing keys), KAN-35 (staging Google OAuth, Vercel/EAS vars, first ADMIN).
+
+**Open items / next steps:**
+1. Run the full suite against Postgres (`mvn clean verify -Dspring.config.name=application-test`). Then move the KAN tickets to Done.
+2. KAN-33 and KAN-34 must be done before merging to `staging`; without `APP_JWT_SECRET` and `SUPABASE_URL` the app won't start.
+3. Merge `feature/auth` into `staging` in all 3 repos (push and PR only on user instruction).
+4. Out of scope, still open in KAN-14: T5, T6, T10, T11, T13, T14. `GET /viaje` stays public (location privacy is KAN-23).
+
 ## Session: 2026-11-16 (CLAUDE.md workflow rules, auth feature planning)
 
 **Request:** Add the staging feature-branch workflow and the test-first rule to CLAUDE.md, then plan an auth branch (Supabase JWT on endpoints, new auth layer, admin-only web dashboard).

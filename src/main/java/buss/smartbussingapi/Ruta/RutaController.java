@@ -6,6 +6,7 @@ import buss.smartbussingapi.Usuario.RoleAuthorizationService;
 import buss.smartbussingapi.commons.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class RutaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<Ruta> addNewRuta(
-            @RequestHeader(value = "X-User-Email", required = false) String userEmail,
+            @AuthenticationPrincipal(expression = "claims['email']") String userEmail,
             @RequestBody GeoJsonFeatureCollectionDTO payload) {
         roleAuthorizationService.requireAdmin(userEmail);
         return new ApiResponse<>("Route created", rutaService.agregarRutaDesdeGeoJson(payload), null);

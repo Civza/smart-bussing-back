@@ -1,6 +1,8 @@
 package buss.smartbussingapi.Interesado;
 
+import buss.smartbussingapi.DTOs.InteresadoRequest;
 import buss.smartbussingapi.commons.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +32,8 @@ public class InteresadoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Void> addNewInteresado(@RequestBody Interesado interesado) {
-        interesadoService.addNewInteresado(interesado);
+    public ApiResponse<Void> addNewInteresado(@Valid @RequestBody InteresadoRequest request) {
+        interesadoService.addNewInteresado(new Interesado(request.email()));
         return new ApiResponse<>("Interesado created", null, null);
     }
 }

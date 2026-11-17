@@ -4,12 +4,14 @@ import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Ruta.RutaRepository;
 import buss.smartbussingapi.Usuario.Usuario;
 import buss.smartbussingapi.Usuario.UsuarioRepository;
+import buss.smartbussingapi.security.JwtTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +40,9 @@ public class ReporteRutaControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private JwtTokenService jwtTokenService;
+
     @BeforeEach
     public void limpiarBD() {
         reporteRutaRepository.deleteAll();
@@ -64,7 +69,7 @@ public class ReporteRutaControllerIntegrationTest {
                 }
                 """;
         Usuario usuario = objectMapper.readValue(jsonUsuario, Usuario.class);
-        usuarioRepository.save(usuario);
+        usuario = usuarioRepository.save(usuario);
 
         String jsonBody = """
                 {
@@ -75,7 +80,7 @@ public class ReporteRutaControllerIntegrationTest {
                 """;
 
         mockMvc.perform(post("/api/v1/reporteRuta/" + ruta.getIdRuta())
-                        .param("email", "test@test.com")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtTokenService.issueToken(usuario))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andExpect(status().isCreated())

@@ -2,6 +2,7 @@ package buss.smartbussingapi.Reporte;
 
 import buss.smartbussingapi.Ruta.Ruta;
 import buss.smartbussingapi.Usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,8 +42,10 @@ public class ReporteRuta {
     @JoinColumn(name = "ruta_id")
     private Ruta ruta;
 
+    /** KAN-15: public reports show the author's name only, never their email or role. */
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnoreProperties(value = {"email", "rol", "id_usuario"}, allowSetters = true)
     private Usuario usuario;
 
 }
