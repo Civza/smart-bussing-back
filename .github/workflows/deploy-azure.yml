@@ -1,0 +1,38 @@
+name: deploy-azure
+
+# Why these IDs are in the file: the repo owner can't add GitHub secrets for this lab.
+# They are not passwords. Azure only accepts the login for this repo and branch (staging).
+
+on:
+  push:
+    branches: [ staging ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - run: ./mvnw -B -DskipTests package && cp target/smartbussingAPI-0.0.1-SNAPSHOT.jar target/app.jar
+
+      - uses: azure/login@v2
+        with:
+          client-id: a02067ff-c9db-48fd-920f-62db10036631
+          tenant-id: 43166f6b-4f0a-4ef0-a528-7e8758730614
+          subscription-id: aa205196-1a0e-45a5-b614-a03b40896f7d
+
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: smartbussing-lab-6266
+          package: target/app.jar
