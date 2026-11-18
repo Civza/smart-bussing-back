@@ -33,7 +33,19 @@ build/
 .vscode/
 
 .env
+.env.*
+!.env.example
 src/main/resources/application.properties
+
+## Secrets and infrastructure state (Cloud Security Lab) ##
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.pem
+*.key
+*.pfx
+*.p12
+gitleaks-*.json
 
 ## Python / DLP Service ##
 dlp-service/venv/
